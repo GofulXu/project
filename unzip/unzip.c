@@ -1,0 +1,2547 @@
+/*
+  Copyright (c) 1990-2005 Info-ZIP.  All rights reserved.
+
+  See the accompanying file LICENSE, version 2000-Apr-09 or later
+  (the contents of which are also included in unzip.h) for terms of use.
+  If, for some reason, all these files are missing, the Info-ZIP license
+  also may be found at:  ftp://ftp.info-zip.org/pub/infozip/license.html
+*/
+/*---------------------------------------------------------------------------
+
+  unzip.c
+
+  UnZip - a zipfile extraction utility.  See below for make instructions, or
+  read the comments in Makefile and the various Contents files for more de-
+  tailed explanations.  To report a bug, submit a *complete* description via
+  //www.info-zip.org/zip-bug.html; include machine type, operating system and
+  version, compiler and version, and reasonably detailed error messages or
+  problem report.  To join Info-ZIP, see the instructions in README.
+
+  UnZip 5.x is a greatly expanded and partially rewritten successor to 4.x,
+  which in turn was almost a complete rewrite of version 3.x.  For a detailed
+  revision history, see UnzpHist.zip at quest.jpl.nasa.gov.  For a list of
+  the many (near infinite) contributors, see "CONTRIBS" in the UnZip source
+  distribution.
+
+  ---------------------------------------------------------------------------
+
+  [from original zipinfo.c]
+
+  This program reads great gobs of totally nifty information, including the
+  central directory stuff, from ZIP archives ("zipfiles" for short).  It
+  started as just a testbed for fooling with zipfiles, but at this point it
+  is actually a useful utility.  It also became the basis for the rewrite of
+  UnZip (3.16 -> 4.0), using the central directory for processing rather than
+  the individual (local) file headers.
+
+  As of ZipInfo v2.0 and UnZip v5.1, the two programs are combined into one.
+  If the executable is named "unzip" (or "unzip.exe", depending), it behaves
+  like UnZip by default; if it is named "zipinfo" or "ii", it behaves like
+  ZipInfo.  The ZipInfo behavior may also be triggered by use of unzip's -Z
+  option; for example, "unzip -Z [zipinfo_options] archive.zip".
+
+  Another dandy product from your buddies at Newtware!
+
+  Author:  Greg Roelofs, newt@pobox.com, http://pobox.com/~newt/
+           23 August 1990 -> April 1997
+
+  ---------------------------------------------------------------------------
+
+  Version:  unzip5??.{tar.Z | tar.gz | zip} for Unix, VMS, OS/2, MS-DOS, Amiga,
+              Atari, Windows 3.x/95/NT/CE, Macintosh, Human68K, Acorn RISC OS,
+              AtheOS, BeOS, SMS/QDOS, VM/CMS, MVS, AOS/VS, Tandem NSK, Theos
+              and TOPS-20.
+
+  Copyrights:  see accompanying file "LICENSE" in UnZip source distribution.
+               (This software is free but NOT IN THE PUBLIC DOMAIN.)
+
+  ---------------------------------------------------------------------------*/
+
+
+
+#define __UNZIP_C       /* identifies this source module */
+#define UNZIP_INTERNAL
+#include "unzip.h"      /* includes, typedefs, macros, prototypes, etc. */
+#include "crypt.h"
+#include "unzvers.h"
+
+#ifndef WINDLL          /* The WINDLL port uses windll/windll.c instead... */
+
+/***************************/
+/* Local type declarations */
+/***************************/
+
+#if (defined(REENTRANT) && !defined(NO_EXCEPT_SIGNALS))
+typedef struct _sign_info
+    {
+        struct _sign_info *previous;
+        void (*sighandler)(int);
+        int sigtype;
+    } savsigs_info;
+#endif
+
+/*******************/
+/* Local Functions */
+/*******************/
+
+#if (defined(REENTRANT) && !defined(NO_EXCEPT_SIGNALS))
+static int setsignalhandler OF((__GPRO__ savsigs_info **p_savedhandler_chain,
+                                int signal_type, void (*newhandler)(int)));
+#endif
+#ifndef SFX
+static void  show_version_info  OF((__GPRO));
+#endif
+
+
+/*************/
+/* Constants */
+/*************/
+
+#include "consts.h"  /* all constant global variables are in here */
+                     /* (non-constant globals were moved to globals.c) */
+
+/* constant local variables: */
+
+#ifndef SFX
+#ifndef _WIN32_WCE /* Win CE does not support environment variables */
+   static ZCONST char Far EnvUnZip[] = ENV_UNZIP;
+   static ZCONST char Far EnvUnZip2[] = ENV_UNZIP2;
+   static ZCONST char Far EnvZipInfo[] = ENV_ZIPINFO;
+   static ZCONST char Far EnvZipInfo2[] = ENV_ZIPINFO2;
+#ifdef RISCOS
+   static ZCONST char Far EnvUnZipExts[] = ENV_UNZIPEXTS;
+#endif /* RISCOS */
+  static ZCONST char Far NoMemArguments[] =
+    "envargs:  cannot get memory for arguments";
+#endif /* !_WIN32_WCE */
+#endif /* !SFX */
+
+#if (defined(REENTRANT) && !defined(NO_EXCEPT_SIGNALS))
+  static ZCONST char Far CantSaveSigHandler[] =
+    "error:  cannot save signal handler settings\n";
+#endif
+
+#if (!defined(SFX) || defined(SFX_EXDIR))
+   static ZCONST char Far NotExtracting[] =
+     "caution:  not extracting; -d ignored\n";
+   static ZCONST char Far MustGiveExdir[] =
+     "error:  must specify directory to which to extract with -d option\n";
+   static ZCONST char Far OnlyOneExdir[] =
+     "error:  -d option used more than once (only one exdir allowed)\n";
+#endif
+
+#if CRYPT
+   static ZCONST char Far MustGivePasswd[] =
+     "error:  must give decryption password with -P option\n";
+#endif
+
+#ifndef SFX
+   static ZCONST char Far Zfirst[] =
+   "error:  -Z must be first option for ZipInfo mode (check UNZIP variable?)\n";
+#endif
+static ZCONST char Far InvalidOptionsMsg[] = "error:\
+  -fn or any combination of -c, -l, -p, -t, -u and -v options invalid\n";
+static ZCONST char Far IgnoreOOptionMsg[] =
+  "caution:  both -n and -o specified; ignoring -o\n";
+
+/* usage() strings */
+#ifndef SFX
+#ifdef VMS
+   static ZCONST char Far Example3[] = "vms.c";
+   static ZCONST char Far Example2[] = "  unzip \"-V\" foo \"Bar\"\
+ (Quote names to preserve case, unless SET PROC/PARS=EXT)\n";
+#else /* !VMS */
+   static ZCONST char Far Example3[] = "ReadMe";
+#ifdef RISCOS
+   static ZCONST char Far Example2[] =
+"  unzip foo -d RAM:$   => extract all files from foo into RAMDisc\n";
+#else /* !RISCOS */
+#if (defined(OS2) || (defined(DOS_FLX_OS2_W32) && defined(MORE)))
+   static ZCONST char Far Example2[] =
+     "";                /* no room:  too many local3[] items */
+#else /* !OS2 */
+#ifdef MACOS
+   static ZCONST char Far Example2[] = ""; /* not needed */
+#else /* !MACOS */
+   static ZCONST char Far Example2[] = " \
+ unzip -p foo | more  => send contents of foo.zip via pipe into program more\n";
+#endif /* ?MACOS */
+#endif /* ?OS2 */
+#endif /* ?RISCOS */
+#endif /* ?VMS */
+
+/* local1[]:  command options */
+#if (defined(DLL) && defined(API_DOC))
+   static ZCONST char Far local1[] =
+     "  -A  print extended help for API functions";
+#else /* !(DLL && API_DOC) */
+   static ZCONST char Far local1[] = "";
+#endif /* ?(DLL && API_DOC) */
+
+/* local2[] and local3[]:  modifier options */
+#ifdef DOS_FLX_H68_OS2_W32
+#ifdef FLEXOS
+   static ZCONST char Far local2[] = "";
+#else
+   static ZCONST char Far local2[] =
+     " -$  label removables (-$$ => fixed disks)";
+#endif
+#ifdef OS2
+#ifdef MORE
+   static ZCONST char Far local3[] = "\
+  -X  restore ACLs if supported              -s  spaces in filenames => '_'\n\
+                                             -M  pipe through \"more\" pager\n";
+#else
+   static ZCONST char Far local3[] = " \
+ -X  restore ACLs if supported              -s  spaces in filenames => '_'\n\n";
+#endif /* ?MORE */
+#else /* !OS2 */
+#ifdef WIN32
+#ifdef NTSD_EAS
+#ifdef MORE
+   static ZCONST char Far local3[] = "\
+  -X  restore ACLs (-XX => use privileges)   -s  spaces in filenames => '_'\n\
+                                             -M  pipe through \"more\" pager\n";
+#else
+   static ZCONST char Far local3[] = " \
+ -X  restore ACLs (-XX => use privileges)   -s  spaces in filenames => '_'\n\n";
+#endif /* ?MORE */
+#else /* !NTSD_EAS */
+#ifdef MORE
+   static ZCONST char Far local3[] = "\
+  -M  pipe through \"more\" pager            \
+  -s  spaces in filenames => '_'\n\n";
+#else
+   static ZCONST char Far local3[] = " \
+                                            -s  spaces in filenames => '_'\n\n";
+#endif /* ?MORE */
+#endif /* ?NTSD_EAS */
+#else /* !WIN32 */
+#ifdef MORE
+   static ZCONST char Far local3[] = "  -\
+M  pipe through \"more\" pager              -s  spaces in filenames => '_'\n\n";
+#else
+   static ZCONST char Far local3[] = "\
+                                             -s  spaces in filenames => '_'\n";
+#endif
+#endif /* ?WIN32 */
+#endif /* ?OS2 || ?WIN32 */
+#else /* !DOS_FLX_OS2_W32 */
+#ifdef VMS
+   static ZCONST char Far local2[] = "\"-X\" restore owner/protection info";
+#ifdef MORE
+   static ZCONST char Far local3[] = "  \
+                                          \"-M\" pipe through \"more\" pager\n";
+#else
+   static ZCONST char Far local3[] = "\n";
+#endif
+#else /* !VMS */
+#ifdef ATH_BEO_UNX
+   static ZCONST char Far local2[] = " -X  restore UID/GID info";
+#ifdef MORE
+   static ZCONST char Far local3[] = "\
+  -K  keep setuid/setgid/tacky permissions   -M  pipe through \"more\" pager\n";
+#else
+   static ZCONST char Far local3[] = "\
+  -K  keep setuid/setgid/tacky permissions\n";
+#endif
+#else /* !ATH_BEO_UNX */
+#ifdef TANDEM
+   static ZCONST char Far local2[] = "\
+ -X  restore Tandem User ID                 -r  remove file extensions\n\
+  -b  create 'C' (180) text files          ";
+#ifdef MORE
+   static ZCONST char Far local3[] = " \
+                                            -M  pipe through \"more\" pager\n";
+#else
+   static ZCONST char Far local3[] = "\n";
+#endif
+#else /* !TANDEM */
+#ifdef AMIGA
+   static ZCONST char Far local2[] = " -N  restore comments as filenotes";
+#ifdef MORE
+   static ZCONST char Far local3[] = " \
+                                            -M  pipe through \"more\" pager\n";
+#else
+   static ZCONST char Far local3[] = "\n";
+#endif
+#else /* !AMIGA */
+#ifdef MACOS
+   static ZCONST char Far local2[] = " -E  show Mac info during extraction";
+   static ZCONST char Far local3[] = " \
+ -i  ignore filenames in mac extra info     -J  junk (ignore) Mac extra info\n\
+\n";
+#else /* !MACOS */
+#ifdef MORE
+   static ZCONST char Far local2[] = " -M  pipe through \"more\" pager";
+   static ZCONST char Far local3[] = "\n";
+#else
+   static ZCONST char Far local2[] = "";   /* Atari, Mac, CMS/MVS etc. */
+   static ZCONST char Far local3[] = "";
+#endif
+#endif /* ?MACOS */
+#endif /* ?AMIGA */
+#endif /* ?TANDEM */
+#endif /* ?ATH_BEO_UNX */
+#endif /* ?VMS */
+#endif /* ?DOS_FLX_OS2_W32 */
+#endif /* !SFX */
+
+#ifndef NO_ZIPINFO
+#ifdef VMS
+   static ZCONST char Far ZipInfoExample[] = "* or % (e.g., \"*font-%.zip\")";
+#else
+   static ZCONST char Far ZipInfoExample[] = "*, ?, [] (e.g., \"[a-j]*.zip\")";
+#endif
+
+static ZCONST char Far ZipInfoUsageLine1[] = "\
+ZipInfo %d.%d%d%s of %s, by Greg Roelofs and the Info-ZIP group.\n\
+\n\
+List name, date/time, attribute, size, compression method, etc., about files\n\
+in list (excluding those in xlist) contained in the specified .zip archive(s).\
+\n\"file[.zip]\" may be a wildcard name containing %s.\n\n\
+   usage:  zipinfo [-12smlvChMtTz] file[.zip] [list...] [-x xlist...]\n\
+      or:  unzip %s-Z%s [-12smlvChMtTz] file[.zip] [list...] [-x xlist...]\n";
+
+static ZCONST char Far ZipInfoUsageLine2[] = "\nmain\
+ listing-format options:             -s  short Unix \"ls -l\" format (def.)\n\
+  -1  filenames ONLY, one per line       -m  medium Unix \"ls -l\" format\n\
+  -2  just filenames but allow -h/-t/-z  -l  long Unix \"ls -l\" format\n\
+                                         -v  verbose, multi-page format\n";
+
+static ZCONST char Far ZipInfoUsageLine3[] = "miscellaneous options:\n\
+  -h  print header line       -t  print totals for listed files or for all\n\
+  -z  print zipfile comment  %c-T%c print file times in sortable decimal format\
+\n %c-C%c be case-insensitive   %s\
+  -x  exclude filenames that follow from listing\n";
+#ifdef MORE
+#ifdef VMS
+   static ZCONST char Far ZipInfoUsageLine4[] =
+     " \"-M\" page output through built-in \"more\"\n";
+#else
+   static ZCONST char Far ZipInfoUsageLine4[] =
+     "  -M  page output through built-in \"more\"\n";
+#endif
+#else /* !MORE */
+   static ZCONST char Far ZipInfoUsageLine4[] = "";
+#endif /* ?MORE */
+#endif /* !NO_ZIPINFO */
+
+#ifdef BETA
+#  ifdef VMSCLI
+   /* BetaVersion[] is also used in vms/cmdline.c:  do not make it static */
+     ZCONST char Far BetaVersion[] = "%s\
+        THIS IS STILL A BETA VERSION OF UNZIP%s -- DO NOT DISTRIBUTE.\n\n";
+#  else
+     static ZCONST char Far BetaVersion[] = "%s\
+        THIS IS STILL A BETA VERSION OF UNZIP%s -- DO NOT DISTRIBUTE.\n\n";
+#  endif
+#endif
+
+#ifdef SFX
+#  ifdef VMSCLI
+   /* UnzipSFXBanner[] is also used in vms/cmdline.c:  do not make it static */
+     ZCONST char Far UnzipSFXBanner[] =
+#  else
+     static ZCONST char Far UnzipSFXBanner[] =
+#  endif
+     "UnZipSFX %d.%d%d%s of %s, by Info-ZIP (http://www.info-zip.org).\n";
+#  ifdef SFX_EXDIR
+     static ZCONST char Far UnzipSFXOpts[] =
+    "Valid options are -tfupcz and -d <exdir>; modifiers are -abjnoqCL%sV%s.\n";
+#  else
+     static ZCONST char Far UnzipSFXOpts[] =
+       "Valid options are -tfupcz; modifiers are -abjnoqCL%sV%s.\n";
+#  endif
+#else /* !SFX */
+   static ZCONST char Far CompileOptions[] =
+     "UnZip special compilation options:\n";
+   static ZCONST char Far CompileOptFormat[] = "\t%s\n";
+#ifndef _WIN32_WCE /* Win CE does not support environment variables */
+   static ZCONST char Far EnvOptions[] =
+     "\nUnZip and ZipInfo environment options:\n";
+   static ZCONST char Far EnvOptFormat[] = "%16s:  %s\n";
+#endif
+   static ZCONST char Far None[] = "[none]";
+#  ifdef ACORN_FTYPE_NFS
+     static ZCONST char Far AcornFtypeNFS[] = "ACORN_FTYPE_NFS";
+#  endif
+#  ifdef ASM_CRC
+     static ZCONST char Far AsmCRC[] = "ASM_CRC";
+#  endif
+#  ifdef ASM_INFLATECODES
+     static ZCONST char Far AsmInflateCodes[] = "ASM_INFLATECODES";
+#  endif
+#  ifdef CHECK_VERSIONS
+     static ZCONST char Far Check_Versions[] = "CHECK_VERSIONS";
+#  endif
+#  ifdef COPYRIGHT_CLEAN
+     static ZCONST char Far Copyright_Clean[] =
+     "COPYRIGHT_CLEAN (PKZIP 0.9x unreducing method not supported)";
+#  endif
+#  ifdef DEBUG
+     static ZCONST char Far UDebug[] = "DEBUG";
+#  endif
+#  ifdef DEBUG_TIME
+     static ZCONST char Far DebugTime[] = "DEBUG_TIME";
+#  endif
+#  ifdef DLL
+     static ZCONST char Far Dll[] = "DLL";
+#  endif
+#  ifdef DOSWILD
+     static ZCONST char Far DosWild[] = "DOSWILD";
+#  endif
+#  ifdef LZW_CLEAN
+     static ZCONST char Far LZW_Clean[] =
+     "LZW_CLEAN (PKZIP/Zip 1.x unshrinking method not supported)";
+#  endif
+#  ifndef MORE
+     static ZCONST char Far No_More[] = "NO_MORE";
+#  endif
+#  ifdef NO_ZIPINFO
+     static ZCONST char Far No_ZipInfo[] = "NO_ZIPINFO";
+#  endif
+#  ifdef NTSD_EAS
+     static ZCONST char Far NTSDExtAttrib[] = "NTSD_EAS";
+#  endif
+#  if defined(WIN32) && defined(NO_W32TIMES_IZFIX)
+     static ZCONST char Far W32NoIZTimeFix[] = "NO_W32TIMES_IZFIX";
+#  endif
+#  ifdef OLD_THEOS_EXTRA
+     static ZCONST char Far OldTheosExtra[] =
+     "OLD_THEOS_EXTRA (handle also old Theos port extra field)";
+#  endif
+#  ifdef OS2_EAS
+     static ZCONST char Far OS2ExtAttrib[] = "OS2_EAS";
+#  endif
+#  ifdef QLZIP
+     static ZCONST char Far SMSExFldOnUnix[] = "QLZIP";
+#  endif
+#  ifdef REENTRANT
+     static ZCONST char Far Reentrant[] = "REENTRANT";
+#  endif
+#  ifdef REGARGS
+     static ZCONST char Far RegArgs[] = "REGARGS";
+#  endif
+#  ifdef RETURN_CODES
+     static ZCONST char Far Return_Codes[] = "RETURN_CODES";
+#  endif
+#  ifdef SET_DIR_ATTRIB
+     static ZCONST char Far SetDirAttrib[] = "SET_DIR_ATTRIB";
+#  endif
+#  ifdef TIMESTAMP
+     static ZCONST char Far TimeStamp[] = "TIMESTAMP";
+#  endif
+#  ifdef UNIXBACKUP
+     static ZCONST char Far UnixBackup[] = "UNIXBACKUP";
+#  endif
+#  ifdef USE_EF_UT_TIME
+     static ZCONST char Far Use_EF_UT_time[] = "USE_EF_UT_TIME";
+#  endif
+#  ifndef LZW_CLEAN
+     static ZCONST char Far Use_Unshrink[] =
+     "USE_UNSHRINK (PKZIP/Zip 1.x unshrinking method supported)";
+#  endif
+#  ifndef COPYRIGHT_CLEAN
+     static ZCONST char Far Use_Smith_Code[] =
+     "USE_SMITH_CODE (PKZIP 0.9x unreducing method supported)";
+#  endif
+#  ifdef USE_DEFLATE64
+     static ZCONST char Far Use_Deflate64[] =
+     "USE_DEFLATE64 (PKZIP 4.x Deflate64(tm) supported)";
+#  endif
+#  ifdef MULT_VOLUME
+     static ZCONST char Far Use_MultiVol[] =
+     "MULT_VOLUME (multi-volume archives supported)";
+#  endif
+#  if (defined(__DJGPP__) && (__DJGPP__ >= 2))
+#    ifdef USE_DJGPP_ENV
+       static ZCONST char Far Use_DJGPP_Env[] = "USE_DJGPP_ENV";
+#    endif
+#    ifdef USE_DJGPP_GLOB
+       static ZCONST char Far Use_DJGPP_Glob[] = "USE_DJGPP_GLOB";
+#    endif
+#  endif /* __DJGPP__ && (__DJGPP__ >= 2) */
+#  ifdef USE_VFAT
+     static ZCONST char Far Use_VFAT_support[] = "USE_VFAT";
+#  endif
+#  ifdef USE_ZLIB
+     static ZCONST char Far UseZlib[] =
+     "USE_ZLIB (compiled with version %s; using version %s)";
+#  endif
+#  ifdef VMS_TEXT_CONV
+     static ZCONST char Far VmsTextConv[] = "VMS_TEXT_CONV";
+#  endif
+#  ifdef VMSCLI
+     static ZCONST char Far VmsCLI[] = "VMSCLI";
+#  endif
+#  ifdef VMSWILD
+     static ZCONST char Far VmsWild[] = "VMSWILD";
+#  endif
+#  ifdef WILD_STOP_AT_DIR
+     static ZCONST char Far WildStopAtDir[] = "WILD_STOP_AT_DIR";
+#  endif
+#  if CRYPT
+#    ifdef PASSWD_FROM_STDIN
+       static ZCONST char Far PasswdStdin[] = "PASSWD_FROM_STDIN";
+#    endif
+     static ZCONST char Far Decryption[] =
+       "\t[decryption, version %d.%d%s of %s]\n";
+     static ZCONST char Far CryptDate[] = CR_VERSION_DATE;
+#  endif
+#  ifndef __RSXNT__
+#    ifdef __EMX__
+       static ZCONST char Far EnvEMX[] = "EMX";
+       static ZCONST char Far EnvEMXOPT[] = "EMXOPT";
+#    endif
+#    if (defined(__GO32__) && (!defined(__DJGPP__) || (__DJGPP__ < 2)))
+       static ZCONST char Far EnvGO32[] = "GO32";
+       static ZCONST char Far EnvGO32TMP[] = "GO32TMP";
+#    endif
+#  endif /* !__RSXNT__ */
+
+#ifdef VMS
+/* UnzipUsageLine1[] is also used in vms/cmdline.c:  do not make it static */
+   ZCONST char Far UnzipUsageLine1[] = "\
+UnZip %d.%d%d%s of %s, by Info-ZIP.  For more details see: unzip -v.\n\n";
+# ifdef COPYRIGHT_CLEAN
+   static ZCONST char Far UnzipUsageLine1v[] = "\
+UnZip %d.%d%d%s of %s, by Info-ZIP.  Maintained by C. Spieler.  Send\n\
+bug reports using http://www.info-zip.org/zip-bug.html; see README for details.\
+\n\n";
+# else
+   static ZCONST char Far UnzipUsageLine1v[] = "\
+UnZip %d.%d%d%s of %s, by Info-ZIP.  UnReduce (c) 1989 by S. H. Smith.\n\
+Send bug reports using //www.info-zip.org/zip-bug.html; see README for details.\
+\n\n";
+# endif /* ?COPYRIGHT_CLEAN */
+#else /* !VMS */
+# ifdef COPYRIGHT_CLEAN
+   static ZCONST char Far UnzipUsageLine1[] = "\
+UnZip %d.%d%d%s of %s, by Info-ZIP.  Maintained by C. Spieler.  Send\n\
+bug reports using http://www.info-zip.org/zip-bug.html; see README for details.\
+\n\n";
+# else
+   static ZCONST char Far UnzipUsageLine1[] = "\
+UnZip %d.%d%d%s of %s, by Info-ZIP.  UnReduce (c) 1989 by S. H. Smith.\n\
+Send bug reports using //www.info-zip.org/zip-bug.html; see README for details.\
+\n\n";
+# endif /* ?COPYRIGHT_CLEAN */
+# define UnzipUsageLine1v       UnzipUsageLine1
+#endif /* ?VMS */
+
+static ZCONST char Far UnzipUsageLine2v[] = "\
+Latest sources and executables are at ftp://ftp.info-zip.org/pub/infozip/ ;\
+\nsee ftp://ftp.info-zip.org/pub/infozip/UnZip.html for other sites.\
+\n\n";
+
+#ifdef MACOS
+static ZCONST char Far UnzipUsageLine2[] = "\
+Usage: unzip %s[-opts[modifiers]] file[.zip] [list] [-d exdir]\n \
+ Default action is to extract files in list, to exdir;\n\
+  file[.zip] may be a wildcard.  %s\n";
+#else /* !MACOS */
+#ifdef VM_CMS
+static ZCONST char Far UnzipUsageLine2[] = "\
+Usage: unzip %s[-opts[modifiers]] file[.zip] [list] [-x xlist] [-d fm]\n \
+ Default action is to extract files in list, except those in xlist, to disk fm;\
+\n  file[.zip] may be a wildcard.  %s\n";
+#else /* !VM_CMS */
+static ZCONST char Far UnzipUsageLine2[] = "\
+Usage: unzip %s[-opts[modifiers]] file[.zip] [list] [-x xlist] [-d exdir]\n \
+ Default action is to extract files in list, except those in xlist, to exdir;\n\
+  file[.zip] may be a wildcard.  %s\n";
+#endif /* ?VM_CMS */
+#endif /* ?MACOS */
+
+#ifdef NO_ZIPINFO
+#  define ZIPINFO_MODE_OPTION  ""
+   static ZCONST char Far ZipInfoMode[] =
+     "(ZipInfo mode is disabled in this version.)";
+#else
+#  define ZIPINFO_MODE_OPTION  "[-Z] "
+#  ifdef VMS
+     static ZCONST char Far ZipInfoMode[] =
+       "\"-Z\" => ZipInfo mode (`unzip \"-Z\"' for usage).";
+#  else
+     static ZCONST char Far ZipInfoMode[] =
+       "-Z => ZipInfo mode (\"unzip -Z\" for usage).";
+#  endif
+#endif /* ?NO_ZIPINFO */
+
+#ifdef VMS
+   static ZCONST char Far VMSusageLine2b[] = "\
+=> define foreign command symbol in LOGIN.COM:  $ unzip :== $dev:[dir]unzip.exe\
+\n";
+#endif
+
+#ifdef MACOS
+static ZCONST char Far UnzipUsageLine3[] = "\n\
+  -d  extract files into exdir               -l  list files (short format)\n\
+  -f  freshen existing files, create none    -t  test compressed archive data\n\
+  -u  update files, create if necessary      -z  display archive comment\n\
+%s\n";
+#else /* !MACOS */
+#ifdef VM_CMS
+static ZCONST char Far UnzipUsageLine3[] = "\n\
+  -p  extract files to pipe, no messages     -l  list files (short format)\n\
+  -f  freshen existing files, create none    -t  test compressed archive data\n\
+  -u  update files, create if necessary      -z  display archive comment\n\
+  -x  exclude files that follow (in xlist)   -d  extract files onto disk fm\n\
+%s\n";
+#else /* !VM_CMS */
+static ZCONST char Far UnzipUsageLine3[] = "\n\
+  -p  extract files to pipe, no messages     -l  list files (short format)\n\
+  -f  freshen existing files, create none    -t  test compressed archive data\n\
+  -u  update files, create if necessary      -z  display archive comment\n\
+  -x  exclude files that follow (in xlist)   -d  extract files into exdir\n\
+%s\n";
+#endif /* ?VM_CMS */
+#endif /* ?MACOS */
+
+static ZCONST char Far UnzipUsageLine4[] = "\
+modifiers:                                   -q  quiet mode (-qq => quieter)\n\
+  -n  never overwrite existing files         -a  auto-convert any text files\n\
+  -o  overwrite files WITHOUT prompting      -aa treat ALL files as text\n \
+ -j  junk paths (do not make directories)   -v  be verbose/print version info\n\
+ %c-C%c match filenames case-insensitively    %c-L%c make (some) names \
+lowercase\n %-42s %c-V%c retain VMS version numbers\n%s";
+
+static ZCONST char Far UnzipUsageLine5[] = "\
+Examples (see unzip.txt for more info):\n\
+  unzip data1 -x joe   => extract all files except joe from zipfile data1.zip\n\
+%s\
+  unzip -fo foo %-6s => quietly replace existing %s if archive file newer\n";
+#endif /* ?SFX */
+
+void mprintf(__G);
+
+
+int create__G(__G__ filename, outname)
+	__GDEF
+	char *filename;
+	char *outname;
+{
+	//memset(__G__ 0, sizeof(Uz_Globs));
+	__G->wildzipfn = filename;
+	__G->process_all_files = 1;
+	__G->extract_flag = 1;
+	__G->UzO.lflag = -1;
+	__G->UzO.exdir = outname;
+	__G->sol = 1;
+	__G->echofd = -1;
+	return 0;
+}
+
+void mprintf(__G)
+    __GDEF
+{
+#ifdef DLL
+ //   zvoid *callerglobs; /* pointer to structure of pass-through global vars */
+	printf("G.callerglobs:%s\n", __LINE__, G.callerglobs);
+#endif
+
+    /* command options of general use */
+//    UzpOpts UzO;        /* command options of general use */
+	printf("LINE:%d\tG.UzO.\n", __LINE__);
+#ifndef FUNZIP
+    //char *exdir;        /* pointer to extraction root directory (-d option) */
+	printf("LINE:%d\tG.UzO.exdir:%s\n", __LINE__, G.UzO.exdir);
+   // char *pwdarg;       /* pointer to command-line password (-P option) */
+	printf("LINE:%d\tG.UzO.pwdarg:%s\n", __LINE__, G.UzO.pwdarg);
+ //   int zipinfo_mode;   /* behave like ZipInfo or like normal UnZip? */
+	printf("LINE:%d\tG.UzO.zipinfo_mode:%d\n", __LINE__, G.UzO.zipinfo_mode);
+//    int aflag;          /* -a: do ASCII-EBCDIC and/or end-of-line translation */
+	printf("LINE:%d\tG.UzO.aflag:%d\n", __LINE__, G.UzO.aflag);
+#ifdef VMS
+ //   int bflag;          /* -b: force fixed record format for binary files */
+	printf("LINE:%d\tG.UzO.bflag:%d\n", __LINE__, G.UzO.bflag);
+#endif
+#ifdef TANDEM
+ //   int bflag;          /* -b: create text files in 'C' format (180)*/
+	printf("LINE:%d\tG.UzO.bflag:%d\n", __LINE__, G.UzO.bflag);
+#endif
+#ifdef UNIXBACKUP
+//    int B_flag;         /* -B: back up existing files by renaming to *~ first */
+	printf("LINE:%d\tG.UzO.B_flag:%d\n", __LINE__, G.UzO.B_flag);
+#endif
+   // int cflag;          /* -c: output to stdout */
+	printf("LINE:%d\tG.UzO.cflag:%d\n", __LINE__, G.UzO.cflag);
+ //   int C_flag;         /* -C: match filenames case-insensitively */
+	printf("LINE:%d\tG.UzO.C_flag:%d\n", __LINE__, G.UzO.C_flag);
+#ifdef MACOS
+   // int E_flag;         /* -E: [MacOS] show Mac extra field during restoring */
+	printf("LINE:%d\tG.UzO.E_flag:%d\n", __LINE__, G.UzO.E_flag);
+#endif
+   // int fflag;          /* -f: "freshen" (extract only newer files) */
+	printf("LINE:%d\tG.UzO.fflag:%d\n", __LINE__, G.UzO.fflag);
+#if (defined(RISCOS) || defined(ACORN_FTYPE_NFS))
+    ///int acorn_nfs_ext;  /* -F: RISC OS types & NFS filetype extensions */
+	printf("LINE:%d\tG.UzO.acorn_nfs_ext:%d\n", __LINE__, G.UzO.acorn_nfs_ext);
+#endif
+    //int hflag;          /* -h: header line (zipinfo) */
+	printf("LINE:%d\tG.UzO.hflag:%d\n", __LINE__, G.UzO.hflag);
+#ifdef MACOS
+ //   int i_flag;         /* -i: [MacOS] ignore filenames stored in Mac e.f. */
+	printf("LINE:%d\tG.UzO.i_flag:%d\n", __LINE__, G.UzO.i_flag);
+#endif
+#ifdef RISCOS
+    //int scanimage;      /* -I: scan image files */
+	printf("LINE:%d\tG.UzO.scanimage:%d\n", __LINE__, G.UzO.scanimage);
+#endif
+    //int jflag;          /* -j: junk pathnames (unzip) */
+	printf("LINE:%d\tG.UzO.jflag:%d\n", __LINE__, G.UzO.jflag);
+#if (defined(__ATHEOS__) || defined(__BEOS__) || defined(MACOS))
+    //int J_flag;         /* -J: ignore AtheOS/BeOS/MacOS e. f. info (unzip) */
+	printf("LINE:%d\tG.UzO.J_flag:%d\n", __LINE__, G.UzO.J_flag);
+#endif
+#if (defined(__ATHEOS__) || defined(__BEOS__) || defined(UNIX))
+    //int K_flag;         /* -K: keep setuid/setgid/tacky permissions */
+	printf("LINE:%d\tG.UzO.K_flag:%d\n", __LINE__, G.UzO.K_flag);
+#endif
+    //int lflag;          /* -12slmv: listing format (zipinfo) */
+	printf("LINE:%d\tG.UzO.lflag:%d\n", __LINE__, G.UzO.lflag);
+    //int L_flag;         /* -L: convert filenames from some OSes to lowercase */
+	printf("LINE:%d\tG.UzO.L_flag:%d\n", __LINE__, G.UzO.L_flag);
+    //int overwrite_none; /* -n: never overwrite files (no prompting) */
+	printf("LINE:%d\tG.UzO.overwrite_none:%d\n", __LINE__, G.UzO.overwrite_none);
+#ifdef AMIGA
+    //int N_flag;         /* -N: restore comments as AmigaDOS filenotes */
+	printf("LINE:%d\tG.UzO.N_flag:%d\n", __LINE__, G.UzO.N_flag);
+#endif
+//    int overwrite_all;  /* -o: OK to overwrite files without prompting */
+	printf("LINE:%d\tG.UzO.overwrite_all:%d\n", __LINE__, G.UzO.overwrite_all);
+#endif /* !FUNZIP */
+    //int qflag;          /* -q: produce a lot less output */
+	printf("LINE:%d\tG.UzO.qflag:%d\n", __LINE__, G.UzO.qflag);
+#ifdef TANDEM
+    //int rflag;          /* -r: remove file extensions */
+	printf("LINE:%d\tG.UzO.rflag:%d\n", __LINE__, G.UzO.rflag);
+#endif
+#ifndef FUNZIP
+#if (defined(MSDOS) || defined(FLEXOS) || defined(OS2) || defined(WIN32))
+    //int sflag;          /* -s: convert spaces in filenames to underscores */
+	printf("LINE:%d\tG.UzO.sflag:%d\n", __LINE__, G.UzO.sflag);
+#endif
+#if (defined(NLM))
+ //   int sflag;          /* -s: convert spaces in filenames to underscores */
+	printf("LINE:%d\tG.UzO.sflag:%d\n", __LINE__, G.UzO.sflag);
+#endif
+#if (defined(MSDOS) || defined(__human68k__) || defined(OS2) || defined(WIN32))
+//    int volflag;        /* -$: extract volume labels */
+	printf("LINE:%d\tG.UzO.volflag:%d\n", __LINE__, G.UzO.volflag);
+#endif
+   // int tflag;          /* -t: test (unzip) or totals line (zipinfo) */
+	printf("LINE:%d\tG.UzO.tflag:%d\n", __LINE__, G.UzO.tflag);
+   // int T_flag;         /* -T: timestamps (unzip) or dec. time fmt (zipinfo) */
+	printf("LINE:%d\tG.UzO.T_flag:%d\n", __LINE__, G.UzO.T_flag);
+    //int uflag;          /* -u: "update" (extract only newer/brand-new files) */
+	printf("LINE:%d\tG.UzO.uflag:%d\n", __LINE__, G.UzO.uflag);
+    //int vflag;          /* -v: (verbosely) list directory */
+	printf("LINE:%d\tG.UzO.vflag:%d\n", __LINE__, G.UzO.vflag);
+   // int V_flag;         /* -V: don't strip VMS version numbers */
+	printf("LINE:%d\tG.UzO.V_flag:%d\n", __LINE__, G.UzO.V_flag);
+    //int W_flag;         /* -W: wildcard '*' won't match '/' dir separator */
+	printf("LINE:%d\tG.UzO.W_flag:%d\n", __LINE__, G.UzO.W_flag);
+#if (defined (__ATHEOS__) || defined(__BEOS__) || defined(UNIX))
+    //int X_flag;         /* -X: restore owner/protection or UID/GID or ACLs */
+	printf("LINE:%d\tG.UzO.X_flag:%d\n", __LINE__, G.UzO.X_flag);
+#else
+#if (defined(TANDEM) || defined(THEOS))
+    //int X_flag;         /* -X: restore owner/protection or UID/GID or ACLs */
+	printf("LINE:%d\tG.UzO.X_flag:%d\n", __LINE__, G.UzO.X_flag);
+#else
+#if (defined(OS2) || defined(VMS) || defined(WIN32))
+    //int X_flag;         /* -X: restore owner/protection or UID/GID or ACLs */
+	printf("LINE:%d\tG.UzO.X_flag:%d\n", __LINE__, G.UzO.X_flag);
+#endif
+#endif
+#endif
+    //int zflag;          /* -z: display the zipfile comment (only, for unzip) */
+	printf("LINE:%d\tG.UzO.zflag:%d\n", __LINE__, G.UzO.zflag);
+#if (!defined(RISCOS) && !defined(CMS_MVS) && !defined(TANDEM))
+    //int ddotflag;       /* -:: don't skip over "../" path elements */
+	printf("LINE:%d\tG.UzO.ddotflag:%d\n", __LINE__, G.UzO.ddotflag);
+#endif
+#endif /* !FUNZIP */
+
+#ifndef FUNZIP
+    /* command options specific to the high level command line interface */
+#ifdef MORE
+    //int M_flag;         /* -M: built-in "more" function */
+	printf("LINE:%d\tG.M_flag:%d\n", __LINE__, G.M_flag);
+#endif
+
+    /* internal flags and general globals */
+#ifdef MORE
+    //int height;           /* check for SIGWINCH, etc., eventually... */
+	printf("LINE:%d\tG.height:%d\n", __LINE__, G.height);
+    //int lines;            /* count of lines displayed on current screen */
+	printf("LINE:%d\tG.lines:%d\n", __LINE__, G.lines);
+# if (defined(SCREENWIDTH) && defined(SCREENLWRAP))
+    //int width;
+	printf("LINE:%d\tG.width:%d\n", __LINE__, G.width);
+    //int chars;            /* count of screen characters in current line */
+	printf("LINE:%d\tG.chars:%d\n", __LINE__, G.chars);
+# endif
+#endif /* MORE */
+#if (defined(IZ_CHECK_TZ) && defined(USE_EF_UT_TIME))
+    //int tz_is_valid;      /* indicates that timezone info can be used */
+	printf("LINE:%d\tG.tz_is_valid:%d\n", __LINE__, G.tz_is_valid);
+#endif
+   // int noargs;           /* did true command line have *any* arguments? */
+	printf("LINE:%d\tG.noargs:%d\n", __LINE__, G.noargs);
+//    unsigned filespecs;   /* number of real file specifications to be matched */
+	printf("LINE:%d\tG.filespecs:%d\n", __LINE__, G.filespecs);
+ //   unsigned xfilespecs;  /* number of excluded filespecs to be matched */
+	printf("LINE:%d\tG.xfilespecs:%d\n", __LINE__, G.xfilespecs);
+   // int process_all_files;
+	printf("LINE:%d\tG.process_all_files:%d\n", __LINE__, G.process_all_files);
+   // int overwrite_mode;   /* 0 - query, 1 - always, 2 - never */
+	printf("LINE:%d\tG.overwrite_mode:%d\n", __LINE__, G.overwrite_mode);
+   // int create_dirs;      /* used by main(), mapname(), checkdir() */
+	printf("LINE:%d\tG.create_dirs:%d\n", __LINE__, G.create_dirs);
+   // int extract_flag;
+	printf("LINE:%d\tG.extract_flag:%d\n", __LINE__, G.extract_flag);
+   // int newzip;           /* reset in extract.c; used in crypt.c */
+	printf("LINE:%d\tG.newzip:%d\n", __LINE__, G.newzip);
+    //Z_OFF_T   real_ecrec_offset;
+	printf("LINE:%d\tG.real_ecrec_offset:%ld\n", __LINE__, G.real_ecrec_offset);
+    //Z_OFF_T   expect_ecrec_offset;
+	printf("LINE:%d\tG.real_ecrec_offset:%ld\n", __LINE__, G.real_ecrec_offset);
+    //long csize;           /* used by decompr. (NEXTBYTE): must be signed */
+	printf("LINE:%d\tG.csize:%ld\n", __LINE__, G.csize);
+    //long used_csize;      /* used by extract_or_test_member(), explode() */
+	printf("LINE:%d\tG.user_cisze:%ld\n", __LINE__, G.used_csize);
+
+#ifdef DLL
+	printf("test:%d\n", __LINE__);
+    // int fValidate;       /* true if only validating an archive */
+	printf("LINE:%d\tG.fValidate:%d\n", __LINE__, G.fValidate);
+    // int filenotfound;
+	printf("LINE:%d\tG.filenotfound:%d\n", __LINE__, G.filenotfound);
+    // int redirect_data;   /* redirect data to memory buffer */
+	printf("LINE:%d\tG.redirect_data:%d\n", __LINE__, G.redirect_data);
+    // int redirect_text;   /* redirect text output to buffer */
+	printf("LINE:%d\tG.redirect_text:%d\n", __LINE__, G.redirect_text);
+# ifndef NO_SLIDE_REDIR
+	printf("test:%d\n", __LINE__);
+    // int redirect_slide;  /* redirect decompression area to mem buffer */
+	printf("LINE:%d\tG.redirect_slide:%d\n", __LINE__, G.redirect_slide);
+#  if (defined(USE_DEFLATE64) && defined(INT_16BIT))
+	printf("test:%d\n", __LINE__);
+    // ulg _wsize;          /* size of sliding window exceeds "unsigned" range */
+	printf("LINE:%d\tG._wsize:%ld\n", __LINE__, G._wsize);
+#  else
+	printf("test:%d\n", __LINE__);
+    // unsigned _wsize;     /* sliding window size can be hold in unsigned */
+	printf("LINE:%d\tG._wsize:%d\n", __LINE__, G._wsize);
+#  endif
+# endif
+	printf("test:%d\n", __LINE__);
+    // ulg redirect_size;            /* size of redirected output buffer */
+	printf("LINE:%d\tG.redirect_size:%ld\n", __LINE__, G.redirect_size);
+    // uch *redirect_buffer;         /* pointer to head of allocated buffer */
+	printf("LINE:%d\tG.redirect_buffer:%s\n", __LINE__, G.redirect_buffer);
+    // uch *redirect_pointer;        /* pointer past end of written data */
+	printf("LINE:%d\tG.redirect_pointer:%s\n", __LINE__, G.redirect_pointer);
+# ifndef NO_SLIDE_REDIR
+	printf("test:%d\n", __LINE__);
+    // uch *redirect_sldptr;         /* head of decompression slide buffer */
+	printf("LINE:%d\tG.redirect_sldptr:%d\n", __LINE__, G.redirect_sldptr);
+# endif
+# ifdef OS2DLL
+	printf("test:%d\n", __LINE__);
+   //  cbList(processExternally);    /* call-back list */
+	printf("LINE:%d\tG.cblist\n", __LINE__);
+# endif
+#endif /* DLL */
+
+	printf("test:%d\n", __LINE__);
+//    char **pfnames;
+//	printf("LINE:%d\tG.pxnames:%s\n", __LINE__, G.pfnames[0]);
+//    char **pxnames;
+//	printf("LINE:%d\tG.pxnames:%s\n", __LINE__, G.pxnames[0]);
+//    char sig[4];
+	printf("LINE:%d\tG.sig:%s\n", __LINE__, G.sig);
+//    char answerbuf[10];
+	printf("LINE:%d\tG.answerbuf:%s\n", __LINE__, G.answerbuf);
+//    min_info info[DIR_BLKSIZ];
+	printf("LINE:%d\tG.min_info:%s\n", __LINE__, G.info == NULL ? "null" : "reader");
+//    min_info *pInfo;
+	printf("LINE:%d\tG.min_info pInfo:%s\n", __LINE__, G.pInfo == NULL ? "null" : "reader");
+#endif /* !FUNZIP */
+//    union work area;                /* see unzpriv.h for definition of work */
+	printf("LINE:%d\tG.work area\n", __LINE__);
+
+#ifndef FUNZIP
+#  if (!defined(USE_ZLIB) || defined(USE_OWN_CRCTAB))
+//    ZCONST ulg near *crc_32_tab;
+	printf("LINE:%d\tG.crc_32_tab:%s\n", __LINE__, G.crc_32_tab == NULL ? "null" : "reader");
+#  else
+//    ZCONST ulg Far *crc_32_tab;
+	printf("LINE:%d\tG.crc_32_tab:%s\n", __LINE__, G.crc_32_tab == NULL ? "null" : "reader");
+#  endif
+#endif
+//    ulg       crc32val;             /* CRC shift reg. (was static in funzip) */
+	printf("LINE:%d\tG.crc32val:%ld\n", __LINE__, G.crc32val);
+
+#ifdef FUNZIP
+//    FILE     *in;                   /* file descriptor of compressed stream */
+	printf("LINE:%d\tG.in:%s\n", __LINE__, G.in == NULL ? "null" : "reader");
+#endif
+//    uch       *inbuf;               /* input buffer (any size is OK) */
+	printf("LINE:%d\tG.inbuf:%s\n", __LINE__, G.inbuf);
+//    uch       *inptr;               /* pointer into input buffer */
+	printf("LINE:%d\tG.inptr:%s\n", __LINE__, G.inptr);
+//    int       incnt;
+	printf("LINE:%d\tG.incnt:%d\n", __LINE__, G.incnt);
+
+#ifndef FUNZIP
+//    ulg       bitbuf;
+	printf("LINE:%d\tG.bitbuf:%ld\n", __LINE__, G.bitbuf);
+//    int       bits_left;            /* unreduce and unshrink only */
+	printf("LINE:%d\tG.bits_left:%d\n", __LINE__, G.bits_left);
+//    int       zipeof;
+	printf("LINE:%d\tG.zipeof:%d\n", __LINE__, G.zipeof);
+//    char      *argv0;               /* used for NT and EXE_EXTENSION */
+	printf("LINE:%d\tG.argv0:%s\n", __LINE__, G.argv0);
+///    char      *wildzipfn;
+	printf("LINE:%d\tG.wildzipfn:%s\n", __LINE__, G.wildzipfn);
+///    char      *zipfn;    /* GRR:  WINDLL:  must nuke any malloc'd zipfn... */
+	printf("LINE:%d\tG.zipfn:%s\n", __LINE__, G.zipfn);
+#ifdef USE_STRM_INPUT
+//    FILE      *zipfd;               /* zipfile file descriptor */
+	printf("LINE:%d\tG.zipfd:%s\n", __LINE__, G.zipfd == NULL ? "null" : "reader");
+#else
+//    int       zipfd;                /* zipfile file handle */
+	printf("LINE:%d\tG.zipfd:%d\n", __LINE__, G.zipfd);
+#endif
+ ///   Z_OFF_T   ziplen;
+	printf("LINE:%d\tG.ziplen:%ld\n", __LINE__, G.ziplen);
+ //   Z_OFF_T   cur_zipfile_bufstart; /* extract_or_test, readbuf, ReadByte */
+	printf("LINE:%d\tG.cur_zipfile_bufstart:%ld\n", __LINE__, G.cur_zipfile_bufstart);
+ //   Z_OFF_T   extra_bytes;          /* used in unzip.c, misc.c */
+	printf("LINE:%d\tG.extra_bytes:%ld\n", __LINE__, G.extra_bytes);
+ //   uch       *extra_field;         /* Unix, VMS, Mac, OS/2, Acorn, ... */
+	printf("LINE:%d\tG.extra_field:%s\n", __LINE__, G.extra_field);
+ //   uch       *hold;
+	printf("LINE:%d\tG.hold:%s\n", __LINE__, G.hold);
+
+ //   local_file_hdr  lrec;          /* used in unzip.c, extract.c */
+	printf("LINE:%d\tG.lrec\n", __LINE__);
+ //   cdir_file_hdr   crec;          /* used in unzip.c, extract.c, misc.c */
+	printf("LINE:%d\tG.crec\n", __LINE__);
+ //   ecdir_rec       ecrec;         /* used in unzip.c, extract.c */
+	printf("LINE:%d\tG.ecrec\n", __LINE__);
+ //   struct stat     statbuf;       /* used by main, mapname, check_for_newer */
+	printf("LINE:%d\tG.statbuf\n", __LINE__);
+
+ //   int      mem_mode;
+	printf("LINE:%d\tG.memmode:%d\n", __LINE__, G.mem_mode);
+ //   uch      *outbufptr;           /* extract.c static */
+	printf("LINE:%d\tG.outbufptr:%s\n", __LINE__, G.outbufptr);
+ //   ulg      outsize;              /* extract.c static */
+	printf("LINE:%d\tG.outsize:%ld\n", __LINE__, G.outsize);
+ //   int      reported_backslash;   /* extract.c static */
+	printf("LINE:%d\tG.reported_backslash:%d\n", __LINE__, G.reported_backslash);
+ //   int      disk_full;
+	printf("LINE:%d\tG.disk_full:%d\n", __LINE__, G.disk_full);
+ //   int      newfile;
+	printf("LINE:%d\tG.newfile:%d\n", __LINE__, G.newfile);
+
+ //   int      didCRlast;            /* fileio static */
+	printf("LINE:%d\tG.didCRlast:%d\n", __LINE__, G.didCRlast);
+ //   ulg      numlines;             /* fileio static: number of lines printed */
+	printf("LINE:%d\tG.numlines:%ld\n", __LINE__, G.numlines);
+ //   int      sol;                  /* fileio static: at start of line */
+	printf("LINE:%d\tG.sol:%d\n", __LINE__, G.sol);
+ //   int      no_ecrec;             /* process static */
+	printf("LINE:%d\tG.no_ecrec:%d\n", __LINE__, G.no_ecrec);
+#ifdef SYMLINKS
+ //   int      symlnk;
+	printf("LINE:%d\tG.symlnk:%d\n", __LINE__, G.symlnk);
+ //   slinkentry *slink_head;        /* pointer to head of symlinks list */
+	printf("LINE:%d\tG.slink_head:%s\n", __LINE__, G.slink_head == NULL ? "null" : "reader");
+//    slinkentry *slink_last;        /* pointer to last entry in symlinks list */
+	printf("LINE:%d\tG.slink_last:%s\n", __LINE__, G.slink_last == NULL ? "null" : "reader");
+#endif
+#ifdef NOVELL_BUG_FAILSAFE
+//    int      dne;                  /* true if stat() says file doesn't exist */
+	printf("LINE:%d\tG.dne:%d\n", __LINE__, G.dne);
+#endif
+
+//    FILE     *outfile;
+	printf("LINE:%d\tG.outfile:%s\n", __LINE__, G.outfile == NULL ? "null" : "reader");
+//    uch      *outbuf;
+	printf("LINE:%d\tG.outbuf:%s\n", __LINE__, G.outbuf);
+//    uch      *realbuf;
+	printf("LINE:%d\tG.realbuf:%s\n", __LINE__, G.realbuf);
+
+#ifndef VMS                        /* if SMALL_MEM, outbuf2 is initialized in */
+ //   uch      *outbuf2;             /*  process_zipfiles() (never changes); */
+	printf("LINE:%d\tG.outbufw:%s\n", __LINE__, G.outbuf2);
+#endif                             /*  else malloc'd ONLY if unshrink and -a */
+#endif /* !FUNZIP */
+  //  uch      *outptr;
+	printf("LINE:%d\tG.outptr:%s\n", __LINE__, G.outptr == NULL ? "null" : "reader");
+  //  ulg      outcnt;               /* number of chars stored in outbuf */
+	printf("LINE:%d\tG.outcnt:%ld\n", __LINE__, G.outcnt);
+#ifndef FUNZIP
+//    char     filename[FILNAMSIZ];  /* also used by NT for temporary SFX path */
+	printf("LINE:%d\tG.filename:%s :%s\n", __LINE__, G.filename == NULL ? "null" : "reader", G.filename);
+
+#ifdef CMS_MVS
+//    char     *tempfn;              /* temp file used; erase on close */
+	printf("LINE:%d\tG.tempfn:%s\n", __LINE__, G.tempfn);
+#endif
+
+//    char *key;         /* crypt static: decryption password or NULL */
+	printf("LINE:%d\tG.key:%s\n", __LINE__, G.key);
+//    int nopwd;         /* crypt static */
+	printf("LINE:%d\tG.nopwd:%d\n", __LINE__, G.nopwd);
+#endif /* !FUNZIP */
+//    ulg keys[3];       /* crypt static: keys defining pseudo-random sequence */
+	printf("LINE:%d\tG.keys:%ld\n", __LINE__, G.keys[0]);
+
+#if (!defined(DOS_FLX_H68_NLM_OS2_W32) && !defined(AMIGA) && !defined(RISCOS))
+#if (!defined(MACOS) && !defined(ATARI) && !defined(VMS))
+//    int echofd;        /* ttyio static: file descriptor whose echo is off */
+	printf("LINE:%d\tG.echofd:%d\n", __LINE__, G.echofd);
+#endif /* !(MACOS || ATARI || VMS) */
+#endif /* !(DOS_FLX_H68_NLM_OS2_W32 || AMIGA || RISCOS) */
+
+//    unsigned hufts;    /* track memory usage */
+	printf("LINE:%d\tG.hufts:%d\n", __LINE__, G.hufts);
+
+#ifdef USE_ZLIB
+//    int inflInit;             /* inflate static: zlib inflate() initialized */
+	printf("LINE:%d\tG.inflInit:%d\n", __LINE__, G.inflInit);
+//    z_stream dstrm;           /* inflate global: decompression stream */
+	printf("LINE:%d\tG.dstrm\n", __LINE__);
+#else
+   // struct huft *fixed_tl;              /* inflate static */
+	printf("LINE:%d\tG.fixed_tl:%s\n", __LINE__, G.fixed_tl == NULL ? "null" : "reader");
+   // struct huft *fixed_td;              /* inflate static */
+	printf("LINE:%d\tG.fixed_td:%s\n", __LINE__, G.fixed_td == NULL ? "null" : "reader");
+   // unsigned fixed_bl, fixed_bd;        /* inflate static */
+	printf("LINE:%d\tG.fixed_bl:%d\tG.fixed_bd:%d\n", __LINE__, G.fixed_bl, G.fixed_bd);
+#ifdef USE_DEFLATE64
+   // struct huft *fixed_tl64;            /* inflate static */
+	printf("LINE:%d\tG.fixed_tl64:%s\n", __LINE__, G.fixed_tl64 == NULL ? "null" : "reader");
+   // struct huft *fixed_td64;            /* inflate static */
+	printf("LINE:%d\tG.fixed_td64:%s\n", __LINE__, G.fixed_td64 == NULL ? "null" : "reader");
+   // unsigned fixed_bl64, fixed_bd64;    /* inflate static */
+	printf("LINE:%d\tG.fixed_bl64:%d\tG.fixed_bd64:%d\n", __LINE__, G.fixed_bl64, G.fixed_bd64);
+   // struct huft *fixed_tl32;            /* inflate static */
+	printf("LINE:%d\tG.fixed_tl32:%s\n", __LINE__, G.fixed_tl32 == NULL ? "null" : "reader");
+   // struct huft *fixed_td32;            /* inflate static */
+	printf("LINE:%d\tG.fixed_td32:%s\n", __LINE__, G.fixed_td32 == NULL ? "null" : "reader");
+   // unsigned fixed_bl32, fixed_bd32;    /* inflate static */
+	printf("LINE:%d\tG.fixed_bl32:%d\tG.fixed_bd32:%d\n", __LINE__, G.fixed_bl32, G.fixed_bd32);
+   // ZCONST ush *cplens;                 /* inflate static */
+	printf("LINE:%d\tG.cplens:%s\n", __LINE__, G.cplens == NULL ? "null" : "reader");
+   // ZCONST uch *cplext;                 /* inflate static */
+	printf("LINE:%d\tG.cplext:%s\n", __LINE__, G.cplext == NULL ? "null" : "reader");
+   // ZCONST uch *cpdext;                 /* inflate static */
+	printf("LINE:%d\tG.cpdext:%s\n", __LINE__, G.cpdext == NULL ? "null" : "reader");
+#endif
+   // unsigned wp;              /* inflate static: current position in slide */
+	printf("LINE:%d\tG.wp:%d\n", __LINE__, G.wp);
+   // ulg bb;                   /* inflate static: bit buffer */
+	printf("LINE:%d\tG.bb:%ld\n", __LINE__, G.bb);
+   // unsigned bk;              /* inflate static: bits count in bit buffer */
+	printf("LINE:%d\tG.bk:%d\n", __LINE__, G.bk);
+#endif /* ?USE_ZLIB */
+
+#ifndef FUNZIP
+#ifdef SMALL_MEM
+  //  char rgchBigBuffer[512];
+	printf("LINE:%d\tG.rgchBigBuffer\n", __LINE__, G.rgchBigBuffer);
+//    char rgchSmallBuffer[96];
+	printf("LINE:%d\tG.rgchSmallBuffer\n", __LINE__, G.rgchSmallBuffer);
+  //  char rgchSmallBuffer2[160];  /* boosted to 160 for local3[] in unzip.c */
+	printf("LINE:%d\tG.rgchSmallBuffer2\n", __LINE__, G.rgchSmallBuffer2);
+#endif
+
+//    MsgFn *message;
+	printf("LINE:%d\tG.message:%s\n", __LINE__, G.message == NULL ? "null" : "reader");
+  //  InputFn *input;
+	printf("LINE:%d\tG.input:%s\n", __LINE__, G.input == NULL ? "null" : "reader");
+ //   PauseFn *mpause;
+	printf("LINE:%d\tG.mpause:%s\n", __LINE__, G.mpause == NULL ? "null" : "reader");
+//    PasswdFn *decr_passwd;
+	printf("LINE:%d\tG.decr_passwd:%s\n", __LINE__, G.decr_passwd == NULL ? "null" : "reader");
+//    StatCBFn *statreportcb;
+	printf("LINE:%d\tG.statreportcb:%s\n", __LINE__, G.statreportcb == NULL ? "null" : "reader");
+#ifdef WINDLL
+//    LPUSERFUNCTIONS lpUserFunctions;
+	printf("LINE:%d\tG.lpUserFunctions\n", __LINE__);
+#endif
+
+//    int incnt_leftover;       /* so improved NEXTBYTE does not waste input */
+	printf("LINE:%d\tG.incnt_leftover:%d\n", __LINE__, G.incnt_leftover);
+//    uch *inptr_leftover;
+	printf("LINE:%d\tG.inptr_leftover:%s\n", __LINE__, G.inptr_leftover == NULL ? "null" : "reader");
+
+#ifdef VMS_TEXT_CONV
+//    unsigned VMS_line_length; /* so native VMS variable-length text files */
+	printf("LINE:%d\tG.VMS_line_length:%d\n", __LINE__, G.VMS_line_length);
+   // int      VMS_line_state;  /*  are readable on other platforms */
+	printf("LINE:%d\tG.VMS_line_state:%d\n", __LINE__, G.VMS_line_state);
+ //   int      VMS_line_pad;
+	printf("LINE:%d\tG.VMS_line_pad:%d\n", __LINE__, G.VMS_line_pad);
+#endif
+
+#if (defined(SFX) && defined(CHEAP_SFX_AUTORUN))
+   // char autorun_command[FILNAMSIZ];
+	printf("LINE:%d\tG.autorun_command\n", __LINE__);
+#endif
+#endif /* !FUNZIP */
+
+#ifdef SYSTEM_SPECIFIC_GLOBALS
+ //   SYSTEM_SPECIFIC_GLOBALS
+	printf("LINE:%d\tDEFINE SYSTEM_SPECIFIC_GLOBALS\n", __LINE__);
+ //   int created_dir, renamed_fullpath;
+	printf("LINE:%d\tG.created_dir:%d\tG.renamed_fullpath:%d\n", __LINE__, G.created_dir, G.renamed_fullpath);
+   // char *rootpath, *buildpath, *end;
+	printf("LINE:%d\tG.rootpath:%s\tG.buildpath:%s\tG.end:%s\n", __LINE__, G.rootpath, G.buildpath, G.end);
+  //  ZCONST char *wildname;
+	printf("LINE:%d\tG.wildname:%s\n", __LINE__, G.wildname);
+  //  char *dirname, matchname[FILNAMSIZ];
+	printf("LINE:%d\tG.dirname:%s\tG.matchname:%s\n", __LINE__, G.dirname, G.matchname);
+  //  int rootlen, have_dirname, dirnamelen, notfirstcall;
+	printf("LINE:%d\tG.rootlen:%d\thave_dirname:%d\tdirnamelen:%d\tnotfirstcall:%d\n", __LINE__, G.rootlen, G.have_dirname, G.dirnamelen, G.notfirstcall);
+  //  zvoid *wild_dir;
+	printf("LINE:%d\tG.wild_dir:%s\n", __LINE__, (char *)G.wild_dir);
+#endif
+
+}
+
+
+
+/*****************************/
+/*  main() / UzpMain() stub  */
+/*****************************/
+
+int MAIN(argc, argv)   /* return PK-type error code (except under VMS) */
+    int argc;
+    char *argv[];
+{
+    int r;
+
+    CONSTRUCTGLOBALS();
+	create__G(__G,argv[1], argv[2]);
+	mprintf(__G);
+    r = process_zipfiles(__G);
+ //   r = unzip(__G__ argc, argv);
+    DESTROYGLOBALS();
+    RETURN(r);
+}
+
+
+
+
+/*******************************/
+/*  Primary UnZip entry point  */
+/*******************************/
+
+int unzip(__G__ argc, argv)
+    __GDEF
+    int argc;
+    char *argv[];
+{
+#ifndef NO_ZIPINFO
+    char *p;
+#endif
+#ifdef DOS_FLX_H68_NLM_OS2_W32
+    int i;
+#endif
+    int retcode, error=FALSE;
+#ifndef NO_EXCEPT_SIGNALS
+#ifdef REENTRANT
+    savsigs_info *oldsighandlers = NULL;
+#   define SET_SIGHANDLER(sigtype, newsighandler) \
+      if ((retcode = setsignalhandler(__G__ &oldsighandlers, (sigtype), \
+                                      (newsighandler))) > PK_WARN) \
+          goto cleanup_and_exit
+#else
+#   define SET_SIGHANDLER(sigtype, newsighandler) \
+      signal((sigtype), (newsighandler))
+#endif
+#endif /* NO_EXCEPT_SIGNALS */
+
+    SETLOCALE(LC_CTYPE,"");
+
+#if (defined(__IBMC__) && defined(__DEBUG_ALLOC__))
+    extern void DebugMalloc(void);
+
+    atexit(DebugMalloc);
+#endif
+
+#ifdef MALLOC_WORK
+    /* The following (rather complex) expression determines the allocation
+       size of the decompression work area.  It simulates what the
+       combined "union" and "struct" declaration of the "static" work
+       area reservation achieves automatically at compile time.
+       Any decent compiler should evaluate this expression completely at
+       compile time and provide constants to the zcalloc() call.
+       (For better readability, some subexpressions are encapsulated
+       in temporarly defined macros.)
+     */
+#   define UZ_SLIDE_CHUNK (sizeof(shrint)+sizeof(uch)+sizeof(uch))
+#   define UZ_NUMOF_CHUNKS \
+      (unsigned)(((WSIZE+UZ_SLIDE_CHUNK-1)/UZ_SLIDE_CHUNK > HSIZE) ? \
+                 (WSIZE+UZ_SLIDE_CHUNK-1)/UZ_SLIDE_CHUNK : HSIZE)
+    G.area.Slide = (uch *)zcalloc(UZ_NUMOF_CHUNKS, UZ_SLIDE_CHUNK);
+#   undef UZ_SLIDE_CHUNK
+#   undef UZ_NUMOF_CHUNKS
+    G.area.shrink.Parent = (shrint *)G.area.Slide;
+    G.area.shrink.value = G.area.Slide + (sizeof(shrint)*(HSIZE));
+    G.area.shrink.Stack = G.area.Slide +
+                           (sizeof(shrint) + sizeof(uch))*(HSIZE);
+#endif
+
+/*---------------------------------------------------------------------------
+    Set signal handler for restoring echo, warn of zipfile corruption, etc.
+  ---------------------------------------------------------------------------*/
+#ifndef NO_EXCEPT_SIGNALS
+#ifdef SIGINT
+    SET_SIGHANDLER(SIGINT, handler);
+#endif
+#ifdef SIGTERM                 /* some systems really have no SIGTERM */
+    SET_SIGHANDLER(SIGTERM, handler);
+#endif
+#ifdef SIGBUS
+    SET_SIGHANDLER(SIGBUS, handler);
+#endif
+#ifdef SIGSEGV
+    SET_SIGHANDLER(SIGSEGV, handler);
+#endif
+#endif /* NO_EXCEPT_SIGNALS */
+
+#if (defined(WIN32) && defined(__RSXNT__))
+    for (i = 0 ; i < argc; i++) {
+       _ISO_INTERN(argv[i]);
+    }
+#endif
+
+/*---------------------------------------------------------------------------
+    Macintosh initialization code.
+  ---------------------------------------------------------------------------*/
+
+#ifdef MACOS
+    {
+        int a;
+
+        for (a = 0;  a < 4;  ++a)
+            G.rghCursor[a] = GetCursor(a+128);
+        G.giCursor = 0;
+    }
+#endif
+
+/*---------------------------------------------------------------------------
+    NetWare initialization code.
+  ---------------------------------------------------------------------------*/
+
+#ifdef NLM
+    InitUnZipConsole();
+#endif
+
+/*---------------------------------------------------------------------------
+    Acorn RISC OS initialization code.
+  ---------------------------------------------------------------------------*/
+
+#ifdef RISCOS
+    set_prefix();
+#endif
+
+/*---------------------------------------------------------------------------
+    Theos initialization code.
+  ---------------------------------------------------------------------------*/
+
+#ifdef THEOS
+    /* The easiest way found to force creation of libraries when selected
+     * members are to be unzipped. Explicitely add libraries names to the
+     * arguments list before the first member of the library.
+     */
+    if (! _setargv(&argc, &argv)) {
+        Info(slide, 0x401, ((char *)slide, "cannot process argv\n"));
+        retcode = PK_MEM;
+        goto cleanup_and_exit;
+    }
+#endif
+
+/*---------------------------------------------------------------------------
+    First figure out if we're running in UnZip mode or ZipInfo mode, and put
+    the appropriate environment-variable options into the queue.  Then rip
+    through any command-line options lurking about...
+  ---------------------------------------------------------------------------*/
+
+#ifdef SFX
+    G.argv0 = argv[0];
+#if (defined(OS2) || defined(WIN32))
+    G.zipfn = GetLoadPath(__G);/* non-MSC NT puts path into G.filename[] */
+#else
+    G.zipfn = G.argv0;
+#endif
+
+#ifdef VMSCLI
+    {
+        ulg status = vms_unzip_cmdline(&argc, &argv);
+        if (!(status & 1)) {
+            retcode = (int)status;
+            goto cleanup_and_exit;
+        }
+    }
+#endif /* VMSCLI */
+
+    uO.zipinfo_mode = FALSE;
+    error = uz_opts(__G__ &argc, &argv);   /* UnZipSFX call only */
+
+#else /* !SFX */
+
+#ifdef RISCOS
+    /* get the extensions to swap from environment */
+    getRISCOSexts(ENV_UNZIPEXTS);
+#endif
+
+#ifdef MSDOS
+    /* extract MKS extended argument list from environment (before envargs!) */
+    mksargs(&argc, &argv);
+#endif
+
+#ifdef VMSCLI
+    {
+        ulg status = vms_unzip_cmdline(&argc, &argv);
+        if (!(status & 1)) {
+            retcode = (int)status;
+            goto cleanup_and_exit;
+        }
+    }
+#endif /* VMSCLI */
+
+    G.noargs = (argc == 1);   /* no options, no zipfile, no anything */
+
+#ifndef NO_ZIPINFO
+    for (p = argv[0] + strlen(argv[0]); p >= argv[0]; --p) {
+        if (*p == DIR_END
+#ifdef DIR_END2
+            || *p == DIR_END2
+#endif
+           )
+            break;
+    }
+    ++p;
+
+#ifdef THEOS
+    if (strncmp(p, "ZIPINFO.",8) == 0 || strstr(p, ".ZIPINFO:") != NULL ||
+        strncmp(p, "II.",3) == 0 || strstr(p, ".II:") != NULL ||
+#else
+    if (STRNICMP(p, LoadFarStringSmall(Zipnfo), 7) == 0 ||
+        STRNICMP(p, "ii", 2) == 0 ||
+#endif
+        (argc > 1 && strncmp(argv[1], "-Z", 2) == 0))
+    {
+        uO.zipinfo_mode = TRUE;
+#ifndef _WIN32_WCE /* Win CE does not support environment variables */
+        if ((error = envargs(&argc, &argv, LoadFarStringSmall(EnvZipInfo),
+                             LoadFarStringSmall2(EnvZipInfo2))) != PK_OK)
+            perror(LoadFarString(NoMemArguments));
+        else
+#endif
+            error = zi_opts(__G__ &argc, &argv);
+    } else
+#endif /* !NO_ZIPINFO */
+    {
+        uO.zipinfo_mode = FALSE;
+#ifndef _WIN32_WCE /* Win CE does not support environment variables */
+        if ((error = envargs(&argc, &argv, LoadFarStringSmall(EnvUnZip),
+                             LoadFarStringSmall2(EnvUnZip2))) != PK_OK)
+            perror(LoadFarString(NoMemArguments));
+        else
+#endif
+            error = uz_opts(__G__ &argc, &argv);
+    }
+
+#endif /* ?SFX */
+
+    if ((argc < 0) || error) {
+        retcode = error;
+        goto cleanup_and_exit;
+    }
+
+/*---------------------------------------------------------------------------
+    Now get the zipfile name from the command line and then process any re-
+    maining options and file specifications.
+  ---------------------------------------------------------------------------*/
+
+#ifdef DOS_FLX_H68_NLM_OS2_W32
+    /* convert MSDOS-style 'backward slash' directory separators to Unix-style
+     * 'forward slashes' for user's convenience (include zipfile name itself)
+     */
+#ifdef SFX
+    for (G.pfnames = argv, i = argc;  i > 0;  --i) {
+#else
+    /* argc does not include the zipfile specification */
+    for (G.pfnames = argv, i = argc+1;  i > 0;  --i) {
+#endif
+#ifdef __human68k__
+        extern char *_toslash(char *);
+        _toslash(*G.pfnames);
+#else /* !__human68k__ */
+        char *q = *G.pfnames;
+
+        while (*q != '\0') {
+            if (*q == '\\')
+                *q = '/';
+            INCSTR(q);
+        }
+        ++G.pfnames;
+#endif /* ?__human68k__ */
+    }
+#endif /* DOS_FLX_H68_NLM_OS2_W32 */
+
+#ifndef SFX
+    G.wildzipfn = *argv++;
+#endif
+
+#if (defined(SFX) && !defined(SFX_EXDIR)) /* only check for -x */
+
+    G.filespecs = argc;
+    G.xfilespecs = 0;
+
+    if (argc > 0) {
+        char **pp = argv-1;
+
+        G.pfnames = argv;
+        while (*++pp)
+            if (strcmp(*pp, "-x") == 0) {
+                if (pp > argv) {
+                    *pp = 0;              /* terminate G.pfnames */
+                    G.filespecs = pp - G.pfnames;
+                } else {
+                    G.pfnames = (char **)fnames;  /* defaults */
+                    G.filespecs = 0;
+                }
+                G.pxnames = pp + 1;      /* excluded-names ptr: _after_ -x */
+                G.xfilespecs = argc - G.filespecs - 1;
+                break;                    /* skip rest of args */
+            }
+        G.process_all_files = FALSE;
+    } else
+        G.process_all_files = TRUE;      /* for speed */
+
+#else /* !SFX || SFX_EXDIR */             /* check for -x or -d */
+
+    G.filespecs = argc;
+    G.xfilespecs = 0;
+
+    if (argc > 0) {
+        int in_files=FALSE, in_xfiles=FALSE;
+        char **pp = argv-1;
+
+        G.process_all_files = FALSE;
+        G.pfnames = argv;
+        while (*++pp) {
+            Trace((stderr, "pp - argv = %d\n", pp-argv));
+#ifdef CMS_MVS
+            if (!uO.exdir && STRNICMP(*pp, "-d", 2) == 0) {
+#else
+            if (!uO.exdir && strncmp(*pp, "-d", 2) == 0) {
+#endif
+                int firstarg = (pp == argv);
+
+                uO.exdir = (*pp) + 2;
+                if (in_files) {      /* ... zipfile ... -d exdir ... */
+                    *pp = (char *)NULL;         /* terminate G.pfnames */
+                    G.filespecs = pp - G.pfnames;
+                    in_files = FALSE;
+                } else if (in_xfiles) {
+                    *pp = (char *)NULL;         /* terminate G.pxnames */
+                    G.xfilespecs = pp - G.pxnames;
+                    /* "... -x xlist -d exdir":  nothing left */
+                }
+                /* first check for "-dexdir", then for "-d exdir" */
+                if (*uO.exdir == '\0') {
+                    if (*++pp)
+                        uO.exdir = *pp;
+                    else {
+                        Info(slide, 0x401, ((char *)slide,
+                          LoadFarString(MustGiveExdir)));
+                        /* don't extract here by accident */
+                        retcode = PK_PARAM;
+                        goto cleanup_and_exit;
+                    }
+                }
+                if (firstarg) { /* ... zipfile -d exdir ... */
+                    if (pp[1]) {
+                        G.pfnames = pp + 1;  /* argv+2 */
+                        G.filespecs = argc - (G.pfnames-argv);  /* for now... */
+                    } else {
+                        G.process_all_files = TRUE;
+                        G.pfnames = (char **)fnames;  /* GRR: necessary? */
+                        G.filespecs = 0;     /* GRR: necessary? */
+                        break;
+                    }
+                }
+            } else if (!in_xfiles) {
+                if (strcmp(*pp, "-x") == 0) {
+                    in_xfiles = TRUE;
+                    if (pp == G.pfnames) {
+                        G.pfnames = (char **)fnames;  /* defaults */
+                        G.filespecs = 0;
+                    } else if (in_files) {
+                        *pp = 0;                   /* terminate G.pfnames */
+                        G.filespecs = pp - G.pfnames;  /* adjust count */
+                        in_files = FALSE;
+                    }
+                    G.pxnames = pp + 1; /* excluded-names ptr starts after -x */
+                    G.xfilespecs = argc - (G.pxnames-argv);  /* anything left */
+                } else
+                    in_files = TRUE;
+            }
+        }
+    } else
+        G.process_all_files = TRUE;      /* for speed */
+
+    if (uO.exdir != (char *)NULL && !G.extract_flag)    /* -d ignored */
+        Info(slide, 0x401, ((char *)slide, LoadFarString(NotExtracting)));
+#endif /* ?(SFX && !SFX_EXDIR) */
+
+/*---------------------------------------------------------------------------
+    Okey dokey, we have everything we need to get started.  Let's roll.
+  ---------------------------------------------------------------------------*/
+	mprintf(__G);
+    retcode = process_zipfiles(__G);
+
+cleanup_and_exit:
+#if (defined(REENTRANT) && !defined(NO_EXCEPT_SIGNALS))
+    /* restore all signal handlers back to their state at function entry */
+    while (oldsighandlers != NULL) {
+        savsigs_info *thissigsav = oldsighandlers;
+
+        signal(thissigsav->sigtype, thissigsav->sighandler);
+        oldsighandlers = thissigsav->previous;
+        free(thissigsav);
+    }
+#endif
+#if (defined(MALLOC_WORK) && !defined(REENTRANT))
+    if (G.area.Slide != (uch *)NULL) {
+        free(G.area.Slide);
+        G.area.Slide = (uch *)NULL;
+    }
+#endif
+    return(retcode);
+
+} /* end main()/unzip() */
+
+
+
+
+
+#if (defined(REENTRANT) && !defined(NO_EXCEPT_SIGNALS))
+/*******************************/
+/* Function setsignalhandler() */
+/*******************************/
+
+static int setsignalhandler(__G__ p_savedhandler_chain, signal_type,
+                            newhandler)
+    __GDEF
+    savsigs_info **p_savedhandler_chain;
+    int signal_type;
+    void (*newhandler)(int);
+{
+    savsigs_info *savsig;
+
+    savsig = malloc(sizeof(savsigs_info));
+    if (savsig == NULL) {
+        /* error message and break */
+        Info(slide, 0x401, ((char *)slide, LoadFarString(CantSaveSigHandler)));
+        return PK_MEM;
+    }
+    savsig->sigtype = signal_type;
+    savsig->sighandler = signal(SIGINT, newhandler);
+    if (savsig->sighandler == SIG_ERR) {
+        free(savsig);
+    } else {
+        savsig->previous = *p_savedhandler_chain;
+        *p_savedhandler_chain = savsig;
+    }
+    return PK_OK;
+
+} /* end function setsignalhandler() */
+
+#endif /* REENTRANT && !NO_EXCEPT_SIGNALS */
+
+
+
+
+
+/**********************/
+/* Function uz_opts() */
+/**********************/
+
+int uz_opts(__G__ pargc, pargv)
+    __GDEF
+    int *pargc;
+    char ***pargv;
+{
+    char **argv, *s;
+    int argc, c, error=FALSE, negative=0;
+
+
+    argc = *pargc;
+    argv = *pargv;
+
+    while (++argv, (--argc > 0 && *argv != NULL && **argv == '-')) {
+        s = *argv + 1;
+        while ((c = *s++) != 0) {    /* "!= 0":  prevent Turbo C warning */
+#ifdef CMS_MVS
+            switch (tolower(c))
+#else
+            switch (c)
+#endif
+            {
+                case ('-'):
+                    ++negative;
+                    break;
+#ifdef RISCOS
+                case ('/'):
+                    if (negative) {   /* negative not allowed with -/ swap */
+                        Info(slide, 0x401, ((char *)slide,
+                          "error:  must give extensions list"));
+                        return(PK_PARAM);  /* don't extract here by accident */
+                    }
+                    exts2swap = s; /* override Unzip$Exts */
+                    s += strlen(s);
+                    break;
+#endif
+                case ('a'):
+                    if (negative) {
+                        uO.aflag = MAX(uO.aflag-negative,0);
+                        negative = 0;
+                    } else
+                        ++uO.aflag;
+                    break;
+#if (defined(DLL) && defined(API_DOC))
+                case ('A'):    /* extended help for API */
+                    APIhelp(__G__ argc, argv);
+                    *pargc = -1;  /* signal to exit successfully */
+                    return 0;
+#endif
+                case ('b'):
+                    if (negative) {
+#if (defined(TANDEM) || defined(VMS))
+                        uO.bflag = MAX(uO.bflag-negative,0);
+#endif
+                        negative = 0;   /* do nothing:  "-b" is default */
+                    } else {
+#ifdef VMS
+                        if (uO.aflag == 0)
+                           ++uO.bflag;
+#endif
+#ifdef TANDEM
+                        ++uO.bflag;
+#endif
+                        uO.aflag = 0;
+                    }
+                    break;
+#ifdef UNIXBACKUP
+                case ('B'): /* -B: back up existing files */
+                    if (negative)
+                        uO.B_flag = FALSE, negative = 0;
+                    else
+                        uO.B_flag = TRUE;
+                    break;
+#endif
+                case ('c'):
+                    if (negative) {
+                        uO.cflag = FALSE, negative = 0;
+#ifdef NATIVE
+                        uO.aflag = 0;
+#endif
+                    } else {
+                        uO.cflag = TRUE;
+#ifdef NATIVE
+                        uO.aflag = 2;   /* so you can read it on the screen */
+#endif
+#ifdef DLL
+                        if (G.redirect_text)
+                            G.redirect_data = 2;
+#endif
+                    }
+                    break;
+#ifndef CMS_MVS
+                case ('C'):    /* -C:  match filenames case-insensitively */
+                    if (negative)
+                        uO.C_flag = FALSE, negative = 0;
+                    else
+                        uO.C_flag = TRUE;
+                    break;
+#endif /* !CMS_MVS */
+#if (!defined(SFX) || defined(SFX_EXDIR))
+                case ('d'):
+                    if (negative) {   /* negative not allowed with -d exdir */
+                        Info(slide, 0x401, ((char *)slide,
+                          LoadFarString(MustGiveExdir)));
+                        return(PK_PARAM);  /* don't extract here by accident */
+                    }
+                    if (uO.exdir != (char *)NULL) {
+                        Info(slide, 0x401, ((char *)slide,
+                          LoadFarString(OnlyOneExdir)));
+                        return(PK_PARAM);    /* GRR:  stupid restriction? */
+                    } else {
+                        /* first check for "-dexdir", then for "-d exdir" */
+                        uO.exdir = s;
+                        if (*uO.exdir == '\0') {
+                            if (argc > 1) {
+                                --argc;
+                                uO.exdir = *++argv;
+                                if (*uO.exdir == '-') {
+                                    Info(slide, 0x401, ((char *)slide,
+                                      LoadFarString(MustGiveExdir)));
+                                    return(PK_PARAM);
+                                }
+                                /* else uO.exdir points at extraction dir */
+                            } else {
+                                Info(slide, 0x401, ((char *)slide,
+                                  LoadFarString(MustGiveExdir)));
+                                return(PK_PARAM);
+                            }
+                        }
+                        /* uO.exdir now points at extraction dir (-dexdir or
+                         *  -d exdir); point s at end of exdir to avoid mis-
+                         *  interpretation of exdir characters as more options
+                         */
+                        if (*s != 0)
+                            while (*++s != 0)
+                                ;
+                    }
+                    break;
+#endif /* !SFX || SFX_EXDIR */
+                case ('e'):    /* just ignore -e, -x options (extract) */
+                    break;
+#ifdef MACOS
+                case ('E'): /* -E [MacOS] display Mac e.f. when restoring */
+                    if( negative ) {
+                        uO.E_flag = FALSE, negative = 0;
+                    } else {
+                        uO.E_flag = TRUE;
+                    }
+                    break;
+#endif /* MACOS */
+                case ('f'):    /* "freshen" (extract only newer files) */
+                    if (negative)
+                        uO.fflag = uO.uflag = FALSE, negative = 0;
+                    else
+                        uO.fflag = uO.uflag = TRUE;
+                    break;
+#if (defined(RISCOS) || defined(ACORN_FTYPE_NFS))
+                case ('F'):    /* Acorn filetype & NFS extension handling */
+                    if (negative)
+                        uO.acorn_nfs_ext = FALSE, negative = 0;
+                    else
+                        uO.acorn_nfs_ext = TRUE;
+                    break;
+#endif /* RISCOS || ACORN_FTYPE_NFS */
+                case ('h'):    /* just print help message and quit */
+                    *pargc = -1;
+                    return USAGE(PK_OK);
+#ifdef MACOS
+                case ('i'): /* -i [MacOS] ignore filenames stored in Mac ef */
+                    if( negative ) {
+                        uO.i_flag = FALSE, negative = 0;
+                    } else {
+                        uO.i_flag = TRUE;
+                    }
+                    break;
+#endif  /* MACOS */
+                case ('j'):    /* junk pathnames/directory structure */
+                    if (negative)
+                        uO.jflag = FALSE, negative = 0;
+                    else
+                        uO.jflag = TRUE;
+                    break;
+#if (defined(ATH_BEO) || defined(MACOS))
+                case ('J'):    /* Junk AtheOS, BeOS or MacOS file attributes */
+                    if( negative ) {
+                        uO.J_flag = FALSE, negative = 0;
+                    } else {
+                        uO.J_flag = TRUE;
+                    }
+                    break;
+#endif /* ATH_BEO || MACOS */
+#ifdef ATH_BEO_UNX
+                case ('K'):
+                    if (negative) {
+                        uO.K_flag = FALSE, negative = 0;
+                    } else {
+                        uO.K_flag = TRUE;
+                    }
+                    break;
+#endif /* ATH_BEO_UNX */
+#ifndef SFX
+                case ('l'):
+                    if (negative) {
+                        uO.vflag = MAX(uO.vflag-negative,0);
+                        negative = 0;
+                    } else
+                        ++uO.vflag;
+                    break;
+#endif /* !SFX */
+#ifndef CMS_MVS
+                case ('L'):    /* convert (some) filenames to lowercase */
+                    if (negative) {
+                        uO.L_flag = MAX(uO.L_flag-negative,0);
+                        negative = 0;
+                    } else
+                        ++uO.L_flag;
+                    break;
+#endif /* !CMS_MVS */
+#ifdef MORE
+#ifdef CMS_MVS
+                case ('m'):
+#endif
+                case ('M'):    /* send all screen output through "more" fn. */
+/* GRR:  eventually check for numerical argument => height */
+                    if (negative)
+                        G.M_flag = FALSE, negative = 0;
+                    else
+                        G.M_flag = TRUE;
+                    break;
+#endif /* MORE */
+                case ('n'):    /* don't overwrite any files */
+                    if (negative)
+                        uO.overwrite_none = FALSE, negative = 0;
+                    else
+                        uO.overwrite_none = TRUE;
+                    break;
+#ifdef AMIGA
+                case ('N'):    /* restore comments as filenotes */
+                    if (negative)
+                        uO.N_flag = FALSE, negative = 0;
+                    else
+                        uO.N_flag = TRUE;
+                    break;
+#endif /* AMIGA */
+                case ('o'):    /* OK to overwrite files without prompting */
+                    if (negative) {
+                        uO.overwrite_all = MAX(uO.overwrite_all-negative,0);
+                        negative = 0;
+                    } else
+                        ++uO.overwrite_all;
+                    break;
+                case ('p'):    /* pipes:  extract to stdout, no messages */
+                    if (negative) {
+                        uO.cflag = FALSE;
+                        uO.qflag = MAX(uO.qflag-999,0);
+                        negative = 0;
+                    } else {
+                        uO.cflag = TRUE;
+                        uO.qflag += 999;
+                    }
+                    break;
+#if CRYPT
+                /* GRR:  yes, this is highly insecure, but dozens of people
+                 * have pestered us for this, so here we go... */
+                case ('P'):
+                    if (negative) {   /* negative not allowed with -P passwd */
+                        Info(slide, 0x401, ((char *)slide,
+                          LoadFarString(MustGivePasswd)));
+                        return(PK_PARAM);  /* don't extract here by accident */
+                    }
+                    if (uO.pwdarg != (char *)NULL) {
+/*
+                        GRR:  eventually support multiple passwords?
+                        Info(slide, 0x401, ((char *)slide,
+                          LoadFarString(OnlyOnePasswd)));
+                        return(PK_PARAM);
+ */
+                    } else {
+                        /* first check for "-Ppasswd", then for "-P passwd" */
+                        uO.pwdarg = s;
+                        if (*uO.pwdarg == '\0') {
+                            if (argc > 1) {
+                                --argc;
+                                uO.pwdarg = *++argv;
+                                if (*uO.pwdarg == '-') {
+                                    Info(slide, 0x401, ((char *)slide,
+                                      LoadFarString(MustGivePasswd)));
+                                    return(PK_PARAM);
+                                }
+                                /* else pwdarg points at decryption password */
+                            } else {
+                                Info(slide, 0x401, ((char *)slide,
+                                  LoadFarString(MustGivePasswd)));
+                                return(PK_PARAM);
+                            }
+                        }
+                        /* pwdarg now points at decryption password (-Ppasswd or
+                         *  -P passwd); point s at end of passwd to avoid mis-
+                         *  interpretation of passwd characters as more options
+                         */
+                        if (*s != 0)
+                            while (*++s != 0)
+                                ;
+                    }
+                    break;
+#endif /* CRYPT */
+                case ('q'):    /* quiet:  fewer comments/messages */
+                    if (negative) {
+                        uO.qflag = MAX(uO.qflag-negative,0);
+                        negative = 0;
+                    } else
+                        ++uO.qflag;
+                    break;
+#ifdef QDOS
+                case ('Q'):   /* QDOS flags */
+                    qlflag ^= strtol(s, &s, 10);
+                    break;    /* we XOR this as we can config qlflags */
+#endif
+#ifdef TANDEM
+                case ('r'):    /* remove file extensions */
+                    if (negative)
+                        uO.rflag = FALSE, negative = 0;
+                    else
+                        uO.rflag = TRUE;
+                    break;
+#endif /* TANDEM */
+#ifdef DOS_FLX_NLM_OS2_W32
+                case ('s'):    /* spaces in filenames:  allow by default */
+                    if (negative)
+                        uO.sflag = FALSE, negative = 0;
+                    else
+                        uO.sflag = TRUE;
+                    break;
+#endif /* DOS_FLX_NLM_OS2_W32 */
+                case ('t'):
+                    if (negative)
+                        uO.tflag = FALSE, negative = 0;
+                    else
+                        uO.tflag = TRUE;
+                    break;
+#ifdef TIMESTAMP
+                case ('T'):
+                    if (negative)
+                        uO.T_flag = FALSE, negative = 0;
+                    else
+                        uO.T_flag = TRUE;
+                    break;
+#endif
+                case ('u'):    /* update (extract only new and newer files) */
+                    if (negative)
+                        uO.uflag = FALSE, negative = 0;
+                    else
+                        uO.uflag = TRUE;
+                    break;
+#ifndef CMS_MVS
+                case ('U'):    /* obsolete; to be removed in version 6.0 */
+                    if (negative)
+                        uO.L_flag = TRUE, negative = 0;
+                    else
+                        uO.L_flag = FALSE;
+                    break;
+#endif /* !CMS_MVS */
+#ifndef SFX
+                case ('v'):    /* verbose */
+                    if (negative) {
+                        uO.vflag = MAX(uO.vflag-negative,0);
+                        negative = 0;
+                    } else if (uO.vflag)
+                        ++uO.vflag;
+                    else
+                        uO.vflag = 2;
+                    break;
+#endif /* !SFX */
+#ifndef CMS_MVS
+                case ('V'):    /* Version (retain VMS/DEC-20 file versions) */
+                    if (negative)
+                        uO.V_flag = FALSE, negative = 0;
+                    else
+                        uO.V_flag = TRUE;
+                    break;
+#endif /* !CMS_MVS */
+#ifdef WILD_STOP_AT_DIR
+                case ('W'):    /* Wildcard interpretation (stop at '/'?) */
+                    if (negative)
+                        uO.W_flag = FALSE, negative = 0;
+                    else
+                        uO.W_flag = TRUE;
+                    break;
+#endif /* WILD_STOP_AT_DIR */
+                case ('x'):    /* extract:  default */
+#ifdef SFX
+                    /* when 'x' is the only option in this argument, and the
+                     * next arg is not an option, assume this initiates an
+                     * exclusion list (-x xlist):  terminate option-scanning
+                     * and leave uz_opts with argv still pointing to "-x";
+                     * the xlist is processed later
+                     */
+                    if (s - argv[0] == 2 && *s == '\0' &&
+                        argc > 1 && argv[1][0] != '-') {
+                        /* break out of nested loops without "++argv;--argc" */
+                        goto opts_done;
+                    }
+#endif /* SFX */
+                    break;
+#if (defined(RESTORE_UIDGID) || defined(RESTORE_ACL))
+                case ('X'):   /* restore owner/protection info (need privs?) */
+                    if (negative) {
+                        uO.X_flag = MAX(uO.X_flag-negative,0);
+                        negative = 0;
+                    } else
+                        ++uO.X_flag;
+                    break;
+#endif /* RESTORE_UIDGID || RESTORE_ACL */
+                case ('z'):    /* display only the archive comment */
+                    if (negative) {
+                        uO.zflag = MAX(uO.zflag-negative,0);
+                        negative = 0;
+                    } else
+                        ++uO.zflag;
+                    break;
+#ifndef SFX
+                case ('Z'):    /* should have been first option (ZipInfo) */
+                    Info(slide, 0x401, ((char *)slide, LoadFarString(Zfirst)));
+                    error = TRUE;
+                    break;
+#endif /* !SFX */
+#ifdef DOS_H68_OS2_W32
+                case ('$'):
+                    if (negative) {
+                        uO.volflag = MAX(uO.volflag-negative,0);
+                        negative = 0;
+                    } else
+                        ++uO.volflag;
+                    break;
+#endif /* DOS_H68_OS2_W32 */
+#if (!defined(RISCOS) && !defined(CMS_MVS) && !defined(TANDEM))
+                case (':'):
+                    if (negative) {
+                        uO.ddotflag = MAX(uO.ddotflag-negative,0);
+                        negative = 0;
+                    } else
+                        ++uO.ddotflag;
+                    break;
+#endif /* !RISCOS && !CMS_MVS && !TANDEM */
+                default:
+                    error = TRUE;
+                    break;
+
+            } /* end switch */
+        } /* end while (not end of argument string) */
+    } /* end while (not done with switches) */
+
+/*---------------------------------------------------------------------------
+    Check for nonsensical combinations of options.
+  ---------------------------------------------------------------------------*/
+
+#ifdef SFX
+opts_done:  /* yes, very ugly...but only used by UnZipSFX with -x xlist */
+#endif
+
+    if ((uO.cflag && uO.tflag) || (uO.cflag && uO.uflag) ||
+        (uO.tflag && uO.uflag) || (uO.fflag && uO.overwrite_none))
+    {
+        Info(slide, 0x401, ((char *)slide, LoadFarString(InvalidOptionsMsg)));
+        error = TRUE;
+    }
+    if (uO.aflag > 2)
+        uO.aflag = 2;
+#ifdef VMS
+    if (uO.bflag > 2)
+        uO.bflag = 2;
+#endif
+    if (uO.overwrite_all && uO.overwrite_none) {
+        Info(slide, 0x401, ((char *)slide, LoadFarString(IgnoreOOptionMsg)));
+        uO.overwrite_all = FALSE;
+    }
+#ifdef MORE
+    if (G.M_flag && !isatty(1))  /* stdout redirected: "more" func. useless */
+        G.M_flag = 0;
+#endif
+
+#ifdef SFX
+    if (error)
+#else
+    if ((argc-- == 0) || error)
+#endif
+    {
+        *pargc = argc;
+        *pargv = argv;
+#ifndef SFX
+        if (uO.vflag >= 2 && argc == -1) {              /* "unzip -v" */
+            show_version_info(__G);
+            return PK_OK;
+        }
+        if (!G.noargs && !error)
+            error = PK_PARAM;   /* had options (not -h or -v) but no zipfile */
+#endif /* !SFX */
+        return USAGE(error);
+    }
+
+#ifdef SFX
+    /* print our banner unless we're being fairly quiet */
+    if (uO.qflag < 2)
+        Info(slide, error? 1 : 0, ((char *)slide, LoadFarString(UnzipSFXBanner),
+          UZ_MAJORVER, UZ_MINORVER, UZ_PATCHLEVEL, UZ_BETALEVEL,
+          LoadFarStringSmall(VersionDate)));
+#ifdef BETA
+    /* always print the beta warning:  no unauthorized distribution!! */
+    Info(slide, error? 1 : 0, ((char *)slide, LoadFarString(BetaVersion), "\n",
+      "SFX"));
+#endif
+#endif /* SFX */
+
+    if (uO.cflag || uO.tflag || uO.vflag || uO.zflag
+#ifdef TIMESTAMP
+                                                     || uO.T_flag
+#endif
+                                                                 )
+        G.extract_flag = FALSE;
+    else
+        G.extract_flag = TRUE;
+
+    *pargc = argc;
+    *pargv = argv;
+    return PK_OK;
+
+} /* end function uz_opts() */
+
+
+
+
+/********************/
+/* Function usage() */
+/********************/
+
+#ifdef SFX
+#  ifdef VMS
+#    define LOCAL "X.\n\
+(Must quote upper-case options, like \"-V\", unless SET PROC/PARSE=EXTEND.)"
+#  endif
+#  ifdef UNIX
+#    define LOCAL "X"
+#  endif
+#  ifdef DOS_OS2_W32
+#    define LOCAL "s$"
+#  endif
+#  if (defined(FLEXOS) || defined(NLM))
+#    define LOCAL "s"
+#  endif
+#  ifdef AMIGA
+#    define LOCAL "N"
+#  endif
+   /* Default for all other systems: */
+#  ifndef LOCAL
+#    define LOCAL ""
+#  endif
+
+#  ifdef MORE
+#    define SFXOPT1 "M"
+#  else
+#    define SFXOPT1 ""
+#  endif
+
+int usage(__G__ error)   /* return PK-type error code */
+    __GDEF
+    int error;
+{
+    Info(slide, error? 1 : 0, ((char *)slide, LoadFarString(UnzipSFXBanner),
+      UZ_MAJORVER, UZ_MINORVER, UZ_PATCHLEVEL, UZ_BETALEVEL,
+      LoadFarStringSmall(VersionDate)));
+    Info(slide, error? 1 : 0, ((char *)slide, LoadFarString(UnzipSFXOpts),
+      SFXOPT1, LOCAL));
+#ifdef BETA
+    Info(slide, error? 1 : 0, ((char *)slide, LoadFarString(BetaVersion), "\n",
+      "SFX"));
+#endif
+
+    if (error)
+        return PK_PARAM;
+    else
+        return PK_COOL;     /* just wanted usage screen: no error */
+
+} /* end function usage() */
+
+
+
+
+
+#else /* !SFX */
+#  ifdef VMS
+#    define QUOT '\"'
+#    define QUOTS "\""
+#  else
+#    define QUOT ' '
+#    define QUOTS ""
+#  endif
+
+int usage(__G__ error)   /* return PK-type error code */
+    __GDEF
+    int error;
+{
+    int flag = (error? 1 : 0);
+
+
+/*---------------------------------------------------------------------------
+    Print either ZipInfo usage or UnZip usage, depending on incantation.
+    (Strings must be no longer than 512 bytes for Turbo C, apparently.)
+  ---------------------------------------------------------------------------*/
+
+    if (uO.zipinfo_mode) {
+
+#ifndef NO_ZIPINFO
+
+        Info(slide, flag, ((char *)slide, LoadFarString(ZipInfoUsageLine1),
+          ZI_MAJORVER, ZI_MINORVER, UZ_PATCHLEVEL, UZ_BETALEVEL,
+          LoadFarStringSmall(VersionDate),
+          LoadFarStringSmall2(ZipInfoExample), QUOTS,QUOTS));
+        Info(slide, flag, ((char *)slide, LoadFarString(ZipInfoUsageLine2)));
+        Info(slide, flag, ((char *)slide, LoadFarString(ZipInfoUsageLine3),
+          QUOT,QUOT, QUOT,QUOT, LoadFarStringSmall(ZipInfoUsageLine4)));
+#ifdef VMS
+        Info(slide, flag, ((char *)slide, "\n\
+You must quote non-lowercase options and filespecs, unless SET PROC/PARSE=EXT.\
+\n"));
+#endif
+
+#endif /* !NO_ZIPINFO */
+
+    } else {   /* UnZip mode */
+
+        Info(slide, flag, ((char *)slide, LoadFarString(UnzipUsageLine1),
+          UZ_MAJORVER, UZ_MINORVER, UZ_PATCHLEVEL, UZ_BETALEVEL,
+          LoadFarStringSmall(VersionDate)));
+#ifdef BETA
+        Info(slide, flag, ((char *)slide, LoadFarString(BetaVersion), "", ""));
+#endif
+
+        Info(slide, flag, ((char *)slide, LoadFarString(UnzipUsageLine2),
+          ZIPINFO_MODE_OPTION, LoadFarStringSmall(ZipInfoMode)));
+#ifdef VMS
+        if (!error)  /* maybe no command-line tail found; show extra help */
+            Info(slide, flag, ((char *)slide, LoadFarString(VMSusageLine2b)));
+#endif
+
+        Info(slide, flag, ((char *)slide, LoadFarString(UnzipUsageLine3),
+          LoadFarStringSmall(local1)));
+
+        Info(slide, flag, ((char *)slide, LoadFarString(UnzipUsageLine4),
+          QUOT,QUOT, QUOT,QUOT, LoadFarStringSmall(local2), QUOT,QUOT,
+          LoadFarStringSmall2(local3)));
+
+        /* This is extra work for SMALL_MEM, but it will work since
+         * LoadFarStringSmall2 uses the same buffer.  Remember, this
+         * is a hack. */
+        Info(slide, flag, ((char *)slide, LoadFarString(UnzipUsageLine5),
+          LoadFarStringSmall(Example2), LoadFarStringSmall2(Example3),
+          LoadFarStringSmall2(Example3)));
+
+    } /* end if (uO.zipinfo_mode) */
+
+    if (error)
+        return PK_PARAM;
+    else
+        return PK_COOL;     /* just wanted usage screen: no error */
+
+} /* end function usage() */
+
+#endif /* ?SFX */
+
+
+
+
+#ifndef SFX
+
+#ifndef _WIN32_WCE /* Win CE does not support environment variables */
+#if (!defined(MODERN) || defined(NO_STDLIB_H))
+/* Declare getenv() to be sure (might be missing in some environments) */
+extern char *getenv();
+#endif
+#endif
+
+/********************************/
+/* Function show_version_info() */
+/********************************/
+
+static void show_version_info(__G)
+    __GDEF
+{
+    if (uO.qflag > 3)                           /* "unzip -vqqqq" */
+        Info(slide, 0, ((char *)slide, "%d\n",
+          (UZ_MAJORVER*100 + UZ_MINORVER*10 + UZ_PATCHLEVEL)));
+    else {
+#ifndef _WIN32_WCE /* Win CE does not support environment variables */
+        char *envptr;
+#endif
+        int numopts = 0;
+
+        Info(slide, 0, ((char *)slide, LoadFarString(UnzipUsageLine1v),
+          UZ_MAJORVER, UZ_MINORVER, UZ_PATCHLEVEL, UZ_BETALEVEL,
+          LoadFarStringSmall(VersionDate)));
+        Info(slide, 0, ((char *)slide,
+          LoadFarString(UnzipUsageLine2v)));
+        version(__G);
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptions)));
+#ifdef ACORN_FTYPE_NFS
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(AcornFtypeNFS)));
+        ++numopts;
+#endif
+#ifdef ASM_CRC
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(AsmCRC)));
+        ++numopts;
+#endif
+#ifdef ASM_INFLATECODES
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(AsmInflateCodes)));
+        ++numopts;
+#endif
+#ifdef CHECK_VERSIONS
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(Check_Versions)));
+        ++numopts;
+#endif
+#ifdef COPYRIGHT_CLEAN
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(Copyright_Clean)));
+        ++numopts;
+#endif
+#ifdef DEBUG
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(UDebug)));
+        ++numopts;
+#endif
+#ifdef DEBUG_TIME
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(DebugTime)));
+        ++numopts;
+#endif
+#ifdef DLL
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(Dll)));
+        ++numopts;
+#endif
+#ifdef DOSWILD
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(DosWild)));
+        ++numopts;
+#endif
+#ifdef LZW_CLEAN
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(LZW_Clean)));
+        ++numopts;
+#endif
+#ifndef MORE
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(No_More)));
+        ++numopts;
+#endif
+#ifdef NO_ZIPINFO
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(No_ZipInfo)));
+        ++numopts;
+#endif
+#ifdef NTSD_EAS
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(NTSDExtAttrib)));
+        ++numopts;
+#endif
+#if defined(WIN32) && defined(NO_W32TIMES_IZFIX)
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(W32NoIZTimeFix)));
+        ++numopts;
+#endif
+#ifdef OLD_THEOS_EXTRA
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(OldTheosExtra)));
+        ++numopts;
+#endif
+#ifdef OS2_EAS
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(OS2ExtAttrib)));
+        ++numopts;
+#endif
+#ifdef QLZIP
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(SMSExFldOnUnix)));
+        ++numopts;
+#endif
+#ifdef REENTRANT
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(Reentrant)));
+        ++numopts;
+#endif
+#ifdef REGARGS
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(RegArgs)));
+        ++numopts;
+#endif
+#ifdef RETURN_CODES
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(Return_Codes)));
+        ++numopts;
+#endif
+#ifdef SET_DIR_ATTRIB
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(SetDirAttrib)));
+        ++numopts;
+#endif
+#ifdef TIMESTAMP
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(TimeStamp)));
+        ++numopts;
+#endif
+#ifdef UNIXBACKUP
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(UnixBackup)));
+        ++numopts;
+#endif
+#ifdef USE_EF_UT_TIME
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(Use_EF_UT_time)));
+        ++numopts;
+#endif
+#ifndef COPYRIGHT_CLEAN
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(Use_Smith_Code)));
+        ++numopts;
+#endif
+#ifndef LZW_CLEAN
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(Use_Unshrink)));
+        ++numopts;
+#endif
+#ifdef USE_DEFLATE64
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(Use_Deflate64)));
+        ++numopts;
+#endif
+#ifdef MULT_VOLUME
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(Use_MultiVol)));
+        ++numopts;
+#endif
+#if (defined(__DJGPP__) && (__DJGPP__ >= 2))
+#  ifdef USE_DJGPP_ENV
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(Use_DJGPP_Env)));
+        ++numopts;
+#  endif
+#  ifdef USE_DJGPP_GLOB
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(Use_DJGPP_Glob)));
+        ++numopts;
+#  endif
+#endif /* __DJGPP__ && (__DJGPP__ >= 2) */
+#ifdef USE_VFAT
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(Use_VFAT_support)));
+        ++numopts;
+#endif
+#ifdef USE_ZLIB
+        sprintf((char *)(slide+256), LoadFarStringSmall(UseZlib),
+          ZLIB_VERSION, zlibVersion());
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          (char *)(slide+256)));
+        ++numopts;
+#endif
+#ifdef VMS_TEXT_CONV
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(VmsTextConv)));
+        ++numopts;
+#endif
+#ifdef VMSCLI
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(VmsCLI)));
+        ++numopts;
+#endif
+#ifdef VMSWILD
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(VmsWild)));
+        ++numopts;
+#endif
+#ifdef WILD_STOP_AT_DIR
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(WildStopAtDir)));
+        ++numopts;
+#endif
+#if CRYPT
+# ifdef PASSWD_FROM_STDIN
+        Info(slide, 0, ((char *)slide, LoadFarString(CompileOptFormat),
+          LoadFarStringSmall(PasswdStdin)));
+# endif
+        Info(slide, 0, ((char *)slide, LoadFarString(Decryption),
+          CR_MAJORVER, CR_MINORVER, CR_BETA_VER,
+          LoadFarStringSmall(CryptDate)));
+        ++numopts;
+#endif /* CRYPT */
+        if (numopts == 0)
+            Info(slide, 0, ((char *)slide,
+              LoadFarString(CompileOptFormat),
+              LoadFarStringSmall(None)));
+
+#ifndef _WIN32_WCE /* Win CE does not support environment variables */
+        Info(slide, 0, ((char *)slide, LoadFarString(EnvOptions)));
+        envptr = getenv(LoadFarStringSmall(EnvUnZip));
+        Info(slide, 0, ((char *)slide, LoadFarString(EnvOptFormat),
+          LoadFarStringSmall(EnvUnZip),
+          (envptr == (char *)NULL || *envptr == 0)?
+          LoadFarStringSmall2(None) : envptr));
+        envptr = getenv(LoadFarStringSmall(EnvUnZip2));
+        Info(slide, 0, ((char *)slide, LoadFarString(EnvOptFormat),
+          LoadFarStringSmall(EnvUnZip2),
+          (envptr == (char *)NULL || *envptr == 0)?
+          LoadFarStringSmall2(None) : envptr));
+        envptr = getenv(LoadFarStringSmall(EnvZipInfo));
+        Info(slide, 0, ((char *)slide, LoadFarString(EnvOptFormat),
+          LoadFarStringSmall(EnvZipInfo),
+          (envptr == (char *)NULL || *envptr == 0)?
+          LoadFarStringSmall2(None) : envptr));
+        envptr = getenv(LoadFarStringSmall(EnvZipInfo2));
+        Info(slide, 0, ((char *)slide, LoadFarString(EnvOptFormat),
+          LoadFarStringSmall(EnvZipInfo2),
+          (envptr == (char *)NULL || *envptr == 0)?
+          LoadFarStringSmall2(None) : envptr));
+#ifndef __RSXNT__
+#ifdef __EMX__
+        envptr = getenv(LoadFarStringSmall(EnvEMX));
+        Info(slide, 0, ((char *)slide, LoadFarString(EnvOptFormat),
+          LoadFarStringSmall(EnvEMX),
+          (envptr == (char *)NULL || *envptr == 0)?
+          LoadFarStringSmall2(None) : envptr));
+        envptr = getenv(LoadFarStringSmall(EnvEMXOPT));
+        Info(slide, 0, ((char *)slide, LoadFarString(EnvOptFormat),
+          LoadFarStringSmall(EnvEMXOPT),
+          (envptr == (char *)NULL || *envptr == 0)?
+          LoadFarStringSmall2(None) : envptr));
+#endif /* __EMX__ */
+#if (defined(__GO32__) && (!defined(__DJGPP__) || (__DJGPP__ < 2)))
+        envptr = getenv(LoadFarStringSmall(EnvGO32));
+        Info(slide, 0, ((char *)slide, LoadFarString(EnvOptFormat),
+          LoadFarStringSmall(EnvGO32),
+          (envptr == (char *)NULL || *envptr == 0)?
+          LoadFarStringSmall2(None) : envptr));
+        envptr = getenv(LoadFarStringSmall(EnvGO32TMP));
+        Info(slide, 0, ((char *)slide, LoadFarString(EnvOptFormat),
+          LoadFarStringSmall(EnvGO32TMP),
+          (envptr == (char *)NULL || *envptr == 0)?
+          LoadFarStringSmall2(None) : envptr));
+#endif /* __GO32__ && !(__DJGPP__ >= 2) */
+#endif /* !__RSXNT__ */
+#ifdef RISCOS
+        envptr = getenv(LoadFarStringSmall(EnvUnZipExts));
+        Info(slide, 0, ((char *)slide, LoadFarString(EnvOptFormat),
+          LoadFarStringSmall(EnvUnZipExts),
+          (envptr == (char *)NULL || *envptr == 0)?
+          LoadFarStringSmall2(None) : envptr));
+#endif /* RISCOS */
+#endif /* !_WIN32_WCE */
+    }
+} /* end function show_version() */
+
+#endif /* !SFX */
+#endif /* !WINDLL */

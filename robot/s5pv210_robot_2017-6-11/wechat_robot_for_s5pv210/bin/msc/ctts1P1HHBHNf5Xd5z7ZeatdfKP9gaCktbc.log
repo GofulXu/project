@@ -1,0 +1,170 @@
+============================================================
+Time  2017/03/18 16:57:40 352 
+============================================================
+[2017/03/18 16:57:40 353] tts        555  SYS_MSG_REGCB param0 =  msp_status_cb  param1 =  func(b694f978) 
+[2017/03/18 16:57:40 356] config     42   use general cloud  
+[2017/03/18 16:57:40 363] tts_cloud  1420 SYS_MSG_REGCB_CLOUD param0 =   msp_status_cb  param1 =  func(b694f978) 
+[2017/03/18 16:57:40 363] tts        527  TTS_MSG_SSB  
+[2017/03/18 16:57:40 363] tts        338  params =  voice_name = xiaoyan, text_encoding = utf8, sample_rate = 16000, speed = 50, volume = 50, pitch = 50, rdn = 2  
+[2017/03/18 16:57:40 363] tts        373  ssb|use cloud  
+[2017/03/18 16:57:40 363] tts_cloud  1391 SYS_MSG_LOAD_CLOUD  
+[2017/03/18 16:57:40 363] tts_cloud  954  TTS_MSG_SSB_CLOUD  
+[2017/03/18 16:57:40 365] tts_cloud  977  tts  ctts1P1HHBHNf5Xd5z7ZeatdfKP9gaCktbc  268436457  1488112124  
+[2017/03/18 16:57:40 365] tts_cloud  1146 need_decode  true  
+[2017/03/18 16:57:40 365] tts_cloud  1147 aue=  speex-wb;7   auf=  audio/L16;rate=16000  
+[2017/03/18 16:57:40 366] tts_cloud  1169 User set url is   nil  
+[2017/03/18 16:57:40 366] transport  627  paramkvsport is   nil  
+[2017/03/18 16:57:40 366] transport  635  ns_enable=  1  
+[2017/03/18 16:57:40 366] transport  679  url.full=  nil  
+[2017/03/18 16:57:40 366] transport  867  net type:  standard  
+[2017/03/18 16:57:40 366] transport  868  net operator:  def  
+[2017/03/18 16:57:40 366] transport  869  use proxy:  false  
+[2017/03/18 16:57:40 366] transport  992  session.domain=  open.xf-yun.com  
+[2017/03/18 16:57:40 366] transport  993  url.host=  open.xf-yun.com  
+[2017/03/18 16:57:40 366] transport  1078 using nameserver ip:  59.107.24.5  
+[2017/03/18 16:57:40 366] transport  1210 [soc] connect   59.107.24.5  80  
+[2017/03/18 16:57:40 366] transport  1227 mspsoc.open,prot_type=  tcp  
+[2017/03/18 16:57:40 367] tts        533  TTS_MSG_SYN  0  
+[2017/03/18 16:57:40 367] tts        413  synth|use cloud  
+[2017/03/18 16:57:40 367] tts_cloud  1189 TTS_MSG_SYN_CLOUD  
+[2017/03/18 16:57:40 367] tts_cloud  1200 remote_connected =  false  
+[2017/03/18 16:57:40 368] tts        536  TTS_MSG_GETAUDIO  0  
+[2017/03/18 16:57:40 368] tts        474  get audio|use cloud  
+[2017/03/18 16:57:40 368] tts_cloud  1284 TTS_MSG_GETAUDIO_CLOUD | synth_status  1  
+[2017/03/18 16:57:40 477] transport  476  [soc] [1] connected  
+[2017/03/18 16:57:40 477] tts_cloud  296  text =  udata(b695d8bc) 
+[2017/03/18 16:57:40 477] tts_cloud  717  send ssb request  
+[2017/03/18 16:57:40 477] tts_cloud  543  using loginid  
+[2017/03/18 16:57:40 477] tts_cloud  584  lver:  nil  
+[2017/03/18 16:57:40 477] tts_cloud  589  cfg_ver:  nil  
+[2017/03/18 16:57:40 477] transport  1264 build http request.  
+[2017/03/18 16:57:40 477] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 573
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:235
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=tts&cmd=ssb&aue=speex%2Dwb%3B7&auf=audio%2FL16%3Brate%3D16000&cver=5%2E0%2E29%2E1151&net%5Ftype=standard&csid=ctts1P1HHBHNf5Xd5z7ZeatdfKP9gaCktbc&key=0ekT/KgQg8uem^6XRVEjZcpnXOkyvEf/bnjKwGIWQMRqxzTMirmS8ZG4ysBiFkDEas
+----
+CL:56
+CT:binary/synth+text
+CE:gzip,encrypt/0.2
+
+uEÃ'<õ±ë  
+[2017/03/18 16:57:40 478] transport  1684 msg:release()  
+[2017/03/18 16:57:40 479] transport  506  [soc] [1] send ok  746  
+[2017/03/18 16:57:40 519] tts        536  TTS_MSG_GETAUDIO  0  
+[2017/03/18 16:57:40 519] tts        474  get audio|use cloud  
+[2017/03/18 16:57:40 519] tts_cloud  1284 TTS_MSG_GETAUDIO_CLOUD | synth_status  1  
+[2017/03/18 16:57:40 608] transport  518  [soc] [1] readable  
+[2017/03/18 16:57:40 608] transport  1637 HTTP/1.1 200 OK
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 3562
+X-Req-Date: 2017/03/18 16:57:40 511
+Cache-Control: no-cache
+CL: 3562
+X-Res-Date: 2017/03/18 16:57:40 589
+
+----
+Content-Length:187
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&uid=d6106586316&ced=33&ofg=1&key=0fOTMOhuH0pGyZQvVvAKAlzKFbMgv793sFqmJmgh87Ayg^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=
+----
+Content-Length:3240
+Content-Type:binary/audio
+Content-Encoding:speex-wb;7,encrypt/0.2
+
+Ø~€@.¶W	úúúúúúúıt¿  
+[2017/03/18 16:57:40 608] transport  1637 Ú#'b˛¬j0C_0ãøyZYb^ÀÑ¡√4∑
+e;EÂÓ”HD™d9oEyk'{§e`Pg‡=à›Ω`¸<=NJjgs≥h0cÂ˝s 9eu|˛Àô‚d}§nôH@Vbñ√j*+8 0c{ÚÅÚâh	¥˘3„#Åhw[ó\¶x!–ÔóíÑÒqûœÑ∫Â≤+v’,ÛHAﬁ‰7¶U*ê”9¸2ﬁTeÚ≠0Ô°Œ•˛ÙLp◊Ur0üsΩôik{}ie`nÁ¥A[jåT/‘:6¡¸”HA–Ú3/W∆\Ã€™∆sô! èLí∞¿˘vﬂµ¶ü©´&U≥;	ı”txüNM¥¡Ÿ§};túÒd„sHAƒÚöLhÅÓ¸,˚±ı¢¶sòo?V{ê8ö0˝æü8x uKÿ«*ø7Cm>Lt5XTæaÿ¡ÿ√HA…+[-D]Èã!‰?åsIlÜ™X¶DEìÿ˚»K}ÛB/viè˘CU&<E∆Ω¬ÈŒdÚòƒ∆wºÒeThCHEZã.-EÂî!\l¨°|L5‰ˆ–]xÀÊ	q∏;2/∆ÇnUdjG'Ï¯Ÿyâëûö‚ø:d¡Ÿ¡ŸHEZàïÕ}Â<C[<Øëﬁ¸âu0T£JH∂ÉÛ?ô|πï	ÀbrÔ“˙ﬁL4¡Ÿ¡Ÿ¡Ÿ¡„HEB™˜(ºΩ8WÄπé iîrLﬁr!ñ]ÃcÆªl˚±Ç
+NVX…∫Bëû√Q"té¥t∆ïaÂÙ/%ÙÖúCH@ *≠z.ﬁ–å/√≈_¸≈AXOú3‡í X$ïÜ£>ﬁVÀ.JQ!oâ	^&ÙÛtº¥qXìHF	íüÏ3Œ'ôHœñfô˝a™ﬂ{∏Â&∏ŸmcF›Æ6€ƒüáS(MÈ{.oˆ»d⁄r5è˘ŸHC˝ubbjÜjw¸+º¯*êÕ’îèF72[˚"èÒÔŒ€"ó[Øåÿ´EﬁLæït)˜§B"Ñ,Y∆…dÁôqüÓ3b-E,YNyÉsèÃ¯ÿ∞Ω3x—-ådêùERwË!¸>2£vé'Ù¡Ÿ¡„¿G‰/ÑHCK&ˆ√/Œt!‹ºrÜ{„àqg5˘%≥É˚k™*rWè√üÄ·9ez>'4∑ÙdJ%[∆&››cHCKw#jïú+lW∏—Y{ä©Ω:|é°Ä„s#gªw$0◊i˘¸‰?»âŒéÈVN4ƒ©)GπŸ3HDé¿–ÇoﬁﬁŒ=∞yL∫X–ÿ†2\íÚjÛ
+ x!	
+[2017/03/18 16:57:40 608] transport  1637 ~€E…—ØN—£˜ÒsR†·yEâ˝g»Â5‚UWÆ¸˛ÈWl‘Z|˜/«&u=£HCSÊ¡f™6,òÆ‡6ﬂÃî‰§Ω¨0”#[ˇ:óU 6◊	ùƒ•<’–Óå6YhÆàfÆòÜ‘µ„HAó1‰`/~7åW0∫mÔ-Í1!„'$Ò[ΩÌ‘¨Å£n„Uk›ò1oçN’ﬂ∏tæ&Ùeîƒ˘ƒcHA
+™fai©˝0n@–è]}€cÿpX]úE∂0É∆oª^≈2∑*\◊≤1_Ÿr¨€Â.…Ñ/.DP√*˙≈£úŸìHAäm  
+[2017/03/18 16:57:40 651] transport  518  [soc] [1] readable  
+[2017/03/18 16:57:40 651] transport  1637 Xz…∂”˜ô√V&Újíáïj'É⁄$ºµ÷÷Tae"¡ÛHG#Ω“,'≤{^ÁøÓ-˛Äö>∂BEæi˛EX”2ç>“’ö/(¸ˇYÚ¶˝ﬁÙ§(¥{;Ñ%4ƒÒHA=rb-m™p\µZâ|¯Pp»°–≤özLèpë{˚∑›∏8Ü<Cñ∏ÈÑyÿT¿Y(XTcÉHD0˘3åkJ3†+YÉödÂrîΩ≠í„´ˆ¸ìÓ:wÆ(-ê”«3]T—ëk|>èÑÒ‘ƒ¡ƒƒ¬ƒzi≠∞q;nrR≥P8,mﬂ¨Æ‡’¨nâ/¯/æ”˛”Î£∏.QÑëNqìÇ]véêÙNlDûŸ’
+64£HD+Ù”@^*‚+R0P¨bM*41I¥ÀxÎV◊
+Ñ/íª‚◊¡€7q◊ÆN∂¡·t=8îû…‰¿b√HE≤UÔπI∑od∞∞0“ ˙•“ÊhgÎ¢´âPä©	[ºg1ªãÎ/≥º˘ÓÃ`146'lÌ0ˆúHA+9–ÉÄKú»Buç,≥˘˘CË•ÎööJ¶RF|	Q+]¨ÑyíŒ™ÅÚX÷É∆9gÇgı∂'í,ø’FŒ˘ôs∆.>lnÜï	Œ«€’µì˘B).&êy≤¶Õáô9OXñ—ﬁ+d∏J•¡—‰πﬁt¡ı≥HDÆu.L÷"~¬=·”@" óCŒu`ŸzË»Ë´òPó9)I>ä+a+_?.+dfî‘ƒéÖÔ9H@Nî¶NIÂnAé∏+¬0BÍ@»áªëÅ<l7˚∞ÚG*^ö¶ÿ·Bæ≈—ÿÀåˇŒ&¥∏ÿÂ≈¿s¥1Ÿ#H@F€ÂMIŸˇ;‰¯Ï€Î+2J{Ú!aªºÁ™=d˛wS∑S¡±wiæñ¡—N'5G√j–ü]Ï`ÀHA8≈ˆÉN*úO≠-)¬˛Ô√7„ÿh26oy”ı^⁄Zf{Äí˚ÿèê≠úı”N)ˆ˝˜« ßòÉsHAøıƒNâ)é¥√åºí•…ïnmÕ¸AªvÈpL±ÎîOì€≈OBá3ñN'˜Üôıúœuı]HÛHA¶8Œ3Õ≈/„—ÇK≤KΩ»¿¿ `k"-DZˇ-îo3…?.ÀãéŒ∂
+EvF∆«  
+[2017/03/18 16:57:40 651] transport  1383 a_complete_httpmessage  200  
+[2017/03/18 16:57:40 651] transport  1493 is_update  true  
+[2017/03/18 16:57:40 651] tts_cloud  317  [trans] [tts_cloudctts1P1HHBHNf5Xd5z7ZeatdfKP9gaCktbc] readable  
+[2017/03/18 16:57:40 651] tts_cloud  335  response  
+[2017/03/18 16:57:40 651] tts_cloud  392  sid =   tts60596e4b@gz3c990c284284461100  
+[2017/03/18 16:57:40 651] tts_cloud  414  synth_parse_response| ssb time:  174  .  
+[2017/03/18 16:57:40 651] tts_cloud  415  text to first audio:  174  .  
+[2017/03/18 16:57:40 651] tts_cloud  476  theory decode audiolen:  33920  ,ced:  33  ,markinfo:  nil  
+[2017/03/18 16:57:40 651] tts_cloud  786  aud_data:len()=  3233  
+[2017/03/18 16:57:40 651] tts_cloud  731  send fch request  
+[2017/03/18 16:57:40 652] transport  1264 build http request.  
+[2017/03/18 16:57:40 652] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: text/plain
+Content-Length: 168
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+ver=MSSP+0%2E9&sub=tts&cmd=fch&cver=5%2E0%2E29%2E1151&key=0fOTMOhuH0pGyZQvVvAKAlzKFbMgv793sFqmJmgh87Ayg^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh8irsDHtuaHn43oU3xms5Yc=  
+[2017/03/18 16:57:40 652] transport  1684 msg:release()  
+[2017/03/18 16:57:40 652] transport  506  [soc] [1] send ok  324  
+[2017/03/18 16:57:40 670] tts        536  TTS_MSG_GETAUDIO  0  
+[2017/03/18 16:57:40 670] tts        474  get audio|use cloud  
+[2017/03/18 16:57:40 670] tts_cloud  1284 TTS_MSG_GETAUDIO_CLOUD | synth_status  1  
+[2017/03/18 16:57:40 673] tts_cloud  696  u_aul =  33920  audiolen =  33920  
+[2017/03/18 16:57:40 673] tts_cloud  791  aud_data = nil  
+[2017/03/18 16:57:40 792] transport  518  [soc] [1] readable  
+[2017/03/18 16:57:40 792] transport  1637 HTTP/1.1 200 OK
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 3056
+X-Req-Date: 2017/03/18 16:57:40 692
+Cache-Control: no-cache
+CL: 3056
+X-Res-Date: 2017/03/18 16:57:40 760
+
+----
+Content-Length:171
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&ced=33&ofg=2&key=0fOTMOhuH0pGyZQvVvAKAlzKFbMgv793sFqmJmgh87Ayg^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh8irsDHtuaHn43oU3xms5Yc=
+----
+Content-Length:2752
+Content-Type:binary/audio
+Content-Encoding:speex-wb,encrypt/0.2
+
+Q*=˘nÊBı1‚yl:jõEåd01√(6Äeo§\dÔ◊€…´  
+[2017/03/18 16:57:40 792] transport  1637 )WÍ`áDD…Ê—jsHD(™ÉMﬁn@Ù  
+[2017/03/18 16:57:40 792] transport  1637 Ñ‰∑;ˇsâi4âç4±‰‘âï&Ë’yrSHA¡@%Ój‚IÓã?\E!zã]áˇ˛z|î˛¿õ‡ö9˜FP´Øo=`äÕü7˛ÀTƒóˆ≈Ω´(wXsH@πª-\*⁄v?Ô¸C!êbc~˙Ôõñz}ïÎh¸ñsf-BWΩÅ≤°ni{üOPÊéN÷JF$µòƒ≈ÒŸH@π∫{-Fn@˚ôçã¯ÛÓEMÖÄP  
+[2017/03/18 16:57:40 792] transport  1637 ∏íÃS·∫6y¥‚2$ø~fA“≤≈¡Å—˚ŒíÙ∆è¡›¡·4—‚cH@4‹÷B©ËJuÏáº∑t◊0kS=πì†=¯VU>Rí^®  
+[2017/03/18 16:57:40 792] transport  1383 a_complete_httpmessage  200  
+[2017/03/18 16:57:40 792] transport  1493 is_update  true  
+[2017/03/18 16:57:40 792] tts_cloud  317  [trans] [tts_cloudctts1P1HHBHNf5Xd5z7ZeatdfKP9gaCktbc] readable  
+[2017/03/18 16:57:40 792] tts_cloud  335  response  
+[2017/03/18 16:57:40 792] tts_cloud  449  text to last audio:  315  .  
+[2017/03/18 16:57:40 792] tts_cloud  450  ssb to sse:  315  .  
+[2017/03/18 16:57:40 793] network    88   ipfromenv ,  ipcache  open.xf-yun.com  def  59.107.24.5  
+[2017/03/18 16:57:40 793] transport  942  cached ip is confirmed  
+[2017/03/18 16:57:40 793] transport  1242 [soc] disconnect   
+[2017/03/18 16:57:40 794] tts_cloud  476  theory decode audiolen:  28800  ,ced:  33  ,markinfo:  nil  
+[2017/03/18 16:57:40 794] tts_cloud  786  aud_data:len()=  2745  
+[2017/03/18 16:57:40 812] tts_cloud  689  last audio  
+[2017/03/18 16:57:40 812] tts_cloud  696  u_aul =  62720  audiolen =  62720  
+[2017/03/18 16:57:40 812] tts_cloud  791  aud_data = nil  
+[2017/03/18 16:57:40 821] tts        536  TTS_MSG_GETAUDIO  0  
+[2017/03/18 16:57:40 821] tts        474  get audio|use cloud  
+[2017/03/18 16:57:40 821] tts_cloud  1224 actual decode audiolen:  33920  ,ced:  33  ,markinfo:  nil  
+[2017/03/18 16:57:40 821] tts_cloud  1284 TTS_MSG_GETAUDIO_CLOUD | synth_status  1  
+[2017/03/18 16:57:40 972] tts        536  TTS_MSG_GETAUDIO  0  
+[2017/03/18 16:57:40 972] tts        474  get audio|use cloud  
+[2017/03/18 16:57:40 972] tts_cloud  1224 actual decode audiolen:  28800  ,ced:  33  ,markinfo:  nil  
+[2017/03/18 16:57:40 972] tts_cloud  1284 TTS_MSG_GETAUDIO_CLOUD | synth_status  2  
+[2017/03/18 16:57:40 974] tts        539  TTS_MSG_SSE  
+[2017/03/18 16:57:40 974] tts        512  sse|use cloud  
+[2017/03/18 16:57:40 974] tts_cloud  1287 TTS_MSG_SSE_CLOUD  
+[2017/03/18 16:57:40 974] tts_cloud  844  tts session info  
+[2017/03/18 16:57:40 982] tts        546  SYS_MSG_UNLOAD  

@@ -1,0 +1,1899 @@
+============================================================
+Time  2017/03/20 23:30:27 381 
+============================================================
+[2017/03/20 23:30:27 383] isr_1conn  2212 SYS_MSG_LOAD_CLOUD  
+[2017/03/20 23:30:27 383] isr_1conn  2233 SYS_MSG_REGCB_CLOUD param0 =   msp_status_cb  param1 =  func(b58590f0) 
+[2017/03/20 23:30:27 383] isr_1conn  2233 SYS_MSG_REGCB_CLOUD param0 =   cloud_rslt_cb  param1 =  func(b5859530) 
+[2017/03/20 23:30:27 383] isr_1conn  2233 SYS_MSG_REGCB_CLOUD param0 =   cloud_err_cb  param1 =  func(b5859440) 
+[2017/03/20 23:30:27 383] isr_1conn  2233 SYS_MSG_REGCB_CLOUD param0 =   cloud_status_cb  param1 =  func(b58b1b40) 
+[2017/03/20 23:30:27 383] isr_1conn  1415 onesoc  
+[2017/03/20 23:30:27 383] isr_1conn  1416 ASR_CLOUD_MSG_SSB  
+[2017/03/20 23:30:27 383] isr_1conn  1431 isr_1conn  cloud_cisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc  268436457  1488112098  
+[2017/03/20 23:30:27 383] isr_1conn  1501 req_lgi_id =  d6106586316@57ac11ac  
+[2017/03/20 23:30:27 383] isr_1conn  1635 nil  
+[2017/03/20 23:30:27 383] isr_1conn  1693 speex-wb  
+[2017/03/20 23:30:27 383] isr_1conn  1771 net_once_bytes  nil  
+[2017/03/20 23:30:27 383] isr_1conn  1776 need_encode  true  
+[2017/03/20 23:30:27 383] isr_1conn  1778 once bytes  122  
+[2017/03/20 23:30:27 384] isr_1conn  1802 User set url is   nil  
+[2017/03/20 23:30:27 384] transport  627  paramkvsport is   nil  
+[2017/03/20 23:30:27 384] transport  635  ns_enable=  1  
+[2017/03/20 23:30:27 384] transport  679  url.full=  nil  
+[2017/03/20 23:30:27 384] transport  867  net type:  standard  
+[2017/03/20 23:30:27 384] transport  868  net operator:  def  
+[2017/03/20 23:30:27 384] transport  869  use proxy:  false  
+[2017/03/20 23:30:27 384] transport  992  session.domain=  open.xf-yun.com  
+[2017/03/20 23:30:27 384] transport  993  url.host=  open.xf-yun.com  
+[2017/03/20 23:30:27 384] transport  1078 using nameserver ip:  59.107.24.5  
+[2017/03/20 23:30:27 384] transport  1210 [soc] connect   59.107.24.5  80  
+[2017/03/20 23:30:27 384] transport  1227 mspsoc.open,prot_type=  tcp  
+[2017/03/20 23:30:27 492] transport  476  [soc] [1] connected  
+[2017/03/20 23:30:27 493] isr_1conn  367  transport connect ok  
+[2017/03/20 23:30:27 493] isr_1conn  1123 send ssb request  
+[2017/03/20 23:30:27 493] isr_1conn  806  using loginid  
+[2017/03/20 23:30:27 493] isr_1conn  838  lver:  nil  
+[2017/03/20 23:30:27 493] isr_1conn  843  cfg_ver:  nil  
+[2017/03/20 23:30:27 493] transport  1264 build http request.  
+[2017/03/20 23:30:27 493] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 461
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:223
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=ssb&ssm=1&auf=audio%2FL16%3Brate%3D16000&cver=5%2E0%2E29%2E1151&net%5Ftype=standard&csid=cisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc&key=0ekT/KgQg8uem^6XRVEjZcpnXOkyvEf/bnjKwGIWQMRqxzTMirmS8ZG4ysBiFkDEas
+----
+CL:144
+CT:text/params
+CE:gzip,encrypt/0.2
+
+YJ²¥eá¨Yv¦Dt$…·ÔQôEÕ½¦}‘zo=Cµ”W=ìz;—qË0®^ÇÿL|'eÌU.šNŸ¼áÕ±ƒa@H„Ä=İcC–¹}&ë¹£_PÉâÏZ¢ª„*£+™2•A]e%ÏÑb*qAî}»ôÒ¶+c‹Ö‚à2½ßšeQíT>  
+[2017/03/20 23:30:27 494] transport  1684 msg:release()  
+[2017/03/20 23:30:27 494] transport  506  [soc] [1] send ok  634  
+[2017/03/20 23:30:27 559] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:27 559] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 174
+X-Req-Date: 2017/03/20 23:30:27 442
+Cache-Control: no-cache
+CL: 174
+X-Res-Date: 2017/03/20 23:30:27 456
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&uid=d6106586316&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:27 559] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:27 559] transport  1493 is_update  true  
+[2017/03/20 23:30:27 559] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:27 559] isr_1conn  435  response  
+[2017/03/20 23:30:27 559] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:27 559] isr_1conn  553  sid =   iat2b253eff@gz004b0c2b4193461100  
+[2017/03/20 23:30:27 560] isr_1conn  559  not QUL_SUPPORT  
+[2017/03/20 23:30:27 560] isr_1conn  566  time cost by session begin command:  67  .  
+[2017/03/20 23:30:27 560] isr_1conn  580  0  2  2  0  
+[2017/03/20 23:30:27 682] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  1  
+[2017/03/20 23:30:27 683] isr_1conn  1846     
+[2017/03/20 23:30:27 686] isr_1conn  1206 [session] send 1th audio  
+[2017/03/20 23:30:27 686] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:27 686] isr_1conn  1211 start netperf_fs_timer  
+[2017/03/20 23:30:27 686] transport  1264 build http request.  
+[2017/03/20 23:30:27 686] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=1&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh8irsDHtuaHn43oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+ë`ùX
+Céi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄUXªîP	iiéi]Vù){æ“z5isSSSSSSSI©}\Y†  
+[2017/03/20 23:30:27 687] transport  1684 msg:release()  
+[2017/03/20 23:30:27 687] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:27 752] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:27 752] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:27 647
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:27 650
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:27 752] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:27 752] transport  1493 is_update  true  
+[2017/03/20 23:30:27 752] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:27 752] isr_1conn  403  size =   244  
+[2017/03/20 23:30:27 752] isr_1conn  435  response  
+[2017/03/20 23:30:27 752] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:27 752] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:27 786] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:27 789] isr_1conn  1206 [session] send 2th audio  
+[2017/03/20 23:30:27 789] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:27 790] transport  1264 build http request.  
+[2017/03/20 23:30:27 790] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh4ONsu/TuvMh43oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+yŞ{„=Š+ˆ—ûÕëÂÊ¾ûõ¶9ymô¾ÙLÁ5q†Ù¥‰]t‹´n[³R	%9IÜÄ	)ÄÜÅŞUZôÒ©ÔšgHIÈVÉ£Ò„ï®x^S¶Ñ-  
+[2017/03/20 23:30:27 792] transport  1684 msg:release()  
+[2017/03/20 23:30:27 792] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:27 850] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:27 850] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:27 742
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:27 745
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:27 850] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:27 850] transport  1493 is_update  true  
+[2017/03/20 23:30:27 850] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:27 850] isr_1conn  403  size =   366  
+[2017/03/20 23:30:27 850] isr_1conn  435  response  
+[2017/03/20 23:30:27 850] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:27 850] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:27 878] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:27 880] isr_1conn  1206 [session] send 3th audio  
+[2017/03/20 23:30:27 880] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:27 880] transport  1264 build http request.  
+[2017/03/20 23:30:27 880] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh/weuiqmNJb/43oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+ë`ùX
+Céi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄUZôGÒ©iiéi]Vù){æ“z5isSSSSSFÆÉédtq*¾¾¾³R	ÜÄÜÄÜÄßDUZôJfÉmiW×ï)©©Ûéiv66!áÉ		)iyYFÆÆÆÆÙI)Ñ4:ôi~ÇÛ£RÜÀÜÄÜÄÛUZôbÉmii©©©××××øiaéw))ésYUøfÆÆÆÉ)kAqq&÷¾³Re@ÜÅÜÄ·šäİ   
+[2017/03/20 23:30:27 881] transport  1684 msg:release()  
+[2017/03/20 23:30:27 881] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:27 956] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:27 956] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:27 842
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:27 845
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:27 956] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:27 956] transport  1493 is_update  true  
+[2017/03/20 23:30:27 956] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:27 956] isr_1conn  403  size =   244  
+[2017/03/20 23:30:27 956] isr_1conn  435  response  
+[2017/03/20 23:30:27 956] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:27 956] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:27 980] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:27 983] isr_1conn  1206 [session] send 4th audio  
+[2017/03/20 23:30:27 984] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:27 984] transport  1264 build http request.  
+[2017/03/20 23:30:27 984] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhyBmPwztNz^/43oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+¿f5Ã.Ä³Wø)©©©·)èihÎRv6!Îjié¡eQm_Èw	ç€h9˜˜·¾SQkÛ…KÙl
+ÌÅJØ„U_ì‚ó‰tšxyÍÙ„A)ÑZöõ×í›ÓdQÒ•uù^ì]LUçG×n÷¿É¯+ÛÓóR	DÒ	ÜÚÛ„	İUZ÷Û.é˜š}‰ıêËgrhÛš3èIÎQ.W¼Uó9öSLEãßªšjßÊùfóR	Ø	ÜÄ	DÄ	ÜÄU_åØğIbš:xI×ù‰ÇZÛ69t‰2­fpfÆÉVEóYYK%äuT{IeTsR	DşÜÅ(lÿ¾ äKÑø–’fI¯(ğ*sa¹ÕìZÙ^‹JÆ6
+Jk•¥ÊÎ±YêÆß'×Œ’¾¾¹YµsR	ÜÄ	ÜÄaÅkÜÚ.U^KÃş)|šo¥Ğ¯`jj;}ï»íÌ>V#œñ•£ö•ï8ZgºÍKE]ºÃR	|Ä
+İDiÅ|	¡-¾  
+[2017/03/20 23:30:27 985] transport  1684 msg:release()  
+[2017/03/20 23:30:27 985] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:28 054] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:28 055] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:27 944
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:27 947
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:28 055] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:28 055] transport  1493 is_update  true  
+[2017/03/20 23:30:28 055] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:28 055] isr_1conn  403  size =   366  
+[2017/03/20 23:30:28 055] isr_1conn  435  response  
+[2017/03/20 23:30:28 055] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:28 055] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:28 082] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:28 084] isr_1conn  1206 [session] send 5th audio  
+[2017/03/20 23:30:28 084] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:28 084] transport  1264 build http request.  
+[2017/03/20 23:30:28 084] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhwdZvAXO1P4Z43oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+8Â†á€½¨“URÕˆ%ç×öZÓIšU@DğÊä,Y¢Y´É!m…]¹õBõ6-#Rİ-éDÄ(Áê	3™îU[’Ş¾V›!(ÓKÉZç¾<€åé¦ğ3Ÿ Ìu—}‘'	‹ÙóRmnÙÜÄiìø	ÙÅŞU[’ß¯j†-w  
+[2017/03/20 23:30:28 085] transport  1684 msg:release()  
+[2017/03/20 23:30:28 085] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:28 150] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:28 150] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:28 42
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:28 46
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:28 150] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:28 150] transport  1493 is_update  true  
+[2017/03/20 23:30:28 150] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:28 150] isr_1conn  403  size =   244  
+[2017/03/20 23:30:28 151] isr_1conn  435  response  
+[2017/03/20 23:30:28 151] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:28 151] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:28 184] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:28 187] isr_1conn  1206 [session] send 6th audio  
+[2017/03/20 23:30:28 187] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:28 188] transport  1264 build http request.  
+[2017/03/20 23:30:28 188] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh8NjH9bCAen^43oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+/Íd){#V—%ò6¸q	|ÒÓ8¥ÛíÙ§ö$6Ú´7İ4‚6½.¬%²ŞóR	¯ci41˜	¤âşU[RŒÎ-Ç³êÑ¨µÛ€ë^ôı
+…Ù‹±<Ä£læ0ğç%VÃ8­´†Õó'ãR	Ûm¡ş	4âé€eU^Zö-}f;ØC\»è×HÄİ¦n;À[¾p«ÈxûçwŸFP'Wk4q±f£R	h	Úé¨…	jåŞU^Kí×ëRš|šiÊwç¥eÚHû«+f	\•tŠœŒÿÙh½&ÛJåR}~+ìé4hxàÍ§ÌçxnÍğš´CİşÇ7ì"4£·İŠÑ…½NI(dğ“‰.×»¼Ñ¦#R	ëˆé,	Òi¤ıNU^Zì-
+^zÿ{2r•£µŠñ¨Â×İáôô¿ ÃJ;M~‘g¸ÜäÁ¦¶ºsR	lÚyS„	äÙH„Sş  
+[2017/03/20 23:30:28 189] transport  1684 msg:release()  
+[2017/03/20 23:30:28 189] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:28 247] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:28 247] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:28 142
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:28 146
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:28 247] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:28 247] transport  1493 is_update  true  
+[2017/03/20 23:30:28 247] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:28 247] isr_1conn  403  size =   366  
+[2017/03/20 23:30:28 247] isr_1conn  435  response  
+[2017/03/20 23:30:28 247] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:28 247] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:28 286] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:28 288] isr_1conn  1206 [session] send 7th audio  
+[2017/03/20 23:30:28 288] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:28 288] transport  1264 build http request.  
+[2017/03/20 23:30:28 288] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh/H^NWSqvbv443oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+ôÚ3Üç©oƒz·€×ˆ®åòeN9sÊZÌ}¯@µ6Ò„Ô.BEêW*,xJ¸±JR¢im1éÜÈ	ÜÄUZƒèX!‚ıÍÑæ%†×Á’.sÓˆo›TW¤$e%àÎÁ¤3G$ñFXlÓR	ÜÄ	ÜÄ	ÜÄ	ÜÄUY™5#w†Ü¹èwciœˆÏ5¸ùÍèXÓÛ Ö#>KÚ/r‡ÙÔÏ/‰[¦#R	ÜÄ	ÜÄ	ÜÄ	ÜÄUZ—ÔX"
+£ô+.%¤şJAÙpkËM‡×/¢>‡%+Ø	 	b/éÑB>ÈÆcR	ÜÄ	ÜÄ	ÜÄós›ĞzMN  
+[2017/03/20 23:30:28 289] transport  1684 msg:release()  
+[2017/03/20 23:30:28 289] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:28 359] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:28 359] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:28 242
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:28 245
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:28 359] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:28 359] transport  1493 is_update  true  
+[2017/03/20 23:30:28 359] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:28 359] isr_1conn  403  size =   244  
+[2017/03/20 23:30:28 359] isr_1conn  435  response  
+[2017/03/20 23:30:28 359] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:28 359] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:28 389] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:28 392] isr_1conn  1206 [session] send 8th audio  
+[2017/03/20 23:30:28 392] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:28 392] transport  1264 build http request.  
+[2017/03/20 23:30:28 392] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh1JrcdCmYDaE43oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+ó^}»°í#Ò­G2rìh¹Ftú'ämH~Ñ½É"ëj8c âÒ¶p†LIFö4#R	ÜÄ	ÜÄ	ÜÄ	ÜÄU\”ÓÅ4«Ğ%ÏRÓ­•GøÑŠUjİ#®?•¾¨ÌÜk:®*"ÍHJB$ĞOCQiÜÄ	ÜÄ	ÜÄ	ÜÄU\”&İ2Kæœšñ!ø„Ä´EuÅò¾Qúy™áÁRxØH£QiÜÄ	ÜÄ	ÜÄ	ÜÄU\ƒ¦\F2Ó(¬+aA€ŠmDøD
+Ë1t«şZ¿‡ÔK0¶Ø“>¢Q,1ß=,éÎrÒ™ÜÄ	ÜÄ	ÜìÆ,wï  
+[2017/03/20 23:30:28 393] transport  1684 msg:release()  
+[2017/03/20 23:30:28 393] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:28 457] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:28 457] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:28 342
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:28 345
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:28 457] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:28 457] transport  1493 is_update  true  
+[2017/03/20 23:30:28 457] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:28 457] isr_1conn  403  size =   366  
+[2017/03/20 23:30:28 457] isr_1conn  435  response  
+[2017/03/20 23:30:28 457] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:28 457] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:28 487] isr_1conn  307  send_ok_num, timer_num, send_average =   2440  2  1220  
+[2017/03/20 23:30:28 487] isr_1conn  310  netperf =   90  
+[2017/03/20 23:30:28 487] isr_1conn  311  start netperf_other_timer  
+[2017/03/20 23:30:28 490] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:28 493] isr_1conn  1206 [session] send 9th audio  
+[2017/03/20 23:30:28 493] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:28 494] transport  1264 build http request.  
+[2017/03/20 23:30:28 494] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh1yxFDfhnHnN43oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+]‰è†©P]/I9=sODî*Œ‹Mí,<Ù+¯Viƒôõ‚½2w…… ÇÖÒ™U_h|Åx²¬‰aÎşUX©Çx£·§úm‚¡Ä8Æ®sŸ¼¨\SM•¿Xâ©utÿsbH*„Å%  
+[2017/03/20 23:30:28 495] transport  1684 msg:release()  
+[2017/03/20 23:30:28 495] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:28 592] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:28 595] isr_1conn  1206 [session] send 10th audio  
+[2017/03/20 23:30:28 595] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:28 595] transport  1264 build http request.  
+[2017/03/20 23:30:28 595] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh1qGwcjMdC5v43oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+¹·ä²a‰şi"!$ámÄ„Áë{$’iô{5Ö°ªŸÛú?c5: ¤s¿xÂƒ9g‰R	KyA+U[BùzøOï;”Á?c	Vİáoz¯)ÊXgM¡ÂèşàømÄÂ~³ÌÅo˜ğcG9½
+Iø¹ƒ¥è">U^CèV8ÖZ$]ë(ßœ„SÖ)¾{Ì·ËT·6¸2Iò¢…&–³xIÃeLsT™k‰<áéa’U[ ¹„8¯áAğ-*1 ÕÌá•Õ`=U-d´Çßc—Ôı"0fz¶L“ã™hÊ¯£µÙÙ@€©_zµJ“¢OzéƒØ×¤°ûîû?nTF.©s²gÒs¶ØÛìµÛS+›&ö»U[ª”Ñë3I^ÉXK‰@H»8é>U[­'9ö08Äyx€.jÍÊÜ³ì""MÈ7Î3è¬q‚©& ’w7Û£Ğ…ãèr{—£É`Z»áÊ~  
+[2017/03/20 23:30:28 596] transport  1684 msg:release()  
+[2017/03/20 23:30:28 596] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:28 598] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:28 598] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:28 484
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:28 487
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:28 598] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:28 598] transport  1493 is_update  true  
+[2017/03/20 23:30:28 598] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:28 598] isr_1conn  403  size =   244  
+[2017/03/20 23:30:28 598] isr_1conn  435  response  
+[2017/03/20 23:30:28 598] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:28 598] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:28 651] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:28 652] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:28 543
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:28 545
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:28 652] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:28 652] transport  1493 is_update  true  
+[2017/03/20 23:30:28 652] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:28 652] isr_1conn  403  size =   366  
+[2017/03/20 23:30:28 652] isr_1conn  435  response  
+[2017/03/20 23:30:28 652] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:28 652] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:28 695] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:28 698] isr_1conn  1206 [session] send 11th audio  
+[2017/03/20 23:30:28 698] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:28 698] transport  1264 build http request.  
+[2017/03/20 23:30:28 698] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh8ORjW3jCZ6/43oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+†ÛW€YÏÙğQ?
+óññ3TfSã}Ì¶›·ş×Hàä=İbù½šhfqQÿ>ã7˜èôêÈAÈªÀøîU^ şæWÑâdìĞuû”+¡òAäR{âŸ^Õ«'ë!:-±GXtlÆCT›	İÈ±‹AåÚ8ìU^()æ§Šµ“„@_›¡ªÊU”kD¡¸v´]$´Oë†Æj(G,fÊnŒóô›J…‹‰ÍJLpî.U^.‹D'è<+6şèslq”B¤ÜÈœvzv‚ˆİY“F£¾9ûÇ¢ˆĞ)<ü>î#T˜Äxı_[¹IC³õp/i‚  
+[2017/03/20 23:30:28 699] transport  1684 msg:release()  
+[2017/03/20 23:30:28 699] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:28 746] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:28 747] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:28 642
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:28 645
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:28 747] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:28 747] transport  1493 is_update  true  
+[2017/03/20 23:30:28 747] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:28 747] isr_1conn  403  size =   244  
+[2017/03/20 23:30:28 747] isr_1conn  435  response  
+[2017/03/20 23:30:28 747] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:28 747] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:28 797] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:28 801] isr_1conn  1206 [session] send 12th audio  
+[2017/03/20 23:30:28 801] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:28 801] transport  1264 build http request.  
+[2017/03/20 23:30:28 801] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh9rIwdENKgf043oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+‚‰Pœ$+‘3é!ú¹³ÒTWìmîV¥
++Âº6!¾/†/Û^FÊ°ê?ĞˆÁè2ÃŒ9šyü‚ék›IììU^7;$a|q	6Ö=hWvüñ.ÿÑ†“X<¼”©2ÿrm†î­k¦[¼Eîã”™…EI·  
+[2017/03/20 23:30:28 803] transport  1684 msg:release()  
+[2017/03/20 23:30:28 803] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:28 866] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:28 866] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:28 762
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:28 765
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:28 866] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:28 866] transport  1493 is_update  true  
+[2017/03/20 23:30:28 867] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:28 867] isr_1conn  403  size =   366  
+[2017/03/20 23:30:28 867] isr_1conn  435  response  
+[2017/03/20 23:30:28 867] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:28 867] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:28 887] isr_1conn  289  send_ok_num, timer_num, send_average =   3660  3  1220  
+[2017/03/20 23:30:28 887] isr_1conn  292  netperf =   90  
+[2017/03/20 23:30:28 890] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:28 892] isr_1conn  1206 [session] send 13th audio  
+[2017/03/20 23:30:28 892] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:28 892] transport  1264 build http request.  
+[2017/03/20 23:30:28 892] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh/Lgfe8VQ1zc43oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+êWŒCSÜŸ¥öPCKl³éx:Pé–µk§ü8h­âZÒ‹»ìóğl,«3Š™î¹ëÀ8yŒ¸Ò8şU^?§_f#<'ÙÀ6‡—ãóõ¤­d4ï„ü¯ÂÊâGU'ò  
+[2017/03/20 23:30:28 893] transport  1684 msg:release()  
+[2017/03/20 23:30:28 893] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:28 952] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:28 952] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:28 842
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:28 849
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:28 952] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:28 952] transport  1493 is_update  true  
+[2017/03/20 23:30:28 952] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:28 952] isr_1conn  403  size =   244  
+[2017/03/20 23:30:28 952] isr_1conn  435  response  
+[2017/03/20 23:30:28 952] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:28 952] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:28 992] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:28 994] isr_1conn  1206 [session] send 14th audio  
+[2017/03/20 23:30:28 994] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:28 994] transport  1264 build http request.  
+[2017/03/20 23:30:28 994] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh9w^vCRLqKFs43oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+œ§´Ss!b°%prp¡(­¬[PBlºé¨å¨0¡É’äí`ìe¡ÇòœñçÂ†SxAy1!¹ÀlÙ¡ÚU[¡9^ÆQ.âarò]–xƒíI$ Ô›‡¨º£ cq‡`W$¨J"l†ù>N#YBš	Ù)©è<S>UZ½§_†ûRo²Ş¥#:Ü´oQßÂN¯İvóşÜŠb,Ó}„ç
+"×ı‡yºƒÑ™ZÁ92HË9¸?ŞUZ¸x[Ä“6JÇhù8ÙF^6ïKeAD„œr6ù!Ò¥³×‡f½úI0™"|ãÑ˜~"ø¥Û†^ÉÙ/#5i¸7P"Ì»¬;œ0Å8öØQFø¯ÛA5CHß¤Ÿ ’1âQ§bµÂ`ö?5kĞëÚÛ‰ÃI©	§UX§e²CvAY}2†œ›i:B9ıêê´¶Ö€^‘¢BÆF»d%4
+’œÃÑ™¤Ä	+`kVmX½>  
+[2017/03/20 23:30:28 995] transport  1684 msg:release()  
+[2017/03/20 23:30:28 996] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:29 050] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:29 050] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:28 942
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:28 945
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:29 050] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:29 050] transport  1493 is_update  true  
+[2017/03/20 23:30:29 050] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:29 050] isr_1conn  403  size =   366  
+[2017/03/20 23:30:29 050] isr_1conn  435  response  
+[2017/03/20 23:30:29 050] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:29 050] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:29 094] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:29 096] isr_1conn  1206 [session] send 15th audio  
+[2017/03/20 23:30:29 096] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:29 096] transport  1264 build http request.  
+[2017/03/20 23:30:29 096] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh/1yBbpFs5Dw43oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+5­íyq=A/ÒòfãQş°8ÛµDx t¾± AâZ‚Æj¸Á*½¾8C’š  
+[2017/03/20 23:30:29 097] transport  1684 msg:release()  
+[2017/03/20 23:30:29 097] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:29 168] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:29 168] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:29 62
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:29 65
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:29 168] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:29 168] transport  1493 is_update  true  
+[2017/03/20 23:30:29 168] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:29 168] isr_1conn  403  size =   244  
+[2017/03/20 23:30:29 168] isr_1conn  435  response  
+[2017/03/20 23:30:29 168] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:29 168] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:29 196] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:29 199] isr_1conn  1206 [session] send 16th audio  
+[2017/03/20 23:30:29 199] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:29 199] transport  1264 build http request.  
+[2017/03/20 23:30:29 199] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh3qN6DpfiBaR43oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+I¹„+#ú×A\¦_½a©ìËÚÊ¸a½I•	·'ËNs—óY;]&å—©Ò›W;]4Û  
+[2017/03/20 23:30:29 200] transport  1684 msg:release()  
+[2017/03/20 23:30:29 200] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:29 275] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:29 275] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:29 165
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:29 169
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:29 275] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:29 275] transport  1493 is_update  true  
+[2017/03/20 23:30:29 275] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:29 275] isr_1conn  403  size =   366  
+[2017/03/20 23:30:29 275] isr_1conn  435  response  
+[2017/03/20 23:30:29 275] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:29 275] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:29 287] isr_1conn  289  send_ok_num, timer_num, send_average =   4880  4  1220  
+[2017/03/20 23:30:29 287] isr_1conn  292  netperf =   90  
+[2017/03/20 23:30:29 298] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:29 300] isr_1conn  1206 [session] send 17th audio  
+[2017/03/20 23:30:29 300] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:29 300] transport  1264 build http request.  
+[2017/03/20 23:30:29 300] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhyMziOflZSse43oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+Vwé†/Ü]ünna  
+[2017/03/20 23:30:29 301] transport  1684 msg:release()  
+[2017/03/20 23:30:29 301] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:29 377] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:29 377] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:29 262
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:29 267
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:29 377] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:29 377] transport  1493 is_update  true  
+[2017/03/20 23:30:29 377] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:29 377] isr_1conn  403  size =   244  
+[2017/03/20 23:30:29 377] isr_1conn  435  response  
+[2017/03/20 23:30:29 377] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:29 377] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:29 400] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:29 404] isr_1conn  1206 [session] send 18th audio  
+[2017/03/20 23:30:29 404] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:29 404] transport  1264 build http request.  
+[2017/03/20 23:30:29 404] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh4UKcJXsRE8g43oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+#É`%Ø¤|+hÜáCŒÚ¦Õ\&2^mKÕÅ+sÿ³Ì/i01äÒƒ6>š"À¥ÃÖ9‘.	TiíyI}k~UZøIÄÚ=F6œ!=ö÷êõÅ»·îÚ·¶É,±¤×yz'ÈI>(lüSÖ™‰Éy£m‰Ø	¨+NU[è(©Â‚=ÿ¸r\Vú†J{_¾E[4vÈï:‚Œ®wÑ–óê^xJml‚ã¤™yÈÉ«b˜xç˜~^şUZ`\ÅR~Vé"ÛÔªl9²aP^Ëjß§€÷ÃoçÕä½ß
+ãd„€½£È9ÆÀ{üursry%]K_|"ü·†ç7¶  
+[2017/03/20 23:30:29 405] transport  1684 msg:release()  
+[2017/03/20 23:30:29 405] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:29 470] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:29 470] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:29 362
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:29 365
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:29 470] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:29 470] transport  1493 is_update  true  
+[2017/03/20 23:30:29 470] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:29 470] isr_1conn  403  size =   366  
+[2017/03/20 23:30:29 470] isr_1conn  435  response  
+[2017/03/20 23:30:29 471] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:29 471] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:29 502] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:29 504] isr_1conn  1206 [session] send 19th audio  
+[2017/03/20 23:30:29 504] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:29 504] transport  1264 build http request.  
+[2017/03/20 23:30:29 504] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh16lROEBtBTI43oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+  
+[2017/03/20 23:30:29 505] transport  1684 msg:release()  
+[2017/03/20 23:30:29 505] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:29 569] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:29 569] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:29 462
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:29 465
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:29 569] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:29 569] transport  1493 is_update  true  
+[2017/03/20 23:30:29 569] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:29 569] isr_1conn  403  size =   244  
+[2017/03/20 23:30:29 569] isr_1conn  435  response  
+[2017/03/20 23:30:29 569] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:29 569] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:29 604] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:29 607] isr_1conn  1206 [session] send 20th audio  
+[2017/03/20 23:30:29 607] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:29 607] transport  1264 build http request.  
+[2017/03/20 23:30:29 607] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh/Iyd7GJI0q343oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+{&cg©¶Ö×.z‡G^rİzÍ·d1´Îát°³™ñœÇğÁwqFànlGCÓÆ@óÜÊZïC€şU^XÓ^/¨š9$Ùç¢_‡2  
+[2017/03/20 23:30:29 608] transport  1684 msg:release()  
+[2017/03/20 23:30:29 608] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:29 678] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:29 678] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:29 562
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:29 565
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:29 678] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:29 678] transport  1493 is_update  true  
+[2017/03/20 23:30:29 678] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:29 678] isr_1conn  403  size =   366  
+[2017/03/20 23:30:29 678] isr_1conn  435  response  
+[2017/03/20 23:30:29 678] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:29 678] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:29 688] isr_1conn  289  send_ok_num, timer_num, send_average =   6100  5  1220  
+[2017/03/20 23:30:29 688] isr_1conn  292  netperf =   90  
+[2017/03/20 23:30:29 706] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:29 709] isr_1conn  1206 [session] send 21th audio  
+[2017/03/20 23:30:29 709] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:29 709] transport  1264 build http request.  
+[2017/03/20 23:30:29 709] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh6b3Nn0gM/jN43oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+ğ§æ^„À 'i«×ç½‡RË’M^ùHh·-¦ÁjÑÜTğÒĞxGx§~/#R	³„øÛÅ¹ÜÄ	|DUZñıÖ©_sş‚g½$'~ZóT±Øù°Ì>ºô¡È·ù5XLe»2f*	Ğx³R	¯¤Şx	ØøÜ`UZñ¯.iwgÕç¤¶WhëfSv66v¶6(¦Ky,¹SágM™‰y=ïÃR	?>ÜÊÜDÜÄU_ôh÷Éh¥[WŸÈWøWÙé‘C*PIiUr¶É)¦ÚÄXIPëOÉ	_*öcRÜÄÜÄ	ÜÄã9ö ÂÉš²  
+[2017/03/20 23:30:29 709] transport  1684 msg:release()  
+[2017/03/20 23:30:29 710] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:29 775] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:29 775] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:29 662
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:29 665
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:29 775] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:29 775] transport  1493 is_update  true  
+[2017/03/20 23:30:29 775] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:29 775] isr_1conn  403  size =   244  
+[2017/03/20 23:30:29 775] isr_1conn  435  response  
+[2017/03/20 23:30:29 775] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:29 775] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:29 799] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:29 801] isr_1conn  1206 [session] send 22th audio  
+[2017/03/20 23:30:29 801] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:29 801] transport  1264 build http request.  
+[2017/03/20 23:30:29 801] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhw44SFkd5mRE43oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+=±†¹å2Æ”d'€j=é‰Y•]*£pyQQHåãNÏà¤w¹^·î³R	ÜÄÜÄÛª£fÎU]óÿEŒØ]g‹„“V>eZu~8_±˜4¤‹¬ñÀØ°îåÏõÍÜòÀcR	ålyäøIÜÄ	ÜÄU]òŸEN7J…1îVô3êüÚk*Ì 
+×x †áÃjvf*«‰Ê»!ôº­TÃR™ÜÄ	ØIyIx.U]ò§F/&C::E„À2)÷•ÅæË^ôÁ…&¨e w8/¥Qœ^/[sR™Ø"	ç'ÉçX¾ã»ş.vµMMH‹–@ò21NŠX:6§[p Ci  
+[2017/03/20 23:30:29 802] transport  1684 msg:release()  
+[2017/03/20 23:30:29 802] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:29 873] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:29 873] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:29 762
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:29 766
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:29 873] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:29 874] transport  1493 is_update  true  
+[2017/03/20 23:30:29 874] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:29 874] isr_1conn  403  size =   366  
+[2017/03/20 23:30:29 874] isr_1conn  435  response  
+[2017/03/20 23:30:29 874] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:29 874] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:29 902] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:29 904] isr_1conn  1206 [session] send 23th audio  
+[2017/03/20 23:30:29 904] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:29 904] transport  1264 build http request.  
+[2017/03/20 23:30:29 904] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh^mT2GxEzpuA43oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+F|èZ·šÓnÉõæ7{Z¸|ª;âä84Ã•Šà ±õ"ãsÛ¥„³ãj1Á	R	É1*Ù…í9Gl.U]ıOE+"š§c¿@yìOŸ`°×plÓVÑ<
+æôŒöQÍUZ¬ïº,{IRÅ8ÜÄy¤ÅØ¥X.U]ıE+$šá…¸Å™´ÁÁ›1V.-î ØDˆÀ:o¶ªÕ¤{¾ïØ>@U.âóRÜìøyJß+>U]ğÕCÚ_ZÌc>Ázyë5^ñßÒt{üj¤Í¡æ>§È“ãòòb‡Iˆ¤RÌÒÛ¤i_£‚³ä lKÆ  
+[2017/03/20 23:30:29 905] transport  1684 msg:release()  
+[2017/03/20 23:30:29 905] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:29 970] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:29 970] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:29 862
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:29 865
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:29 970] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:29 970] transport  1493 is_update  true  
+[2017/03/20 23:30:29 970] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:29 970] isr_1conn  403  size =   244  
+[2017/03/20 23:30:29 970] isr_1conn  435  response  
+[2017/03/20 23:30:29 970] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:29 970] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:30 004] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:30 004] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:30 006] isr_1conn  1206 [session] send 24th audio  
+[2017/03/20 23:30:30 006] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:30 006] transport  1264 build http request.  
+[2017/03/20 23:30:30 007] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxLjnLX8sFBp43oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+û_Nn”vŒ-îbRÜØèU×ÿX=tÊ©³;÷şÅY&ÓO˜vÅ#R	yÈùÜÄ	¤Ä	ÜÄU]ğ…CÇU  
+[2017/03/20 23:30:30 007] transport  1684 msg:release()  
+[2017/03/20 23:30:30 007] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:30 010] isr_1conn  1206 [session] send 25th audio  
+[2017/03/20 23:30:30 010] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:30 010] transport  1264 build http request.  
+[2017/03/20 23:30:30 010] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhzOPjFb26Yzc43oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+]±3íB§÷!ù§´é‡Ìùüîš¢î¡Îq%pªYGÆÛÔ¬'¾×ƒûsOãRëˆ85HCšhİşU_ô&Å	OçTë¸üŠë×]0¸h‚%t©GËŒ"øxj×—¿”y›Õ[³R	‡[{Ü'ÙÜÅIáéNU_ùÇ)*š&†wÕìÚHRÈÜŞRlÔùh±ÑË¯(ö“J'®ï"jQUÁ¶ƒRÜÄ¤Ù¹%ÄùÜâU_ôHa‰+ªnê'WÜ	‘]	0I	(ÕP¤¬É¬½s”Y9
+ƒ8‚¾¶¹ÇƒSyÜØ(ß	İòîÂ>ŒO  
+[2017/03/20 23:30:30 011] transport  1684 msg:release()  
+[2017/03/20 23:30:30 011] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:30 070] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:30 070] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:29 962
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:29 965
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:30 070] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:30 070] transport  1493 is_update  true  
+[2017/03/20 23:30:30 070] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:30 070] isr_1conn  403  size =   366  
+[2017/03/20 23:30:30 070] isr_1conn  435  response  
+[2017/03/20 23:30:30 070] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:30 070] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:30 088] isr_1conn  289  send_ok_num, timer_num, send_average =   7320  6  1220  
+[2017/03/20 23:30:30 088] isr_1conn  292  netperf =   90  
+[2017/03/20 23:30:30 106] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:30 109] isr_1conn  1206 [session] send 26th audio  
+[2017/03/20 23:30:30 109] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:30 109] transport  1264 build http request.  
+[2017/03/20 23:30:30 109] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhwVm3GgzQmZ443oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+ÛÛ$h$¹1Š·YBüÂii]5 vLSSH“WiidtttttttsRÙÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi]Vù){æ“z5isSSSSSSSIidttttty”sR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi])isSSSSSSSIiÍÃƒ}‘ŠRãsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄü}ª™lú?A÷Éiiü‘éi])isSSSSSSSIidtttvôttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiw™…Zh4ï)isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄ  
+[2017/03/20 23:30:30 110] transport  1684 msg:release()  
+[2017/03/20 23:30:30 110] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:30 136] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:30 136] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 176
+X-Req-Date: 2017/03/20 23:30:30 22
+Cache-Control: no-cache
+CL: 176
+X-Res-Date: 2017/03/20 23:30:30 28
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=0&rss=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh8irsDHtuaHn43oU3xms5Yc=  
+[2017/03/20 23:30:30 136] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:30 136] transport  1493 is_update  true  
+[2017/03/20 23:30:30 136] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:30 136] isr_1conn  403  size =   244  
+[2017/03/20 23:30:30 136] isr_1conn  435  response  
+[2017/03/20 23:30:30 136] isr_1conn  483  resp_syncid =  1  
+[2017/03/20 23:30:30 136] isr_1conn  580  1  2  0  1  
+[2017/03/20 23:30:30 190] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:30 190] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:30 82
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:30 85
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:30 190] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:30 190] transport  1493 is_update  true  
+[2017/03/20 23:30:30 191] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:30 191] isr_1conn  403  size =   366  
+[2017/03/20 23:30:30 191] isr_1conn  435  response  
+[2017/03/20 23:30:30 191] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:30 191] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:30 199] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:30 201] isr_1conn  1206 [session] send 27th audio  
+[2017/03/20 23:30:30 201] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:30 201] transport  1264 build http request.  
+[2017/03/20 23:30:30 201] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh5VMdWBbDUua43oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+ë`ùX
+C•éi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi]Vù){æ“z5isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi])isSSSSSSSIiTÒ49¤c“sR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiª‘éi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄós›ĞzMN  
+[2017/03/20 23:30:30 202] transport  1684 msg:release()  
+[2017/03/20 23:30:30 202] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:30 276] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:30 276] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:30 163
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:30 166
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:30 276] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:30 276] transport  1493 is_update  true  
+[2017/03/20 23:30:30 276] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:30 276] isr_1conn  403  size =   244  
+[2017/03/20 23:30:30 277] isr_1conn  435  response  
+[2017/03/20 23:30:30 277] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:30 277] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:30 301] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:30 305] isr_1conn  1206 [session] send 28th audio  
+[2017/03/20 23:30:30 305] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:30 305] transport  1264 build http request.  
+[2017/03/20 23:30:30 305] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh0164s06eA6643oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+ƒ?ªm9t8KéhÒÒ“¨êS`•®?†PÚ½Ç§kO¾õ5€•ãRÜÄ	ÜÄìÄ
+ÜÅ~U_õ9tÉeÓúdé¶IZãZê„$nÇtfY±é¦FİIgï)§+ÿ!w!sR	1ìyİDÜÄÜÄU_ôh÷Éh¦}Ÿ! é°éi]	 hŒƒº÷wsIiTÒ49¤c“sRÜÄ	ÜÄ	ÜÄ	ÜÄU_ïŠó‰ii[X
+Ú]#? sSSSH•óI½g„ttw¸ÛÑ  
+[2017/03/20 23:30:30 306] transport  1684 msg:release()  
+[2017/03/20 23:30:30 306] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:30 376] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:30 377] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:30 262
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:30 265
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:30 377] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:30 377] transport  1493 is_update  true  
+[2017/03/20 23:30:30 377] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:30 377] isr_1conn  403  size =   366  
+[2017/03/20 23:30:30 377] isr_1conn  435  response  
+[2017/03/20 23:30:30 377] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:30 377] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:30 418] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:30 422] isr_1conn  1206 [session] send 29th audio  
+[2017/03/20 23:30:30 422] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:30 422] transport  1264 build http request.  
+[2017/03/20 23:30:30 422] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh4WbWt5pU3/B43oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+ë`ùX
+Céi])isSSSSSSSIidtttvôttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi]Vù){æ“z5isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi])isSSSSSSSIiTÒ49¤c“sR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄós›ĞzMN  
+[2017/03/20 23:30:30 423] transport  1684 msg:release()  
+[2017/03/20 23:30:30 423] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:30 488] isr_1conn  289  send_ok_num, timer_num, send_average =   8540  7  1220  
+[2017/03/20 23:30:30 488] isr_1conn  292  netperf =   90  
+[2017/03/20 23:30:30 507] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:30 507] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:30 402
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:30 405
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:30 507] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:30 507] transport  1493 is_update  true  
+[2017/03/20 23:30:30 507] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:30 507] isr_1conn  403  size =   244  
+[2017/03/20 23:30:30 507] isr_1conn  435  response  
+[2017/03/20 23:30:30 507] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:30 507] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:30 526] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:30 530] isr_1conn  1206 [session] send 30th audio  
+[2017/03/20 23:30:30 530] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:30 530] transport  1264 build http request.  
+[2017/03/20 23:30:30 530] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh0XurU7az21V43oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+ë`ùX
+Céi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiª‘éi]Vù){æ“z5isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi])isSSSSSSSIiTÒ49¤c“sR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéij])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄjèpû¿Šá‰iiéi])isSSSSSSSIidtttttuV£R	ÜÄ	ÜÄÜÄÜÄŞUYl¯	kj ½æVc4ï£”È É÷Û¾I7•¸<îü÷—A'õeÅËJ¸ÔóR	ÜÂ_@Ú®  
+[2017/03/20 23:30:30 532] transport  1684 msg:release()  
+[2017/03/20 23:30:30 532] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:30 615] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:30 615] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:30 502
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:30 505
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:30 615] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:30 615] transport  1493 is_update  true  
+[2017/03/20 23:30:30 615] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:30 615] isr_1conn  403  size =   366  
+[2017/03/20 23:30:30 615] isr_1conn  435  response  
+[2017/03/20 23:30:30 615] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:30 615] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:30 628] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:30 630] isr_1conn  1206 [session] send 31th audio  
+[2017/03/20 23:30:30 630] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:30 630] transport  1264 build http request.  
+[2017/03/20 23:30:30 630] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhwizydliB1NN43oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+İ›4{´U|<ooWÛxRÒ.:Û)CÃƒô¢û˜îÿqºÉPûKª	qÜsR(úß	4ìÜÄU_õÜóI]’lïàÔUª5‘v„+ß2²‘/ésSD3WsSS]å„G™ùu3RÜÄ	DùIß	ÛxU_ù¦Ó	’Úß1¸goÆ9¦7Nd}•´ÍÊjÖÚ*É~%R°hNrsœÃS©ÜÚ	ÜÄÙ˜=¡®UZy …IjšGyz¥' €èÕ¶öö6Wa–ft±”£½Ôr}•p¥¶³W¶‰3“·š6Ê%,È÷s Êú¥©¼M  
+[2017/03/20 23:30:30 631] transport  1684 msg:release()  
+[2017/03/20 23:30:30 631] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:30 692] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:30 692] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:30 582
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:30 585
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:30 692] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:30 692] transport  1493 is_update  true  
+[2017/03/20 23:30:30 692] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:30 692] isr_1conn  403  size =   244  
+[2017/03/20 23:30:30 692] isr_1conn  435  response  
+[2017/03/20 23:30:30 692] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:30 692] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:30 731] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:30 734] isr_1conn  1206 [session] send 32th audio  
+[2017/03/20 23:30:30 734] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:30 734] transport  1264 build http request.  
+[2017/03/20 23:30:30 734] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh8UEqphSm34g43oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+oºò²„*Ù:ˆÎo~ÂZĞ¡·6úY–ÛÊpÅnbg ‡!¥…½?«Ëo“ó)ŸÅ7å
+fæ+s©U_ñ­ÉW—P—Y:ê!ÈZ¼L&C<ü˜ğğ¡†¬ÀÁÏ‡'€PÒ#ëCÅ£‘šYfú+jëA+\rnU_ùÇ‰Ûæ™m¶ã·jö7´*³ü¯i•«É‚jşyn§¾=&ªìï+CĞëÈ'i	K§9{©÷~UX¾¶`ÉWb8‹úz<fZèöø®GFn*¹p¦Ö#»ÌVM%ï—å½eKp¡˜³R+‡RëX¾z!Ú(¤¬f«Í^›Ë†µUShNùJs?±<Y•¬xø)J·œËÑ§Ñ o*Î³9h@CºØù¼o  
+[2017/03/20 23:30:30 735] transport  1684 msg:release()  
+[2017/03/20 23:30:30 735] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:30 787] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:30 787] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:30 682
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:30 685
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:30 787] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:30 787] transport  1493 is_update  true  
+[2017/03/20 23:30:30 787] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:30 787] isr_1conn  403  size =   366  
+[2017/03/20 23:30:30 787] isr_1conn  435  response  
+[2017/03/20 23:30:30 787] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:30 787] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:30 832] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:30 835] isr_1conn  1206 [session] send 33th audio  
+[2017/03/20 23:30:30 835] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:30 835] transport  1264 build http request.  
+[2017/03/20 23:30:30 835] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhww8ag1MIiyB43oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+¥‡½_Ül}|öÉíë‡óò‚M}êÏCŸ\$³ºa¢/<y?Ï‹e*¥cÁÔTS‘œ¦=llhŞ©$U^¶jf/-ß¯ÿ£LqGÔZÜ‡^Q³>DµÎDË»œÈ¢]st÷µÓë‡:íRó“ï 8šm»¶…nU^· e-VšŞ$öP€‡tTÛÛ¿2È4•†*²ÉyÉÚ@N¥ê—‹×‰†T3kÓR*ÄTê%›êb ûÁí>UZõF&+šùÎ´Ÿãyë¢NVœ¨úp±)Ü¡pÏå P³#/B³R+j«è™¿;yöÜœ•FÊ¥;ä  
+[2017/03/20 23:30:30 836] transport  1684 msg:release()  
+[2017/03/20 23:30:30 836] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:30 888] isr_1conn  289  send_ok_num, timer_num, send_average =   9760  8  1220  
+[2017/03/20 23:30:30 888] isr_1conn  292  netperf =   90  
+[2017/03/20 23:30:30 907] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:30 907] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:30 802
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:30 805
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:30 907] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:30 907] transport  1493 is_update  true  
+[2017/03/20 23:30:30 907] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:30 907] isr_1conn  403  size =   244  
+[2017/03/20 23:30:30 907] isr_1conn  435  response  
+[2017/03/20 23:30:30 907] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:30 907] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:30 935] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:30 938] isr_1conn  1206 [session] send 34th audio  
+[2017/03/20 23:30:30 938] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:30 938] transport  1264 build http request.  
+[2017/03/20 23:30:30 938] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh2CCUfQwVFFn43oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+Úß}_O%<9=ŸÜçilRîEÁ¤Ø#‰•«Ğ]i©¶Ä>èçˆ®ÏÂCñ
+R˜0ÛÚØ/DÄıÇDUZíš`Éw¨Ãø	§ÇlZÙ‡.¦"~æ®æ)šÃÿ\Re‡¿q›EeXöSR	 ÎÙd¤ÃHÙÓ~U_çdôIt¦6t‡©¯È¥ëZÀM„íÑ*Iëô²±U©D÷ãMg¶şÆ|û÷;†“R	ØªØÂÛ…HÜÚU_ôh÷É½şxo)·)áSI(ö(ö1¨ö)isSSSSSSS@§ç.ñ~ttttsR¤Ä	´Ä	ÜÄü}ª™lú?A÷Éiiéi] sYµù¹·wsIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiw™…Zh4ï)isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄ  
+[2017/03/20 23:30:30 940] transport  1684 msg:release()  
+[2017/03/20 23:30:30 940] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:31 017] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:31 017] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:30 902
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:30 905
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:31 017] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:31 017] transport  1493 is_update  true  
+[2017/03/20 23:30:31 017] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:31 017] isr_1conn  403  size =   366  
+[2017/03/20 23:30:31 017] isr_1conn  435  response  
+[2017/03/20 23:30:31 017] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:31 017] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:31 036] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:31 038] isr_1conn  1206 [session] send 35th audio  
+[2017/03/20 23:30:31 038] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:31 038] transport  1264 build http request.  
+[2017/03/20 23:30:31 038] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhyTmZ8Zp2/QO43oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+ë`ùX
+Céi])isSSSSSSL	idtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi]Vù){æ“z5ivSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi])isSSSSSSSIi~Yùü5W™×sR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi])isSSSUSSIidtttttttsR	ÜÄ	ÜÄ	ÜÚós›ĞzMN  
+[2017/03/20 23:30:31 039] transport  1684 msg:release()  
+[2017/03/20 23:30:31 039] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:31 116] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:31 116] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:31 2
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:31 7
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:31 116] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:31 116] transport  1493 is_update  true  
+[2017/03/20 23:30:31 116] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:31 116] isr_1conn  403  size =   244  
+[2017/03/20 23:30:31 116] isr_1conn  435  response  
+[2017/03/20 23:30:31 116] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:31 116] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:31 129] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:31 131] isr_1conn  1206 [session] send 36th audio  
+[2017/03/20 23:30:31 131] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:31 131] transport  1264 build http request.  
+[2017/03/20 23:30:31 131] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh7GO9iWcqjLq43oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+ë`ùX
+Céi])isSSSSSSSIidttttttwSR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi]Vù){æ“z5isSSSSSSSIiavdttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi])isSSSSSSSIiTÒ49¤c“sR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiª‘éi])isSSSSSSSIidttty”vdsR	ÜÄ	ÜÄ	ÜÄü}ª™lú?A÷Éiiéi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiá†ªµÌ ù)isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄ  
+[2017/03/20 23:30:31 132] transport  1684 msg:release()  
+[2017/03/20 23:30:31 132] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:31 191] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:31 191] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:31 82
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:31 85
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:31 192] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:31 192] transport  1493 is_update  true  
+[2017/03/20 23:30:31 192] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:31 192] isr_1conn  403  size =   366  
+[2017/03/20 23:30:31 192] isr_1conn  435  response  
+[2017/03/20 23:30:31 192] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:31 192] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:31 231] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:31 233] isr_1conn  1206 [session] send 37th audio  
+[2017/03/20 23:30:31 233] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:31 233] transport  1264 build http request.  
+[2017/03/20 23:30:31 233] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh3R9EAF2z/9h43oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+ë`ùX
+Cü‘éi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi]Vù){æ“z5isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éii•éi])isSSSSSSSIiTÒ49¤c“sR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi])ivSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄós›ĞzMN  
+[2017/03/20 23:30:31 234] transport  1684 msg:release()  
+[2017/03/20 23:30:31 234] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:31 289] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:31 289] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:31 183
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:31 186
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:31 289] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:31 289] transport  1493 is_update  true  
+[2017/03/20 23:30:31 289] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:31 289] isr_1conn  403  size =   244  
+[2017/03/20 23:30:31 289] isr_1conn  435  response  
+[2017/03/20 23:30:31 289] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:31 289] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:31 289] isr_1conn  289  send_ok_num, timer_num, send_average =   11224  9  1247  
+[2017/03/20 23:30:31 289] isr_1conn  292  netperf =   90  
+[2017/03/20 23:30:31 333] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:31 335] isr_1conn  1206 [session] send 38th audio  
+[2017/03/20 23:30:31 335] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:31 335] transport  1264 build http request.  
+[2017/03/20 23:30:31 335] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh7VNq9rXpk5t43oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+ë`ùX
+Céi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi]Vù){æ“z5isSSSUSSIidtttttttsR	ÜÄ	ÜÄ	ÜÚ	ÜÄU_ôh÷Éiiéi])isSSSSSSSIiTÒ49¤c“sR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi])isSSSSSSSIiavdttttsR	ÜÄ	ÜÄ	ÜÄü}ª™lú?A÷Éiiéi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiw™…Zh4ï)isSSSSSSSIidttty”vdsR	ÜÄ	ÜÄ	ÜÄ	ÜÄ  
+[2017/03/20 23:30:31 336] transport  1684 msg:release()  
+[2017/03/20 23:30:31 336] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:31 410] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:31 410] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:31 302
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:31 305
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:31 411] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:31 411] transport  1493 is_update  true  
+[2017/03/20 23:30:31 411] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:31 411] isr_1conn  403  size =   366  
+[2017/03/20 23:30:31 411] isr_1conn  435  response  
+[2017/03/20 23:30:31 411] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:31 411] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:31 442] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:31 445] isr_1conn  1206 [session] send 39th audio  
+[2017/03/20 23:30:31 445] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:31 445] transport  1264 build http request.  
+[2017/03/20 23:30:31 445] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh/OzWi82pZVI43oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+ë`ùX
+Céi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi]Vù){æ“z5isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiü‘éi])isSSSSSSSIiTÒ49¤c“sR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄós›ĞzMN  
+[2017/03/20 23:30:31 445] transport  1684 msg:release()  
+[2017/03/20 23:30:31 445] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:31 507] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:31 507] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:31 402
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:31 405
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:31 508] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:31 508] transport  1493 is_update  true  
+[2017/03/20 23:30:31 508] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:31 508] isr_1conn  403  size =   244  
+[2017/03/20 23:30:31 508] isr_1conn  435  response  
+[2017/03/20 23:30:31 508] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:31 508] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:31 552] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:31 554] isr_1conn  1206 [session] send 40th audio  
+[2017/03/20 23:30:31 554] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:31 554] transport  1264 build http request.  
+[2017/03/20 23:30:31 554] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh5m4IN4D/F8l43oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+ë`ùX
+C•éi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi]Vù){æ“z5isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi])isSSSSSSSIiTÒ49¤c“sR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄü}ª™lú?A÷Éiiéi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiw™…Zh4ï)isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄ  
+[2017/03/20 23:30:31 555] transport  1684 msg:release()  
+[2017/03/20 23:30:31 555] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:31 638] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:31 639] transport  1637 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 170
+X-Req-Date: 2017/03/20 23:30:31 522
+Cache-Control: no-cache
+CL: 170
+X-Res-Date: 2017/03/20 23:30:31 526
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&eps=1&rcs=2&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxmhs5T9hkCh43oU3xms5Yc=  
+[2017/03/20 23:30:31 639] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:31 639] transport  1493 is_update  true  
+[2017/03/20 23:30:31 639] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:31 639] isr_1conn  403  size =   366  
+[2017/03/20 23:30:31 639] isr_1conn  435  response  
+[2017/03/20 23:30:31 639] isr_1conn  483  resp_syncid =  0  
+[2017/03/20 23:30:31 640] isr_1conn  580  0  2  2  1  
+[2017/03/20 23:30:31 655] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:31 657] isr_1conn  1206 [session] send 41th audio  
+[2017/03/20 23:30:31 657] isr_1conn  1208 totalsz =   244  
+[2017/03/20 23:30:31 657] transport  1264 build http request.  
+[2017/03/20 23:30:31 657] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 537
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhxw1DOqosZnu43oU3xms5Yc=
+----
+CL:256
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+ë`ùX
+Céi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi]Vù){æ“z5isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi])isSSSSSSSIiTÒ49¤c“sR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄós›ĞzMN  
+[2017/03/20 23:30:31 658] transport  1684 msg:release()  
+[2017/03/20 23:30:31 658] transport  506  [soc] [1] send ok  710  
+[2017/03/20 23:30:31 690] isr_1conn  289  send_ok_num, timer_num, send_average =   12200  10  1220  
+[2017/03/20 23:30:31 690] isr_1conn  292  netperf =   90  
+[2017/03/20 23:30:31 748] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:31 750] isr_1conn  1206 [session] send 42th audio  
+[2017/03/20 23:30:31 750] isr_1conn  1208 totalsz =   366  
+[2017/03/20 23:30:31 750] transport  1264 build http request.  
+[2017/03/20 23:30:31 750] transport  1364 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 657
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:174
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=iat&cmd=auw&aus=2&cver=5%2E0%2E29%2E1151&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlhw5^WQYQyQCO43oU3xms5Yc=
+----
+CL:376
+CT:audio/L16;rate=16000
+CE:speex-wb,encrypt/0.2
+
+ë`ùX
+Céi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi]Vù){æ“z5isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi])isSSSSSSSIiTÒ49¤c“sR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiéi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄü}ª™lú?A÷Éiiéi])isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄU_ôh÷Éiiw™…Zh4ï)isSSSSSSSIidtttttttsR	ÜÄ	ÜÄ	ÜÄ	ÜÄ  
+[2017/03/20 23:30:31 751] transport  1684 msg:release()  
+[2017/03/20 23:30:31 751] transport  506  [soc] [1] send ok  830  
+[2017/03/20 23:30:31 810] transport  518  [soc] [1] readable  
+[2017/03/20 23:30:31 811] transport  1637 HTTP/1.1 200 OK
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 350
+X-Req-Date: 2017/03/20 23:30:31 623
+Cache-Control: no-cache
+CL: 350
+X-Res-Date: 2017/03/20 23:30:31 705
+
+----
+Content-Length:176
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E29%2E1151&rss=5&eps=3&rcs=5&key=0fJ0/^Nn^9j5S/0wl6^s8C0ketjYaxSsuqQLsY2p0TJ04^HBywnTxKrRdKbraiH^^XWg^teRfX6BnjehTfGazlh4ONsu/TuvMh43oU3xms5Yc=
+----
+Content-Length:48
+Content-Type:binary/recresult
+Content-Encoding:encrypt/0.2
+
+ıDX  
+[2017/03/20 23:30:31 811] transport  1383 a_complete_httpmessage  200  
+[2017/03/20 23:30:31 811] transport  1493 is_update  true  
+[2017/03/20 23:30:31 811] isr_1conn  399  [trans] [isr_1conncisr1P1HHBHNf6bMai913ar5OMdSQuQT5nxc] readable  
+[2017/03/20 23:30:31 811] isr_1conn  403  size =   244  
+[2017/03/20 23:30:31 811] isr_1conn  435  response  
+[2017/03/20 23:30:31 811] isr_1conn  483  resp_syncid =  2  
+[2017/03/20 23:30:31 811] isr_1conn  580  2  5  5  3  
+[2017/03/20 23:30:31 811] isr_1conn  594  [session] got last result  
+[2017/03/20 23:30:31 811] isr_1conn  599  time from last audio to last result:  60  .  
+[2017/03/20 23:30:31 811] isr_1conn  600  time from session-begin to session-end:  4318  .  
+[2017/03/20 23:30:31 812] network    88   ipfromenv ,  ipcache  open.xf-yun.com  def  59.107.24.5  
+[2017/03/20 23:30:31 812] transport  942  cached ip is confirmed  
+[2017/03/20 23:30:31 812] transport  1242 [soc] disconnect   
+[2017/03/20 23:30:31 812] isr_1conn  609  [session] got 1th result  
+[2017/03/20 23:30:31 812] isr_1conn  621  time from first audio to first result:  4125  .  
+[2017/03/20 23:30:31 852] isr_1conn  1829 ASR_CLOUD_MSG_AUW  3200  2  
+[2017/03/20 23:30:31 853] isr_1conn  1829 ASR_CLOUD_MSG_AUW  1600  4  
+[2017/03/20 23:30:31 954] isr_1conn  2038 ASR_CLOUD_MSG_SSE  
+[2017/03/20 23:30:31 956] isr_1conn  1281 isr_1conn session info  
+[2017/03/20 23:30:31 961] isr_1conn  2181 session finished! ret =   0  

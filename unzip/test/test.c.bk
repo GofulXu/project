@@ -1,0 +1,158 @@
+#include "default/gfapi.h"
+
+typedef struct _head{
+	unsigned int head;
+	unsigned short version;
+	unsigned short zipbit;
+	unsigned short zipmode;
+	unsigned short last_time;
+	unsigned short change_time;
+	unsigned int crc_check;
+	unsigned int size;
+	unsigned int last_size;
+	unsigned short name_size;
+	unsigned short exten_size;
+}m_head;
+
+typedef struct _cen_head{
+	unsigned int	cen_head;
+	unsigned short	  cen_version;
+	unsigned short	  cen_Lversion;
+	unsigned short	  cen_zipbit;
+	unsigned short	  cen_zipmode;
+	unsigned short	  cen_last_changetime;
+	unsigned short	  cen_last_changedate;
+	unsigned int	cen_crc_check;
+	unsigned int	cen_size;
+	unsigned int	cen_last_size;
+	unsigned short	cen_name_size;
+	unsigned short	cen_exten_size;
+	unsigned short	cen_anno_size;
+	unsigned short	cen_start_num;
+	unsigned short	cen_inside_attr;
+	unsigned int	cen_outside_attr;
+	unsigned int	cen_head_offset;
+}m_cen_head;
+
+typedef struct end_head{
+	unsigned int	end_head;
+	unsigned short	end_disk_num;
+	unsigned short	end_cendisk_num;
+	unsigned short	end_cendir_num;
+	unsigned short	end_cen_num;
+	unsigned int	end_size;
+	unsigned int	end_strat_offset;
+	unsigned short	end_anno_size;
+
+}m_end_head;
+
+typedef struct _ziphead{
+	m_head H;
+    char *filename;
+	char *filebuf;	
+	m_cen_head C;
+	char *dirname;
+	m_end_head E;
+}m_ziphead;
+
+int main(int argc, char *argv[])
+{
+	struct stat mst;
+	if(argc < 2)
+		return 0;
+	stat(argv[1], &mst);
+	if(mst.st_size > 1024*1024*12)
+	{
+		printf("size:%ldM%ldk so big \n", mst.st_size/1024/1024, mst.st_size/(1024*1024));
+		return 0;
+	
+	}
+	printf("file size:%ldM%ldk  %ldb\n", mst.st_size/1024/1024, mst.st_size/(1024*1024), mst.st_size);
+	char *RB = (char *)malloc(mst.st_size+1);
+	FILE *fd = fopen(argv[1], "rb");
+	fread(RB, 1024, mst.st_size/1024+1, fd);
+	fclose(fd);
+//	if(mst.st_size/1024 < 10)
+//		printf("%s",RB);
+
+	m_ziphead G;
+	char *p = (char *)&G.H;
+	memset(p, 0, sizeof(m_head));
+	memcpy(p, RB, 14);
+	memcpy(p+16, RB+14, 16);
+	G.filename = (char *)malloc(G.H.name_size);
+	G.filebuf = (char *)malloc(G.H.size);
+	memset(G.filename, 0, G.H.name_size);
+	memset(G.filebuf, 0, G.H.size);
+	memcpy(G.filename, RB+30, G.H.name_size);
+	memcpy(G.filebuf, RB+30+G.H.name_size, G.H.size);
+
+	printf("filebuf:%s\n", G.filebuf);
+	printf("H.head:%8x\n", G.H.head);
+	printf("H.version:%04x\n", G.H.version);
+	printf("H.zipbit:%04x\n", G.H.zipbit);
+	printf("H.zipmode:%04x\n", G.H.zipmode);
+	printf("H.last_time:%04x\n", G.H.last_time);
+	printf("H.change_time:%04x\n", G.H.change_time);
+	printf("H.crc_check:%08x\n", G.H.crc_check);
+	printf("H.size:%08x\n", G.H.size);
+	printf("H.last_size:%08x\n", G.H.last_size);
+	printf("H.name_size:%04x\n", G.H.name_size);
+	printf("H.exten_size:%04x\n", G.H.exten_size);
+	printf("filename:%s\n", G.filename);
+
+	printf("\n\n\nnext:%d\n", 30+G.H.name_size + G.H.size);
+	p = (char *)&G.C;
+	memset(p, 0, sizeof(m_cen_head));
+	memcpy(p, RB+30 + G.H.name_size + G.H.size, sizeof(m_cen_head) - 10);
+	memcpy((p + sizeof(m_cen_head) - 8), (RB + 30 + G.H.name_size + G.H.size + sizeof(m_cen_head) - 10), 8);
+	G.dirname = (char *)malloc(G.C.cen_name_size);
+	memset(G.dirname, 0, G.C.cen_name_size);
+	memcpy(G.dirname, RB + 30 + G.H.name_size + G.H.size + sizeof(m_cen_head) - 2, G.C.cen_name_size);
+
+	printf("C.cen_head:%08x\n", G.C.cen_head);
+	printf("C.cen_version:%04x\n", G.C.cen_version);
+	printf("C.cen_Lversion:%04x\n", G.C.cen_Lversion);
+	printf("C.cen_zipbit:%04x\n", G.C.cen_zipbit);
+	printf("C.cen_zipmode:%04x\n", G.C.cen_zipmode);
+	printf("C.cen_last_changetime:%04x\n", G.C.cen_last_changetime);
+	printf("C.cen_last_changedate:%04x\n", G.C.cen_last_changedate);
+	printf("C.cen_crc_check:%08x\n", G.C.cen_crc_check);
+	printf("C.cen_size:%08x\n", G.C.cen_size);
+	printf("C.cen_last_size:%08x\n", G.C.cen_last_size);
+	printf("C.cen_name_size:%04x\n", G.C.cen_name_size);
+	printf("C.cen_exten_size:%04x\n", G.C.cen_exten_size);
+	printf("C.cen_anno_size:%04x\n", G.C.cen_anno_size);
+	printf("C.cen_start_num:%04x\n", G.C.cen_start_num);
+	printf("C.cen_inside_attr:%04x\n", G.C.cen_inside_attr);
+	printf("C.cen_outside_attr:%08x\n", G.C.cen_outside_attr);
+	printf("C.cen_head_offset:%08x\n", G.C.cen_head_offset);
+	printf("dirname:%s\n", G.dirname);
+
+	printf("\n\n\nnext:%d\n", 30+G.H.name_size + G.H.size +sizeof(m_cen_head) - 2 + G.C.cen_name_size);
+	p = (char *)&G.E;
+	memset(p, 0, sizeof(m_cen_head));
+	memcpy(p, RB + 30 + G.H.name_size + G.H.size + sizeof(m_cen_head) - 2 + G.C.cen_name_size, sizeof(m_end_head) -2);
+	printf("C.end_head:%08x\n", G.E.end_head);
+	printf("C.end_disk_num:%04x\n", G.E.end_disk_num);
+	printf("C.end_cendisk_num:%04x\n", G.E.end_cendisk_num);
+	printf("C.end_cendir_num:%04x\n", G.E.end_cendir_num);
+	printf("C.end_cen_num:%04x\n", G.E.end_cen_num);
+	printf("C.end_size:%08x\n", G.E.end_size);
+	printf("C.end_strat_offset:%08x\n", G.E.end_strat_offset);
+	printf("C.end_anno_size:%04x\n", G.E.end_anno_size);
+#if 1
+
+//	memcpy(H.cen_head, RB+30+H.name_size+H.size, 4);
+
+
+	free(G.filename);
+	free(G.filebuf);
+	free(G.dirname);
+#endif
+
+	free(RB);
+
+
+	return 0;
+}

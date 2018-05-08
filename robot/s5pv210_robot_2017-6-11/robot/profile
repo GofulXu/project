@@ -1,0 +1,66 @@
+#!/bin/sh
+# Ash profile 
+# vim: syntax=sh
+
+# No core files by default
+ulimit -S -c 0 > /dev/null 2>&1
+
+USER="`id -un`"
+LOGNAME=$USER
+PS1='[\u@\h \W]\# '
+PATH=$PATH
+
+HOSTNAME=`/bin/hostname`
+
+export USER LOGNAME PS1 PATH
+ifconfig wlan0 up
+
+export TSLIB_TSDEVICE=/dev/event0
+export TSLIB_FBDEVICE=/dev/fb0
+export TSLIB_CONFFILE=/tslib/etc/ts.conf
+export TSLIB_CONSOLEDEVICE=none
+export POINTERCAL_FILE=/etc/pointercal
+export TSLIB_CALIBFILE=/tslib/etc/pointercal
+#export QWS_MOUSE_PROTO=TPanel:/dev/event0
+export CAMERA_DEVICE=/dev/video3
+export V_ROOT=/tslib
+export QWS_KEYBOARD=TTY:/dev/tty1
+export PATH=/bin:/usr/bin:$PATH
+export TSLIB_PLUGINDIR=/tslib/lib/ts
+export TSLIB_CALIBFILE=/etc/pointercal
+export QWS_DISPLAY=:1
+export LD_LIBRARY_PATH=$V_ROOT/lib:/lib:/usr/lib:$LD_LIBRARY_PATH
+
+export TSLIB_CALIBFILE=/etc/pointercal
+export HOME=/root
+export KDEDIR=/opt/kde
+export QWS_KEYBOARD="TTY:/dev/tty1"
+export PATH=/tslib/bin:$PATH
+export LD_LIBRARY_PATH=/tslib/lib
+#export QWS_MOUSE_PROTO="Tslib:/dev/event1 MouseMan:/dev/mouse1"
+
+#export QWS_MOUSE_PROTO="TPanel:/dev/event0 Tslib"
+#MouseMan:/dev/mice
+
+export QTDIR=/home
+export LD_LIBRARY_PATH=$QTDIR/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$QTDIR/sqlite3.6/lib:$LD_LIBRARY_PATH
+
+
+modprobe snd-soc-wm8960
+modprobe snd-soc-gec210-wm8960
+
+if [ -f /etc/pointercal ] ; then
+          hotplug
+else
+          /tslib/bin/ts_calibrate
+          hotplug
+fi
+source mknode.sh
+amixer cset numid=5,iface=MIXER,name='PCM Volume' 127
+insmod /xww/robot.ko
+ifconfig eth0 192.168.1.103
+route add default gw 192.168.1.251
+#mount -o nolock 192.168.1.180:/home/gec/myshare /mnt/ubuntu
+/xww/wechat 192.168.1.106&
+

@@ -1,0 +1,125 @@
+============================================================
+Time  2017/02/27 15:39:33 890 
+============================================================
+[2017/02/27 15:39:33 891] legacyuup  324  SYS_MSG_LOAD  
+[2017/02/27 15:39:33 892] legacyuup  237  UUP_MSG_START  
+[2017/02/27 15:39:33 892] legacyuup  239  legacyuup  legacyuup_4d72b0  268436457  1472383802  
+[2017/02/27 15:39:33 892] legacyuup  282  User set url is   nil  
+[2017/02/27 15:39:33 892] transport  609  paramkvsport is   nil  
+[2017/02/27 15:39:33 892] transport  617  ns_enable=  1  
+[2017/02/27 15:39:33 892] transport  661  url.full=  nil  
+[2017/02/27 15:39:33 892] transport  837  switch 80  
+[2017/02/27 15:39:33 892] transport  844  net type:  standard  
+[2017/02/27 15:39:33 892] transport  845  net operator:  def  
+[2017/02/27 15:39:33 892] transport  846  use proxy:  false  
+[2017/02/27 15:39:33 892] legacyuup  299  not login!  
+[2017/02/27 15:39:34 374] legacyuup  313  UUP_MSG_LGI_RESULT  
+[2017/02/27 15:39:34 374] legacyuup  193  [session] send uup request  
+[2017/02/27 15:39:34 374] transport  959  session.domain=  open.xf-yun.com  
+[2017/02/27 15:39:34 374] transport  960  url.host=  open.xf-yun.com  
+[2017/02/27 15:39:34 375] network    83   ipfromenv ,  ipcache  open.xf-yun.com  def  nil  
+[2017/02/27 15:39:34 375] transport  994  NAMESERVER START  
+[2017/02/27 15:39:34 375] transport  997  name =   asr  
+[2017/02/27 15:39:34 375] ns         727  ntt=  standard  
+[2017/02/27 15:39:34 375] transport  1000 trans,ns_inprog =  0  
+[2017/02/27 15:39:34 375] ns         682  name server start  
+[2017/02/27 15:39:34 375] ns         683  ns_sub =   asr  
+[2017/02/27 15:39:34 375] ns         685  ns_host=  open.xf-yun.com  
+[2017/02/27 15:39:34 375] ns         403  ns_host=  open.xf-yun.com  
+[2017/02/27 15:39:34 375] ns         662  GET /sip/resolver?srand=0227153911.32 HTTP/1.1
+Host: hdns.openspeech.cn
+Connection: Keep-Alive
+X-Par: ver=1.2&appid=57ac11ac&operator=UNKNOW&nettype=STANDARD&cver=5.0.27.1135&svc=asr&host=open.xf-yun.com&sign=e326e6cecd35d7e43c36981090e23e7c
+User-Agent: iFLYCloud
+
+  
+[2017/02/27 15:39:34 375] ns         663  net_type =  standard  
+[2017/02/27 15:39:34 375] ns         664  cmwapascmnet =  
+[2017/02/27 15:39:34 375] ns         665  uniwapasuninet =  
+[2017/02/27 15:39:34 375] ns         666  ctwapasctnet =  
+[2017/02/27 15:39:34 375] ns         676  host=  hdns.openspeech.cn  
+[2017/02/27 15:39:34 375] legacyuup  150  lver:  nil  
+[2017/02/27 15:39:34 375] legacyuup  155  cfg_ver:  nil  
+[2017/02/27 15:39:35 409] ns         290  ns dns resp  0  
+[2017/02/27 15:39:35 409] ns         346  ip_is_expected=  true  
+[2017/02/27 15:39:35 409] ns         332  ip front is  117.121.56  
+[2017/02/27 15:39:35 409] ns         337  warning: ip not found in ip_list  
+[2017/02/27 15:39:35 409] ns         348  is_voicecloud_ip=  1  
+[2017/02/27 15:39:35 409] ns         355  ip_is_expected=  true  
+[2017/02/27 15:39:35 409] ns         363  ip_is_expected=  true  
+[2017/02/27 15:39:35 409] ns         558  ns dns ok  117.121.56.5  
+[2017/02/27 15:39:35 409] ns         174  ns gethttpresp  117.121.56.5  80  
+[2017/02/27 15:39:35 454] ns         199  ns connected  
+[2017/02/27 15:39:35 455] ns         202  ns send ok  271  
+[2017/02/27 15:39:35 468] transport  142  [dns] [0] response 59.107.24.13  
+[2017/02/27 15:39:35 468] transport  152  59  107  24  13  
+[2017/02/27 15:39:35 468] transport  203  ipv =  v4  
+[2017/02/27 15:39:35 468] transport  207  dns ip is v4  
+[2017/02/27 15:39:35 468] transport  188  ip front is  59.107.24  
+[2017/02/27 15:39:35 468] transport  260  expected ip  
+[2017/02/27 15:39:35 468] network    88   iptoenv ,  ipcache  open.xf-yun.com  def  59.107.24.13  
+[2017/02/27 15:39:35 469] transport  290  dns cb start conn  
+[2017/02/27 15:39:35 469] transport  1166 [soc] connect   59.107.24.13  80  
+[2017/02/27 15:39:35 469] transport  1183 mspsoc.open,prot_type=  tcp  
+[2017/02/27 15:39:35 479] transport  467  [soc] [0] connected  
+[2017/02/27 15:39:35 479] transport  1220 build http request.  
+[2017/02/27 15:39:35 480] transport  1320 POST /msp.do HTTP/1.1
+Host: open.xf-yun.com
+Content-Type: multipart/mixed;boundary=--
+Content-Length: 904
+User-Agent: iFLYCloud
+Cache-Control: no-cache
+Accept: */*
+
+----
+CL:84
+CT:text/plain
+
+ver=MSSP+0%2E9&sub=asr&cmd=uup&cver=5%2E0%2E27%2E1135&key=0c4G4KJ85svIz10sMzTVscwA==
+----
+CL:280
+CT:binary/userdata+abnf
+CE:gzip,encrypt/0.2
+
+SãÁL:'†CA«Ff·eEBá”–◊–Á‚◊–gÂgE˚ùˇy˙dÅÅÅ·  
+[2017/02/27 15:39:35 481] transport  489  [soc] [0] send ok  1077  
+[2017/02/27 15:39:35 502] ns         205  ns readable  
+[2017/02/27 15:39:35 502] ns         210  HTTP/1.1 200 OK
+Date: Mon, 27 Feb 2017 07:39:35 GMT
+Content-Type: application/json
+Content-Length: 371
+Connection: keep-alive
+Server: iflytek/hdns
+
+{"dns":[{"host":"open.xf-yun.com","sip":[{"svc":"asr","ips":[{"ip":"59.107.24.5","port":80,"idc":"gz"},{"ip":"59.107.24.11","port":980,"idc":"gz"},{"ip":"59.107.24.5","port":80,"idc":"gz"}],"ttl":6000}]}],"default":[{"host":"open.xf-yun.com","sip":[{"svc":"asr","ips":[{"ip":"59.107.24.11","port":980,"idc":"gz"},{"ip":"59.107.24.5","port":80,"idc":"gz"}],"ttl":6000}]}]}  
+[2017/02/27 15:39:35 503] ns         407  name server http resp  nil  0  udata(b594a104) 
+[2017/02/27 15:39:35 503] ns         415  ns response OK for this time!  
+[2017/02/27 15:39:35 503] ns         426  from_server=  iflytek/hdns  
+[2017/02/27 15:39:35 503] ns         510  tick()=  5077249  
+[2017/02/27 15:39:35 503] ns         514  tick()mod=  5077249  
+[2017/02/27 15:39:35 503] ns         515  ns_host=  open.xf-yun.com  
+[2017/02/27 15:39:35 504] ns         528  ns_host=  open.xf-yun.com  
+[2017/02/27 15:39:35 504] transport  974  ns_ip =   59.107.24.5  
+[2017/02/27 15:39:35 504] transport  975  ip_type =  assigned_asropen.xf-yun.com_host  
+[2017/02/27 15:39:35 504] ns         756  no data in ns_q  
+[2017/02/27 15:39:35 504] ns         757  conti_ns,ns_inprog =   1  
+[2017/02/27 15:39:35 504] transport  501  [soc] [0] readable  
+[2017/02/27 15:39:35 504] transport  1592 HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 151
+X-Req-Date: 2017/02/27 15:39:35 441
+Cache-Control: no-cache
+CL: 151
+X-Res-Date: 2017/02/27 15:39:35 448
+
+ver=MSSP+0%2E9&ret=0&cver=5%2E0%2E27%2E1135&eid=ac7311366115ad518c4c2fd17583349b&key=0dW5UV7iSRADlfqSmDGG^K^dcbqmvhzFjIblMqBHHa0K2cacJAk0EnHX1gv7011^Ur  
+[2017/02/27 15:39:35 504] transport  1339 a_complete_httpmessage  200  
+[2017/02/27 15:39:35 504] transport  1448 is_update  true  
+[2017/02/27 15:39:35 504] transport  1452 port updated  80  
+[2017/02/27 15:39:35 504] transport  1454 switch  80  
+[2017/02/27 15:39:35 504] legacyuup  70   [trans] [id = uuplegacyuup_4d72b0] readable  
+[2017/02/27 15:39:35 504] network    83   ipfromenv ,  ipcache  open.xf-yun.com  def  59.107.24.13  
+[2017/02/27 15:39:35 504] transport  919  cached ip is confirmed  
+[2017/02/27 15:39:35 504] transport  1198 [soc] disconnect   
+[2017/02/27 15:39:35 505] legacyuup  80   uup ok!  
+[2017/02/27 15:39:35 505] legacyuup  333  SYS_MSG_UNLOAD  
