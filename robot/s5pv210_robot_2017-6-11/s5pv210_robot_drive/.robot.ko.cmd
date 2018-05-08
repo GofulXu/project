@@ -1,1 +1,0 @@
-cmd_/home/myshare/src/gpio/robot.ko := arm-linux-ld -EL -r  -T /home/transplant/gec210-kernel-2.6.35.7/scripts/module-common.lds --build-id -o /home/myshare/src/gpio/robot.ko /home/myshare/src/gpio/robot.o /home/myshare/src/gpio/robot.mod.o
