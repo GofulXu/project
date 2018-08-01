@@ -9,6 +9,9 @@ int gf_tftp_downloadfile(char *ip, char *savepath, char *filename, int timeout)
 	FILE *fd;
 	char url[256] = {0};
 	CURL *curl;
+	if(0 >= timeout)
+		timeout = 60*60*1000;
+
 	if(savepath)
 	{
 		if(access(savepath, F_OK) == 0)
@@ -66,6 +69,8 @@ int gf_tftp_uploadfile(char *ip, char *filepath, int timeout)
 			break;
 		len--;
 	}
+	if(0 >= timeout)
+		timeout = 60*60*1000;
 	sprintf(url, "tftp://%s/%s", ip, filepath + (len));
 	fd = fopen(filepath, "r");
 	curl = curl_easy_init();
@@ -112,9 +117,9 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 	if(strcmp(argv[1], "-g") == 0)
-		success = gf_tftp_downloadfile(argv[3], NULL, argv[2], 3000);
+		success = gf_tftp_downloadfile(argv[3], NULL, argv[2], 0);
 	if(strcmp(argv[1], "-p") == 0)
-		success = gf_tftp_uploadfile(argv[3], argv[2], 3000);
+		success = gf_tftp_uploadfile(argv[3], argv[2], 0);
 	if(success == 0)
 	{
 		printf("upload %s success\n", argv[2]);
