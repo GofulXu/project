@@ -1,0 +1,53 @@
+============================================================
+Time  2018/10/22 11:55:27 908 
+============================================================
+[2018/10/22 11:55:27 908] ivw_upload 722  SYS_MSG_LOAD  
+[2018/10/22 11:55:27 908] ivw_upload 781  IVW_UPLOAD_MSG_QUE  
+[2018/10/22 11:55:27 908] ivw_upload 794  ==================== Query Start ====================  
+[2018/10/22 11:55:27 908] ivw_upload 645  try2_query  
+[2018/10/22 11:55:27 908] ivw_upload 653  query_data   {"input":{"appid":"59a4c2a0"},"cmd":"uploadquery"}  
+[2018/10/22 11:55:27 908] ivw_upload 665  Do query  
+[2018/10/22 11:55:27 923] ivw_upload 673  compressed data_len:  69  
+[2018/10/22 11:55:27 923] ivw_upload 677  xor data_len:  69  
+[2018/10/22 11:55:27 923] ivw_upload 305  build_httpreq type=  query  
+[2018/10/22 11:55:27 923] ivw_upload 340  unknown  
+[2018/10/22 11:55:27 923] ivw_upload 402  POST /internal/awaken/comm HTTP/1.1
+Host: ins.xfyun.cn
+Connection: Keep-Alive
+Content-Type: application/octet-steam
+Content-Length: 69
+
+å¨QÕÀ,/*Vµ≠QM+/œKVµU5≤K3N1M3W≠“VM…éì„„ °ë°R-“5∑ÄÔ4  
+[2018/10/22 11:55:27 923] ivw_upload 408  handle_httpresp type=  query  
+[2018/10/22 11:55:27 923] network    501  gethttpresp  http://ins.xfyun.cn/internal/awaken/comm  nil  
+[2018/10/22 11:55:27 923] network    263  gethostbyname  ins.xfyun.cn  1  
+[2018/10/22 11:55:28 068] network    245  dns resp  0  1  
+[2018/10/22 11:55:28 068] network    487  gethttpresp dns ok  117.121.50.210  
+[2018/10/22 11:55:28 068] network    445  gethttpresp2  117.121.50.210  80  2  
+[2018/10/22 11:55:28 068] network    465  prot_type  tcp  
+[2018/10/22 11:55:28 115] network    350  connected  2  
+[2018/10/22 11:55:28 116] network    353  send ok  211  2  
+[2018/10/22 11:55:28 168] network    362  readable  2  
+[2018/10/22 11:55:28 168] network    366  HTTP/1.1 200 
+Server: nginx
+Date: Mon, 22 Oct 2018 03:55:28 GMT
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Vary: Accept-Encoding
+
+92
+{"code":"00000","desc":"ÊàêÂäü","data":"GIwPBwcHBwcHB6xRTclKVrVVLSrPzkhLLitKKq1T1VbNKCpWta1RLUjLScrOKwG1koeFjgICnieioZGOIc5BjgFNsrIHt6JW6TkHBwc="}
+0
+
+  
+[2018/10/22 11:55:28 171] ivw_upload 514  http resp  nil  0  udata(c8045c78) 
+[2018/10/22 11:55:28 171] ivw_upload 525  {"code":"00000","desc":"ÊàêÂäü","data":"GIwPBwcHBwcHB6xRTclKVrVVLSrPzkhLLitKKq1T1VbNKCpWta1RLUjLScrOKwG1koeFjgICnieioZGOIc5BjgFNsrIHt6JW6TkHBwc="}  
+[2018/10/22 11:55:28 171] ivw_upload 557  data_xor len=  78  
+[2018/10/22 11:55:28 176] ivw_upload 418  uncompressed data  {"cmd":"uploadquery","out":{"wakelist":"","appid":"59a4c2a0"}}  62  
+[2018/10/22 11:55:28 176] ivw_upload 485  query wakelist:    
+[2018/10/22 11:55:28 176] ivw_upload 494  ==================== Query Success ====================  
+[2018/10/22 11:55:28 176] ivw_upload 57   ==================== Query Finished ====================  
+[2018/10/22 11:55:30 693] ivw_upload 733  SYS_MSG_SHUTDOWN  
+[2018/10/22 11:55:30 693] ivw_upload 610  save no upload data  
+[2018/10/22 11:55:30 693] ivw_upload 622  data size:  0  
