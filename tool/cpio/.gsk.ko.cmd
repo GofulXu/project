@@ -1,0 +1,1 @@
+cmd_/home/json/Goeful/work/cpio/gsk.ko := arm-linux-ld -EL -r  -T /home/json/work/goeful/kernel/scripts/module-common.lds --build-id -o /home/json/Goeful/work/cpio/gsk.ko /home/json/Goeful/work/cpio/gsk.o /home/json/Goeful/work/cpio/gsk.mod.o

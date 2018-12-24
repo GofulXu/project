@@ -1,0 +1,1 @@
+cmd_/home/json/Goeful/work/cpio/ksa.ko := arm-linux-ld -EL -r  -T /home/json/work/goeful/kernel/scripts/module-common.lds --build-id -o /home/json/Goeful/work/cpio/ksa.ko /home/json/Goeful/work/cpio/ksa.o /home/json/Goeful/work/cpio/ksa.mod.o
