@@ -1,0 +1,16 @@
+# the standard variables don't make sense for an uninstalled copy
+prefix=
+exec_prefix=
+libdir=
+# includedir is builddir because it is used to find gstconfig.h in places
+includedir=/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs
+pluginsdir=/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4
+
+Name: GStreamer Base Plugins Libraries, Uninstalled
+Description: Streaming media framework, base plugins libraries, uninstalled
+Version: 1.10.4
+Requires: gstreamer-1.0
+Libs: -L/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs/gst/allocators/.libs -L/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs/gst/app/.libs -L/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs/gst/audio/.libs -L/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs/gst/fft/.libs -L/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs/gst/pbutils/.libs -L/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs/gst/riff/.libs -L/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs/gst/rtp/.libs -L/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs/gst/rtsp/.libs -L/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs/gst/sdp/.libs -L/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs/gst/tag/.libs -L/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs/gst/video/.libs
+Cflags: -I/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs -I/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs
+
+libraries=allocators app audio fft pbutils riff rtp rtsp sdp tag video

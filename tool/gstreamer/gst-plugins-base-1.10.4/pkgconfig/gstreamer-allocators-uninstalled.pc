@@ -1,0 +1,16 @@
+# the standard variables don't make sense for an uninstalled copy
+prefix=
+exec_prefix=
+libdir=/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs/gst/allocators/.libs
+# includedir is builddir because it is used to find gstconfig.h in places
+includedir=/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs
+girdir=/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs/gst/allocators
+typelibdir=/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs/gst/allocators
+
+Name: GStreamer Allocators Library, Uninstalled
+Description: Allocators implementation, uninstalled
+Version: 1.10.4
+Requires: gstreamer-1.0
+Libs: -L${libdir} -lgstallocators-1.0
+Cflags: -I/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs -I/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs
+

@@ -1,0 +1,16 @@
+# the standard variables don't make sense for an uninstalled copy
+prefix=
+exec_prefix=
+libdir=/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs/gst/rtsp/.libs
+# includedir is builddir because it is used to find gstconfig.h in places
+includedir=/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs
+girdir=/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs/gst/rtsp
+typelibdir=/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs/gst/rtsp
+
+Name: GStreamer RTSP Library, Uninstalled
+Description: RTSP base classes and helper functions, uninstalled
+Version: 1.10.4
+Requires: gstreamer-1.0 gstreamer-sdp-1.0 gio-2.0
+Libs: -L${libdir} -lgstrtsp-1.0
+Cflags: -I/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs -I/home/goeful/tool/gstreamer/gst-plugins-base-1.10.4/gst-libs
+
