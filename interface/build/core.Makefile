@@ -22,6 +22,10 @@ CFLAGS += -I$(PROJECT_PATH)/JNI	\
 CFLAGS += -DANDROID
 endif
 
+ifeq ($(SUPPORT_BUILD_STDC), y)
+LINKFLAGS += -lstdc++
+endif
+
 DYN_LDS_WITH += 
 
 LINKFLAGS += 

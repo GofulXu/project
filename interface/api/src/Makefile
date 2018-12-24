@@ -22,6 +22,9 @@ SRC += \
 		network/gftftpclientcurl.c						\
 		shell/gfshell.c									\
 		paramerter/gfparamerter.c						\
+		max_unzip/zip_uppack.c							\
+		ntpclient/phaselock.c							\
+		ntpclient/ntpclient.c							\
 		uart/gfcom.c									\
 		uart/gfserial.c					
 
@@ -33,6 +36,10 @@ DYN_LDS_WITH += \
 				-L$(PROJECT_PATH)/api/lib				\
 				-L$(PROJECT_PATH)/lib
 
-LINKFLAGS += 
+LINKFLAGS += \
+			 -lpthread											\
+			 -lm												\
+			 -ldl
+
 
 -include $(PROJECT_PATH)/build/core.Makefile
