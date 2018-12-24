@@ -1,0 +1,15 @@
+# the standard variables don't make sense for an uninstalled copy
+prefix=
+exec_prefix=
+libdir=/home/goeful/tool/gstreamer/gstreamer-1.10.4/libs/gst/check/.libs
+includedir=
+girdir=/home/goeful/tool/gstreamer/gstreamer-1.10.4/libs/gst/check
+typelibdir=/home/goeful/tool/gstreamer/gstreamer-1.10.4/libs/gst/check
+
+Name: GStreamer check unit testing, uninstalled
+Description: Unit testing helper library for GStreamer modules, Not Installed
+Requires: gstreamer-1.0 = 1.10.4
+Version: 1.10.4
+
+Libs: -L${libdir} -lgstcheck-1.0 -lm
+Cflags: -I/home/goeful/tool/gstreamer/gstreamer-1.10.4/libs -I/home/goeful/tool/gstreamer/gstreamer-1.10.4/libs
