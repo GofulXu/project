@@ -3,6 +3,10 @@ BINDIR = $(PROJECT_PATH)/lib
 NAME = module
 SRC += \
 		src/gftime/gftime.c 						\
+		src/gftime/gfadjsystime.c					\
+		src/gfservice/gfservice.c					\
+		src/gfservice/gfservice_send.c					\
+		src/gfservice/gfhashfunc.c					\
 		src/gfreportlog/gfreportlog.c 				\
 		src/gfcom/gfcom_sample.c 					\
 		src/gfcom/gfnetwork_sample.c 				\
