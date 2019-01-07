@@ -1,9 +1,9 @@
 BUILD_TARGET_TYPE = exe
 BINDIR = $(PROJECT_PATH)/sample
-NAME = sample
+NAME = gfbroadjniservice
 SRC += \
-		test.c
-
+	   gfbroadjniservice.c
+#		test_service_send.c
 CFLAGS += \
 			-I$(PROJECT_PATH)/module/include					\
 			-I$(PROJECT_PATH)/api/include/sqlite3				\
