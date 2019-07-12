@@ -1,15 +1,15 @@
 #include "default/gfapi.h"
 #include <dirent.h>
 
-#define MAKEFILE_GCC "/home/vinsion/tool/mymakefile_V2.0/src/Makefile_gcc"
-#define MAKEFILE_FSL "/home/vinsion/tool/mymakefile_V2.0/src/Makefile_fsl"
-#define MAKEFILE_HISI "/home/vinsion/tool/mymakefile_V2.0/src/Makefile_hisi"
-#define MAKEFILE_AR9331 "/home/vinsion/tool/mymakefile_V2.0/src/Makefile_ar9331"
-#define MAKEFILE_MT7628 "/home/vinsion/tool/mymakefile_V2.0/src/Makefile_mt7628"
-#define README_PATH "/home/vinsion/tool/mymakefile_V2.0/src/readme.vinsion"
-#define TEST_PATH "/home/vinsion/tool/mymakefile_V2.0/src/test.vinsion"
-#define INC_CMD "cp /home/vinsion/tool/mymakefile_V2.0/src/default/ ./inc/default -rf"
-#define API_CMD "cp /home/vinsion/tool/mymakefile_V2.0/src/gfapi/ ./src/gfapi -rf"
+#define MAKEFILE_GCC "/home/vinsion/learn/project/tool/mymakefile_V1.0/src/Makefile_gcc"
+#define MAKEFILE_FSL "/home/vinsion/learn/project/tool/mymakefile_V1.0/src/Makefile_fsl"
+#define MAKEFILE_HISI "/home/vinsion/learn/project/tool/mymakefile_V1.0/src/Makefile_hisi"
+#define MAKEFILE_AR9331 "/home/vinsion/learn/project/tool/mymakefile_V1.0/src/Makefile_ar9331"
+#define MAKEFILE_MT7628 "/home/vinsion/learn/project/tool/mymakefile_V1.0/src/Makefile_mt7628"
+#define README_PATH "/home/vinsion/learn/project/tool/mymakefile_V1.0/src/readme.vinsion"
+#define TEST_PATH "/home/vinsion/learn/project/tool/mymakefile_V1.0/src/test.vinsion"
+#define INC_CMD "cp /home/vinsion/learn/project/tool/mymakefile_V1.0/src/default/ ./inc/default -rf"
+#define API_CMD "cp /home/vinsion/learn/project/tool/mymakefile_V1.0/src/gfapi/ ./src/gfapi -rf"
 
 int copy_file(char *rfilename,char *wfilename);
 //./mycp  source  dest

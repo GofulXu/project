@@ -1,6 +1,5 @@
 #include "gfapi.h"
-
-#define INTERFACE_PATH "/home/vinsion/tool/myproject_V1.0/bin/interface.tar"
+#define INTERFACE_PATH "/home/vinsion/learn/project/tool/myproject_V1.0/bin/interface.tar"
 
 int main(int argc, char **argv)//参数个数， 参数列表
 {
