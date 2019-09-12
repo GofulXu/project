@@ -11,7 +11,8 @@ SRC += \
 		base/string.c									\
 		base/sysclient/sysclient.c						\
 		base/syscmd/syscmd.c							\
-		parse/json/cJSON.c								\
+		parse/cJSON.c								\
+		parse/md5sum.c								\
 		network/gftcp.c									\
 		network/gfudp.c									\
 		network/gftcpclient.c							\

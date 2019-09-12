@@ -154,7 +154,7 @@ static bool recv_data(uint64_t wParam, uint64_t lParam)
 		else
 		{
 			if(pNetworkClient->pDataHandler)
-				pNetworkClient->pDataHandler(pNetworkClient->recv_buf, ret);
+				pNetworkClient->pDataHandler(pNetworkClient->recv_buf, ret, from.sin_addr.s_addr, from.sin_port);
 			if(pNetworkClient->pAddrHandler)
 				pNetworkClient->pAddrHandler(inet_ntoa(from.sin_addr), htons(from.sin_port));
         	last_recv_time = gf_thrd_get_tick();

@@ -180,6 +180,7 @@ void gf_shell_run()
 	int value1 = 0, value2 = 0;
 	while(1)
 	{
+		printf("#");
 		memset(cmd, 0, sizeof(cmd));
 		memset(buf, 0, sizeof(buf));
 		value1 = value2 = -1;

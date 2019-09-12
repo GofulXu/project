@@ -5,7 +5,7 @@ endif
 #LINK_PATH = /opt/hisi-linux/x86-arm/arm-hisiv200-linux/target/bin/
 #CROSS_COMPILE = $(LINK_PATH)arm-hisiv200-linux-
 
-LINK_PATH =
+#LINK_PATH = arm-none-linux-gnueabi-
 CROSS_COMPILE = $(LINK_PATH)
 CC = gcc
 LINK = $(CROSS_COMPILE)$(CC)

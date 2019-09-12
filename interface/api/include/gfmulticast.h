@@ -12,7 +12,7 @@ extern "C"
 #define GFMULTICAST_LOG_ERROR( format, ...) 	gf_log(LOG_LEVEL_ERROR, "gfmulticast", __FUNCTION__, __LINE__, format, ##__VA_ARGS__)
 #define GFMULTICAST_LOG_FATAL( format, ...) 	gf_log(LOG_LEVEL_FATAL, "gfmulticast", __FUNCTION__, __LINE__, format, ##__VA_ARGS__)
 
-typedef int (*PDataHandler)(char *data, int size);
+typedef int (*PDataHandler)(char *data, int size, unsigned long ip, unsigned short port);
 
 typedef int (*PTimeoutHandler)(int action);
 

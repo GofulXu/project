@@ -187,7 +187,21 @@ int gf_udpclient_send(SUdpClient* pClient, unsigned long hostip, unsigned short 
 	{
 		if(0 < gf_udp_select(pClient->socket, NULL, &writefds, NULL, timeout))
 		{
-			return gf_udp_send( pClient->socket, hostip, hostport, buf, size);
+		    struct sockaddr_in from;
+		    memset( &from, 0, sizeof(from) );
+		    from.sin_addr.s_addr = hostip;
+		    from.sin_port = hostport;
+#if 0
+		    int i = 0;
+		    printf("udp_send buf: ");
+		    for(i = 0; i < size; i++)
+		    {
+			printf("%02x ", buf[i]);
+		    }
+		    printf("\n");
+		    printf("%s:%d---ip:%s\tport:%d\n", __FUNCTION__, __LINE__, inet_ntoa(from.sin_addr), htons(from.sin_port));
+#endif
+		    return gf_udp_send( pClient->socket, hostip, hostport, buf, size);
 		}
 	}
 	return -2;
