@@ -25,8 +25,7 @@ int gf_module_init(void)
 	//初始化日志记录
 	gf_reportlog_init();
 
-	//
-	gf_networkhandle_init();
+	GfP2PServiceInit();
 
 	//注册退出处理函数
 	create_exit_function();
@@ -36,7 +35,7 @@ int gf_module_init(void)
 
 void gf_module_exit(void)
 {
-	gf_networkhandle_exit();
-	gf_reportlog_exit();
-	return ;
+    GfP2PServiceExit();
+    gf_reportlog_exit();
+    return ;
 }

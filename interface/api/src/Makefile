@@ -13,11 +13,12 @@ SRC += \
 		base/syscmd/syscmd.c							\
 		parse/cJSON.c								\
 		parse/md5sum.c								\
+		parse/GfCRC32.c								\
 		network/gftcp.c									\
 		network/gfudp.c									\
 		network/gftcpclient.c							\
 		network/gftcpserver.c							\
-		network/gfudpclient.c							\
+		network/GfUdpClient.c							\
 		network/gfmulticast.c							\
 		network/gfftpclientcurl.c						\
 		network/gftftpclientcurl.c						\

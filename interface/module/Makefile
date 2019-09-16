@@ -8,8 +8,7 @@ SRC += \
 		src/gfservice/gfservice_send.c					\
 		src/gfservice/gfhashfunc.c					\
 		src/gfreportlog/gfreportlog.c 				\
-		src/gfcom/gfcom_sample.c 					\
-		src/gfcom/gfnetwork_sample.c 				\
+		src/GfP2P/GfP2PService.c 				\
 		src/gfmodule.c 	
 
 CFLAGS += \
