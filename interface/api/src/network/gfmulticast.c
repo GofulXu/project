@@ -8,7 +8,7 @@
 
 #include "gfapi.h"
 #include "gfthrd.h"
-#include "gfparamerter.h"
+#include "GfParamerter.h"
 #include "gflog.h"
 #include "gfreportlog.h"
 #include "gfmulticast.h"

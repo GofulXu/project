@@ -7,14 +7,8 @@
 /*数据流接收线程*/
 static bool UdpClientRecv( uint64_t wparam, uint64_t lparam )
 {
-	SUdpClient*	pClient = (SUdpClient*)wparam;
-	int rcv_size = 0;
-	int buf_size = sizeof(pClient->buf);
-	char *p = NULL;
-	unsigned long ip;
-	unsigned short port;
+	SUdpClient* pClient = (SUdpClient*)wparam;
 	fd_set readfds;
-	pClient->datasize = 0;
 
 	/*清一下接收缓存*/
 	/*判断当前网络连接的结构是否有效*/
@@ -23,66 +17,49 @@ static bool UdpClientRecv( uint64_t wparam, uint64_t lparam )
 		GFUDPCLIENT_LOG_DEBUG( "[%s:%d]Invalid udp client!\n",__FUNCTION__,__LINE__);
 		return false;
 	}
-	if(0 < gf_udp_select(pClient->socket, &readfds, NULL, NULL, 1000))
+	if(0 < gf_udp_select(pClient->NetP.Socket, &readfds, NULL, NULL, 1000))
 	{
 
-		memset(pClient->buf, 0, sizeof(pClient->buf));
-		p = pClient->buf + pClient->datasize;
-
+		memset(pClient->NetP.Buf, 0, sizeof(pClient->NetP.Buf));
 		/*接收数据*/
-		rcv_size = gf_udp_recv( pClient->socket, &ip, &port, p, buf_size - pClient->datasize);
+		pClient->NetP.Size = gf_udp_recv( pClient->NetP.Socket, &pClient->NetP.Ip, &pClient->NetP.Port, pClient->NetP.Buf, sizeof(pClient->NetP.Buf));
 
-		if(rcv_size > 0)
+		if(pClient->NetP.Size > 0)
 		{
-			pClient->datasize += rcv_size;
 			if(pClient->pPacketHandler)
 			{	
-				if(0 > pClient->pPacketHandler(pClient->socket, ip, port, p, pClient->datasize, pClient->lParam) )
+				if(0 > pClient->pPacketHandler(&pClient->NetP, pClient->lParam) )
 				{
-					closesocket(pClient->socket);
-					pClient->socket = INVALID_SOCKET;
-					if(pClient->databuf)
-					{
-						free(pClient->databuf);
-						pClient->databuf = NULL;
-					}
+					pClient->NetP.Size = 0;
+					pClient->hThrd = NULL;
+					closesocket(pClient->NetP.Socket);
+					pClient->NetP.Socket = INVALID_SOCKET;
 					GFUDPCLIENT_LOG_DEBUG( "return false %s:%d\n", __FUNCTION__, __LINE__);
 					return false;
 				}
 			}
 		}
 
-		if(rcv_size <= 0)
+		if(pClient->NetP.Size <= 0)
 		{
 			GFUDPCLIENT_LOG_DEBUG( "[%s:%d]net recive failed\n", __FUNCTION__, __LINE__);
-			pClient->datasize = 0;
+			pClient->NetP.Size = 0;
 			pClient->hThrd = NULL;
 			if( pClient->pErrorHandler )
 			{
-				pClient->pErrorHandler(pClient->socket, pClient->localip, pClient->localport, pClient->lParam);
-				closesocket(pClient->socket);
-				pClient->socket = INVALID_SOCKET;
-				if(pClient->databuf)
-				{
-					free(pClient->databuf);
-					pClient->databuf = NULL;
-				}
+				pClient->pErrorHandler(&pClient->NetP, pClient->lParam);
+				closesocket(pClient->NetP.Socket);
+				pClient->NetP.Socket = INVALID_SOCKET;
 				/*退出线程*/
 				GFUDPCLIENT_LOG_DEBUG( "return false %s:%d\n", __FUNCTION__, __LINE__);
-				return false;
 			}else
 			{
-				closesocket(pClient->socket);
-				pClient->socket = INVALID_SOCKET;
-				if(pClient->databuf)
-				{
-					free(pClient->databuf);
-					pClient->databuf = NULL;
-				}
+				closesocket(pClient->NetP.Socket);
+				pClient->NetP.Socket = INVALID_SOCKET;
 				/*退出线程*/
 				GFUDPCLIENT_LOG_DEBUG( "return false %s:%d\n", __FUNCTION__, __LINE__);
-				return false;
 			}
+			return false;
 		}
 	}
 
@@ -92,10 +69,10 @@ static bool UdpClientRecv( uint64_t wparam, uint64_t lparam )
 /*关闭接收*/
 void GfUdpClientExit( SUdpClient *pClient )
 {
-	if( pClient->socket != INVALID_SOCKET )
+	if( pClient->NetP.Socket != INVALID_SOCKET )
 	{
-		close( pClient->socket );
-		pClient->socket = INVALID_SOCKET;
+		close( pClient->NetP.Socket );
+		pClient->NetP.Socket = INVALID_SOCKET;
 	}	
 	/*强行中止接收线程*/
 	if( pClient->hThrd != NULL )
@@ -103,18 +80,13 @@ void GfUdpClientExit( SUdpClient *pClient )
 		gf_thrd_close( pClient->hThrd, 2000 );
 		pClient->hThrd = NULL;
 	}
-	if( pClient->databuf != NULL)
-	{
-		free(pClient->databuf);
-		pClient->databuf = NULL;
-	}
 	pClient->pPacketHandler = NULL;
 	pClient->pErrorHandler = NULL;
 	pClient->lParam = 0;
-	pClient->localip = 0;
-	pClient->localport = 0;
-	pClient->hostip = 0;
-	pClient->hostport = 0;
+	pClient->LocalIp = 0;
+	pClient->LocalPort = 0;
+	pClient->HostIp = 0;
+	pClient->HostPort = 0;
 }
 
 /*************************************************************************
@@ -127,17 +99,16 @@ void GfUdpClientExit( SUdpClient *pClient )
  *************************************************************************/
 int GfUdpClientInit( SUdpClient* pClient)
 {
-	SOCKET skt=-1;
+	SOCKET Skt=-1;
 	//unsigned int now = 0;
 
 	if( !pClient ) return false;
 	pClient->hThrd = NULL;
-	pClient->databuf = NULL;
-	pClient->mutex = NULL;
-	pClient->socket = INVALID_SOCKET;
+	pClient->Mutex = NULL;
+	pClient->NetP.Socket = INVALID_SOCKET;
 	
-	skt = gf_udp_socket();
-	if( skt == INVALID_SOCKET)
+	Skt = gf_udp_socket();
+	if( Skt == INVALID_SOCKET)
 	{
 		GFUDPCLIENT_LOG_DEBUG( "%s: create socket err\n", __FUNCTION__);
 		return -1;
@@ -149,14 +120,14 @@ int GfUdpClientInit( SUdpClient* pClient)
 	srand( now );
 	gf_udp_bind(skt, INADDR_ANY, htons( (unsigned short) (30000 + rand()%26000 )));
 #endif
-	if(0 > gf_udp_bind(skt, pClient->localip, pClient->localport))
+	if(0 > gf_udp_bind(Skt, pClient->LocalIp, pClient->LocalPort))
 	{
-		GFUDPCLIENT_LOG_DEBUG( "%s: bind %d err\n", __FUNCTION__, ntohs(pClient->localport));
+		GFUDPCLIENT_LOG_DEBUG( "%s: bind %d err\n", __FUNCTION__, ntohs(pClient->LocalPort));
 		GfUdpClientExit(pClient);
 		return -2;
 	}
-	GFUDPCLIENT_LOG_DEBUG( "%s: bind %d suc\n", __FUNCTION__, ntohs(pClient->localport));
-	pClient->socket = skt;
+	GFUDPCLIENT_LOG_DEBUG( "%s: bind %d suc\n", __FUNCTION__, ntohs(pClient->LocalPort));
+	pClient->NetP.Socket = Skt;
 	pClient->hThrd = gf_thrd_open( "udpClientRecv", 50, 0, 256*1024,/*(PThreadHandler)*/UdpClientRecv, NULL, (uint64_t)pClient, pClient->lParam);
 	if( pClient->hThrd == NULL )
 	{
@@ -169,17 +140,17 @@ int GfUdpClientInit( SUdpClient* pClient)
 }
 
 /*数据发送*/
-int GfUdpClientSend(SUdpClient* pClient, unsigned long hostip, unsigned short hostport, char* buf, int size, int timeout)
+int GfUdpClientSend(SUdpClient* pClient, unsigned long HostIp, unsigned short HostPort, char* buf, int size, int timeout)
 {
 	fd_set writefds;
-	if( pClient && pClient->socket != INVALID_SOCKET )
+	if( pClient && pClient->NetP.Socket != INVALID_SOCKET )
 	{
-		if(0 < gf_udp_select(pClient->socket, NULL, &writefds, NULL, timeout))
+		if(0 < gf_udp_select(pClient->NetP.Socket, NULL, &writefds, NULL, timeout))
 		{
 		    struct sockaddr_in from;
 		    memset( &from, 0, sizeof(from) );
-		    from.sin_addr.s_addr = hostip;
-		    from.sin_port = hostport;
+		    from.sin_addr.s_addr = HostIp;
+		    from.sin_port = HostPort;
 #if 0
 		    int i = 0;
 		    printf("udp_send buf: ");
@@ -190,7 +161,7 @@ int GfUdpClientSend(SUdpClient* pClient, unsigned long hostip, unsigned short ho
 		    printf("\n");
 		    printf("%s:%d---ip:%s\tport:%d\n", __FUNCTION__, __LINE__, inet_ntoa(from.sin_addr), htons(from.sin_port));
 #endif
-		    return gf_udp_send( pClient->socket, hostip, hostport, buf, size);
+		    return gf_udp_send( pClient->NetP.Socket, HostIp, HostPort, buf, size);
 		}
 	}
 	return -2;
@@ -198,9 +169,9 @@ int GfUdpClientSend(SUdpClient* pClient, unsigned long hostip, unsigned short ho
 
 
 /*是否已经开始接收*/
-bool GfUdpClientIsInit( SUdpClient* pClient )
+int GfUdpClientIsInit( SUdpClient* pClient )
 {
-	if(!pClient || pClient->socket == INVALID_SOCKET || !pClient->hThrd)
-		return false;
-	return true;
+	if(!pClient || pClient->NetP.Socket == INVALID_SOCKET || !pClient->hThrd)
+		return -1;
+	return 0;
 }

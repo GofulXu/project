@@ -5,9 +5,8 @@
 #include "gfthrd.h"
 #include "gfcomhandle.h"
 #include "gfnetworkhandle.h"
-#include "operate.h"
 #include "gfshell.h"
-#include "gfparamerter.h"
+#include "GfParamerter.h"
 #include "gftime.h"
 #include "gfreportlog.h"
 #include "gfmodule.h"
@@ -34,18 +33,18 @@ static int gf_app_log_init()
 	int log_level = 6;
 	char value[64];
 
-	gf_paramerter_set_int( "log_type", 0);
+	GfParamerterSetInt( "log_type", 0);
 	gf_log_init( LOG_LEVEL_ALL, "console", "all" );
 
-	log_level = gf_paramerter_get_int("log_level");
+	log_level = GfParamerterGetInt("log_level");
 	if(log_level < 0)
 		log_level = 0;
 
 	gf_log_set_level(log_level);
 
-	gf_paramerter_set("log_targets", "console");
+	GfParamerterSet("log_targets", "console");
 	memset(value,0,sizeof(value));
-	if( !gf_paramerter_get("log_targets", value, sizeof(value)) )
+	if( !GfParamerterGet("log_targets", value, sizeof(value)) )
 		gf_log_set_targets( value );
 
 	return 0;
@@ -59,7 +58,7 @@ static int gf_app_set_env(void)
 
 static int create_exit_function(void)
 {
-	gf_shell_adduthash_exitfunction((exit_fun_ptr)gf_paramerter_exit);
+	gf_shell_adduthash_exitfunction((exit_fun_ptr)GfParamerterExit);
 	return 0;
 }
 
@@ -69,7 +68,7 @@ int main(int argc, char *argv[])
 	app_set_resource();
 
 	//参数化参数表
-	gf_paramerter_init();
+	GfParamerterInit();
 
 	//初始化打印系统
 	gf_app_log_init();

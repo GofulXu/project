@@ -3,7 +3,7 @@
 #include "gfthrd.h"
 #include "gfmutex.h"
 #include "gfreportlog.h"
-#include "gfparamerter.h"
+#include "GfParamerter.h"
 #include "gftime.h"
 
 static HANDLE m_mutex = NULL;

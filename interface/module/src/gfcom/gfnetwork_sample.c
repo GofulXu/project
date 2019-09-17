@@ -4,7 +4,7 @@
 #include "gfudpclient.h"
 #include "gfnetworkhandle.h"
 #include "operate.h"
-#include "gfparamerter.h"
+#include "GfParamerter.h"
 #include "gfreportlog.h"
 #ifdef SUPPORT_JNI
 #include "SampleJNI.h"

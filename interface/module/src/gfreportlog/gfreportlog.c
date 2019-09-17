@@ -4,7 +4,7 @@
 #include "gfmutex.h"
 #include "gftime.h"
 #include "gfreportlog.h"
-#include "gfparamerter.h"
+#include "GfParamerter.h"
 
 #define SAVE_BUF_SIZE (512*1024)
 
@@ -71,7 +71,7 @@ static bool deleteLogFileProc(uint64_t lparam, uint64_t uparam)
 
     gf_thrd_delay(120*1000);
 
-    delete_days = gf_paramerter_get_int("save_days");
+    delete_days = GfParamerterGetInt("save_days");
     if(delete_days < 1 || delete_days > 3*30)
         delete_days = 30;
 
@@ -206,7 +206,7 @@ int gf_reportlog_save(int type, char *format, ...)
             i = 0;
             memset(mac, 0, sizeof(mac));
 
-            if(0 > gf_paramerter_get("mac", mac, sizeof(mac)))
+            if(0 > GfParamerterGet("mac", mac, sizeof(mac)))
             {
                 snprintf(mac, sizeof(mac)-1,"%s", "00:07:63:11:22:33");
             }

@@ -41,6 +41,12 @@ enum _P2PSERVICESTATUS{
     STATUS_PROXYDISCONNECT  //PROXY未连接
 };
 
+enum _P2PDEVICETYPE{
+    P2PDEVICE_SERVER,
+    P2PDEVICE_USER,
+    P2PDEVICE_GATEWAY
+};
+
 typedef	struct _MsgP2PServiceHead{
     unsigned int Id;	    //timetick时间戳
     unsigned int Cmd;	    //命令字
@@ -52,13 +58,15 @@ typedef	struct _MsgP2PServiceHead{
 
 //CMD_P2PCREATE_REQUEST
 typedef struct _SendMsgP2PServiceCreate{
+    MsgP2PServiceHead Head;
     char UserID[32];	
-    char Passwd[32];	//+md5加密
+    char Passwd[32];	//+明文
     char UserName[32];	//预留
 }SendMsgP2PServiceCreate;
 
 //CMD_P2PCREATE_RESPOND
 typedef struct _RecvMsgP2PServiceCreate{
+    MsgP2PServiceHead Head;
     char UserID[32];	
     char Passwd[32];	//+md5加密
     char UserName[32];	//预留
@@ -68,6 +76,7 @@ typedef struct _RecvMsgP2PServiceCreate{
 
 //CMD_P2PLOGIN_REQUEST
 typedef struct _SendMsgP2PServiceLogin{
+    MsgP2PServiceHead Head;
     char UserID[32];	
     char Passwd[32];	//+md5加密
     char UserName[32];	//预留
@@ -76,6 +85,7 @@ typedef struct _SendMsgP2PServiceLogin{
 
 //CMD_P2PLOGIN_RESPOND
 typedef struct _RecvMsgP2PServiceLogin{
+    MsgP2PServiceHead Head;
     char UserID[32];	
     char UserName[32];	//预留
     char UUID[32];	//用户端注册时服务器返回
@@ -84,6 +94,7 @@ typedef struct _RecvMsgP2PServiceLogin{
 
 //CMD_P2PLOGOUT_REQUEST
 typedef struct _SendMsgP2PServiceLogout{
+    MsgP2PServiceHead Head;
     char UserID[32];	
     char Passwd[32];	//+md5加密
     char UserName[32];	//预留
@@ -92,6 +103,7 @@ typedef struct _SendMsgP2PServiceLogout{
 
 //CMD_P2PLOGOUT_RESPOND
 typedef struct _RecvMsgP2PServiceLogout{
+    MsgP2PServiceHead Head;
     char UserID[32];	
     char UserName[32];	//预留
     char UUID[32];	//用户端注册时服务器返回
@@ -100,6 +112,7 @@ typedef struct _RecvMsgP2PServiceLogout{
 
 //CMD_P2PDETECT_REQUEST
 typedef struct _SendMsgP2PServiceDetect{
+    MsgP2PServiceHead Head;
     char UserID[32];	
     char Passwd[32];	//+md5加密
     char UserName[32];	//预留
@@ -110,6 +123,7 @@ typedef struct _SendMsgP2PServiceDetect{
 
 //CMD_P2PDETECT_RESPOND
 typedef struct _RecvMsgP2PServiceDetect{
+    MsgP2PServiceHead Head;
     char UserID[32];	
     char Passwd[32];	//+md5加密---new
     char UserName[32];	//预留--new
@@ -119,6 +133,7 @@ typedef struct _RecvMsgP2PServiceDetect{
 
 //CMD_P2POPENP2P_REQUEST
 typedef struct _SendMsgP2PServiceOpenP2P{
+    MsgP2PServiceHead Head;
     char UserID[32];	
     char Passwd[32];	//+md5加密
     char UserName[32];	//预留
@@ -126,6 +141,7 @@ typedef struct _SendMsgP2PServiceOpenP2P{
 }SendMsgP2PServiceOpenP2P;
 
 typedef struct _DevInfo{
+    MsgP2PServiceHead Head;
     char UUID[32];
     char Ip[32];
     unsigned short Port;
@@ -134,6 +150,7 @@ typedef struct _DevInfo{
 
 //CMD_P2POPENP2P_RESPOND, 设备端接收到设备信息后立刻进行P2P连接，同时反馈结果以及相应时间戳到服务器
 typedef struct _RecvMsgP2PServiceOpenP2P{
+    MsgP2PServiceHead Head;
     char UserID[32];	
     char UserName[32];	//预留
     char UUID[32];	//用户端注册时服务器返回
@@ -144,6 +161,7 @@ typedef struct _RecvMsgP2PServiceOpenP2P{
 
 //CMD_P2POPENPROXY_REQUEST  //服务器收到后检测设备端是否在线，在线的话将用户加入hash表做代理透传服务
 typedef struct _SendMsgP2PServiceOpenPROXY{
+    MsgP2PServiceHead Head;
     char UserID[32];	
     char Passwd[32];	//+md5加密
     char UserName[32];	//预留
@@ -152,6 +170,7 @@ typedef struct _SendMsgP2PServiceOpenPROXY{
 
 //CMD_P2POPENPROXY_RESPOND
 typedef struct _RecvMsgP2PServiceOpenPROXY{
+    MsgP2PServiceHead Head;
     char UserID[32];	
     char UserName[32];	//预留
     char UUID[32];	//用户端注册时服务器返回
@@ -160,6 +179,7 @@ typedef struct _RecvMsgP2PServiceOpenPROXY{
 
 //CMD_P2PHEARTPACKET
 typedef struct _SendMsgP2PServiceHeartPacket{
+    MsgP2PServiceHead Head;
     char UserID[32];	
     char UserName[32];	//预留
     char UUID[32];	//用户端注册时服务器返回

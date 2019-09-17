@@ -3,7 +3,7 @@ BINDIR = $(PROJECT_PATH)/api/lib
 NAME = operate
 SRC += \
 		sqlite3.c			\
-		operate.c
+		GfOperate.c
 
 
 

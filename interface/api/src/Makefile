@@ -23,7 +23,7 @@ SRC += \
 		network/gfftpclientcurl.c						\
 		network/gftftpclientcurl.c						\
 		shell/gfshell.c									\
-		paramerter/gfparamerter.c						\
+		paramerter/GfParamerter.c						\
 		max_unzip/zip_uppack.c							\
 		ntpclient/phaselock.c							\
 		ntpclient/ntpclient.c							\

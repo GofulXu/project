@@ -11,39 +11,37 @@ extern "C"{
 #define GFUDPCLIENT_LOG_ERROR( format, ...) 	gf_log(LOG_LEVEL_ERROR, "gfudpclient", __FUNCTION__, __LINE__, format, ##__VA_ARGS__)
 #define GFUDPCLIENT_LOG_FATAL( format, ...) 	gf_log(LOG_LEVEL_FATAL, "gfudpclient", __FUNCTION__, __LINE__, format, ##__VA_ARGS__)
 
+typedef struct _NetPacket{
+    SOCKET Socket;
+    unsigned long Ip;
+    unsigned short Port;
+    char Buf[128*1024];
+    unsigned Size;
+}NetPacket;
 
-typedef int (*PPacketHandler)( SOCKET socket, unsigned long ip, unsigned short port, char *buf, int size, unsigned long lParam );
 
-typedef int (*PErrorHandler)( SOCKET socket, unsigned long ip,	unsigned short port, unsigned long lParam );
+typedef int (*PPacketHandler)( NetPacket *NetP, unsigned long lParam );
+
+typedef int (*PErrorHandler)( NetPacket *NetP, unsigned long lParam );
 
 typedef struct
 {
 	/*本地地址*/
-	unsigned long localip;
+	unsigned long LocalIp;
 	/*本地端口*/
-	unsigned short localport;
+	unsigned short LocalPort;
 	/*主机地址*/
-	unsigned long hostip;
+	unsigned long HostIp;
 	/*主机端口*/
-	unsigned short hostport;
-	/*工作套解字*/
-	SOCKET socket;
-	/*接收缓冲区*/
-	char buf[128*1024];
-	/*接收数据大小*/
-	int datasize;
-	/*一个命令缓冲区*/
-	char command_buf[8*1024];
-	/*发送缓冲区*/
-	char sndbuf[64*1024];
-	char* databuf;
+	unsigned short HostPort;
+
+	NetPacket NetP;
 	/*侦听线程*/
 	HANDLE hThrd;
-	HANDLE mutex;
+	HANDLE Mutex;
 	PPacketHandler pPacketHandler;
 	PErrorHandler pErrorHandler;	
 	unsigned long lParam;
-	bool check_entire;
 }SUdpClient;
 /*************************************************************************
 *@param pClient
@@ -68,7 +66,7 @@ void GfUdpClientExit( SUdpClient* pClient );
 *@param pClient
 *
 *************************************************************************/
-bool GfUdpClientIsInit( SUdpClient* pClient );
+int GfUdpClientIsInit( SUdpClient* pClient );
 
 /*************************************************************************
 *@param pClient

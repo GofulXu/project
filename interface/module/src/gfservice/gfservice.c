@@ -2,7 +2,7 @@
 #include "gfapi.h"
 #include "gfthrd.h"
 #include "gfmutex.h"
-#include "gfparamerter.h"
+#include "GfParamerter.h"
 #include "gfservice.h"
 #include "gfadjsystime.h"
 #include "gfhashfunc.h"

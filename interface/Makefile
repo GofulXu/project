@@ -4,7 +4,6 @@ all:
 	make -C module
 	make -C app
 ifeq ($(SUPPORT_BUILD_SAMPLE), y)
-	make -C api/operate/sample
 	make -C sample 
 endif
 
