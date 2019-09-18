@@ -20,6 +20,7 @@ LINKFLAGS += \
 			 -loperate										\
 			 -lpthread											\
 			 -lm												\
+			 -luuid												\
 			 -ldl
 
 -include $(PROJECT_PATH)/build/core.Makefile

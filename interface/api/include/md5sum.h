@@ -8,8 +8,12 @@
 #ifndef __MD5SUM_H__
 #define __MD5SUM_H__
 
-char GetFileMD5(char *filename);
-char GetContextMD5(char *Context, int size);
+int GetContextMD5Ex(char *Context, int Len, char *Buf, int Size);
+int GetContextMD5(char *Context, int Len, unsigned char *Buf, int Size);
+int GetFileMD5Ex(char *FileName, char *Buf, int Size);
+int GetFileMD5(char *FileName, unsigned char *Buf, int Size);
+int GetUuidEx(char *Buf, int Size);
+int GetUuid(char *Buf, int Size);
 
 #endif/*__MD5SUM_H__*/
 

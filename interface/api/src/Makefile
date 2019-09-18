@@ -14,6 +14,7 @@ SRC += \
 		parse/cJSON.c								\
 		parse/md5sum.c								\
 		parse/GfCRC32.c								\
+		parse/Parse.c								\
 		network/gftcp.c									\
 		network/gfudp.c									\
 		network/gftcpclient.c							\
@@ -41,6 +42,7 @@ DYN_LDS_WITH += \
 LINKFLAGS += \
 			 -lpthread											\
 			 -lm												\
+			 -luuid												\
 			 -ldl
 
 

@@ -7,6 +7,7 @@
 #include "gfcomhandle.h"
 #include "gfnetworkhandle.h"
 #include "gfmodule.h"
+#include "md5sum.h"
 
 
 static int create_exit_function(void)

@@ -4,44 +4,14 @@
 	> Mail: vinsion@vinsion.mail 
 	> Created Time: Fri 30 Aug 2019 09:32:29 AM +06
  ************************************************************************/
-/* md5sum.c - print MD5 Message-Digest Algorithm 
- * Copyright (C) 1995, 1996, 1998, 1999,
- *               2000, 2001, 2002 Free Software Foundation, Inc.
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation; either version 2, or (at your option) any
- * later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
- * According to the definition of MD5 in RFC 1321 from April 1992.
- * NOTE: This is *not* the same file as the one from glibc.
- */
-/* Written by Ulrich Drepper <drepper@gnu.ai.mit.edu>, 1995.  */
-/* Heavily modified for GnuPG by <wk@gnupg.org> */
- 
- 
-/* Test values:
- * ""                  D4 1D 8C D9 8F 00 B2 04  E9 80 09 98 EC F8 42 7E
- * "a"                 0C C1 75 B9 C0 F1 B6 A8  31 C3 99 E2 69 77 26 61
- * "abc                90 01 50 98 3C D2 4F B0  D6 96 3F 7D 28 E1 7F 72
- * "message digest"    F9 6B 69 7D 7C B7 93 8D  52 5A 2F 31 AA F1 61 D0
- */
- 
  
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 #include <errno.h>
+#include "uuid/uuid.h"
+#include "Parse.h"
  
  
 #undef BIG_ENDIAN_HOST
@@ -359,7 +329,7 @@ static void md5_final( MD5_CONTEXT *hd )
 }
  
 
-int GetContextMD5(char *Context, int len, char *md5buf, int size)
+int GetContextMD5(char *Context, int Len, unsigned char *Buf, int Size)
 {
     MD5_CONTEXT ctx;
     int i;
@@ -368,16 +338,20 @@ int GetContextMD5(char *Context, int len, char *md5buf, int size)
 	return -1;
 
     md5_init(&ctx);
-    md5_write(&ctx, Context, len);
+    md5_write(&ctx, Context, Len);
     md5_final(&ctx);
-    if(md5buf)
-	memcpy(md5buf, ctx.buf, size);
+    if(Buf && Size < sizeof(ctx.buf))
+	memcpy(Buf, ctx.buf, Size);
+    else if(Buf)
+	memcpy(Buf, ctx.buf, sizeof(ctx.buf));
+    else
+	return -2;
 
 #if 0
 
     printf("===>%s<===\n", Context);
     for (i=0; i < 16; i++)
-	printf ("%02x", ctx.buf[i]);
+	printf ("%02x", Buf[i]);
     printf ("\n");
 #endif
 
@@ -386,7 +360,7 @@ int GetContextMD5(char *Context, int len, char *md5buf, int size)
 }
 
 
-int GetFileMD5(char *filename, char *md5buf, int size)
+int GetFileMD5(char *FileName, unsigned char *Buf, int Size)
 {
     assert (sizeof (u32) == 4);
     FILE *fp;
@@ -395,10 +369,10 @@ int GetFileMD5(char *filename, char *md5buf, int size)
     MD5_CONTEXT ctx;
     int i;
 
-    fp = fopen(filename, "rb");
+    fp = fopen(FileName, "rb");
     if (!fp)
     {
-	printf("can't open `%s': %s\n", filename, strerror (errno));
+	printf("can't open `%s': %s\n", FileName, strerror (errno));
 	return -1;
     }
     md5_init(&ctx);
@@ -408,49 +382,133 @@ int GetFileMD5(char *filename, char *md5buf, int size)
     }
     if (ferror(fp))
     {
-	printf("error reading `%s': %s\n", filename, strerror(errno));
+	printf("error reading `%s': %s\n", FileName, strerror(errno));
 	fclose(fp);
 	fp = NULL;
-	return -1;
+	return -2;
     }
     md5_final(&ctx);
     fclose(fp);
 
-    if(md5buf)
-	memcpy(md5buf, ctx.buf, size);
+    if(Buf && Size < sizeof(ctx.buf))
+	memcpy(Buf, ctx.buf, Size);
+    else if(Buf)
+	memcpy(Buf, ctx.buf, sizeof(ctx.buf));
+    else
+	return -3;
 
 #if 0
+    printf("===>MD5SUM<===\n");
     for (i=0; i < 16; i++)
-	printf ("%02x", ctx.buf[i]);
-    printf ("%s\n", filename);
+	printf ("%02x", md5buf[i]);
+    printf (" %s\n", filename);
 #endif
 
     return 0;
 }
- 
- 
-#if 0
-int main (int argc, char **argv)
+
+int GetUuid(unsigned char *Buf, int Size)
 {
-  assert (sizeof (u32) == 4);
- 
- 
-  if (argc < 2)
-  {
-	fprintf (stderr, "usage: md5sum filenames\n");
-	exit (1);
-  }
-  unsigned char md5buf[64] = {0};
-  for (argc--, argv++; argc; argv++, argc--)
-  {
-      if(!GetFileMD5(*argv, md5buf, sizeof(md5buf)))
-      {
-	int i = 0;
-	for (i=0; i < 16; i++)
-	    printf ("%02x", md5buf[i]);
-	printf ("  %s\n", *argv);
-      }
-  }
-  return 0;
-}
+    uuid_t Uuid;
+    uuid_generate(Uuid);
+
+    if(Buf && Size < sizeof(uuid_t))
+	memcpy(Buf, &Uuid, Size);
+    else if(Buf)
+	memcpy(Buf, &Uuid, sizeof(uuid_t));
+    else
+	return -3;
+
+#if 0
+    printf("===>UUID<===\n");
+    int i = 0;
+    for(i = 0; i < 16; i++)
+	printf("%02x", Buf[i]);
+    printf("\n");
 #endif
+    return 0;
+}
+
+int GetContextMD5Ex(char *Context, int Len, char *Buf, int Size)
+{
+    MD5_CONTEXT ctx;
+    int i;
+
+    if(!Context)
+	return -1;
+
+    md5_init(&ctx);
+    md5_write(&ctx, Context, Len);
+    md5_final(&ctx);
+    if(Buf)
+	Hex2Str(ctx.buf, 16, Buf, Size);
+    else
+	return -2;
+
+#if 0
+    printf("[%s:%d]===>%s<===\n", __FUNCTION__, __LINE__, Buf);
+    unsigned char Text[32] = {0};
+    Str2Hex(Buf, 32, Text, 16);
+    printf("===>MD5SUM<===\n");
+    for (i=0; i < 16; i++)
+	printf ("%02x", Text[i]);
+#endif
+
+    return 0;
+
+}
+
+
+int GetFileMD5Ex(char *FileName, char *Buf, int Size)
+{
+    assert (sizeof (u32) == 4);
+    FILE *fp;
+    char buffer[4096];
+    size_t n;
+    MD5_CONTEXT ctx;
+    int i;
+
+    fp = fopen(FileName, "rb");
+    if (!fp)
+    {
+	printf("can't open `%s': %s\n", FileName, strerror (errno));
+	return -1;
+    }
+    md5_init(&ctx);
+    while((n = fread(buffer, 1, sizeof(buffer), fp)))
+    {
+	md5_write(&ctx, buffer, n);
+    }
+    if (ferror(fp))
+    {
+	printf("error reading `%s': %s\n", FileName, strerror(errno));
+	fclose(fp);
+	fp = NULL;
+	return -2;
+    }
+    md5_final(&ctx);
+    fclose(fp);
+
+    if(Buf)
+	Hex2Str(ctx.buf, 16, Buf, Size);
+    else
+	return -3;
+    //printf("[%s:%d]===>%s<===\n", __FUNCTION__, __LINE__, Buf);
+
+    return 0;
+}
+
+//Size > 36
+int GetUuidEx(char *Buf, int Size)
+{
+    uuid_t Uuid;
+    uuid_generate(Uuid);
+
+    if(Buf)
+	uuid_unparse_upper(Uuid, Buf);
+    else
+	return -3;
+    //printf("[%s:%d]===>%s<===\n", __FUNCTION__, __LINE__, Buf);
+
+    return 0;
+}
