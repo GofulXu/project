@@ -55,6 +55,7 @@ static int clear_uthash_function( )
 		free(current_user);            /* optional- if you want to free  */
 		current_user = NULL;
 	}
+	return 0;
 }
 
 static int clear_uthash_exitfunction( )
@@ -66,6 +67,7 @@ static int clear_uthash_exitfunction( )
 		free(current_user);            /* optional- if you want to free  */
 		current_user = NULL;
 	}
+	return 0;
 }
 
 static int delete_uthash_function(char *name, shell_fun_ptr mfun)

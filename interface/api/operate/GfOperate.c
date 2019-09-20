@@ -32,7 +32,7 @@ int DatabaseClose(sqlite3 *Db)
 }
 
 
-int DatabaseShow(sqlite3 *Db, char *Table)
+int DatabaseShow(sqlite3 *Db)
 {
 	if(!Db)
 		return DB_NO_FOUND;
@@ -40,7 +40,7 @@ int DatabaseShow(sqlite3 *Db, char *Table)
 	char *Errmsg;
 	int nrow,ncolumn,i,j,index;
 	char sql[256] = {0};
-	snprintf(sql, sizeof(sql), "select * from %s", Table);
+	snprintf(sql, sizeof(sql), "select * from %s", GENERAL_PARA_TABLE);
 
 	if(sqlite3_get_table(Db,sql,&Resultp,&nrow,&ncolumn,&Errmsg) != SQLITE_OK)
 	{
@@ -62,7 +62,7 @@ int DatabaseShow(sqlite3 *Db, char *Table)
 	return DB_OK;
 }
 
-int DatabaseGeneralCreateParaTable(sqlite3* Db, char *Table)
+int DatabaseGeneralCreateParaTable(sqlite3* Db)
 {
 	if(!Db)
 		return DB_NO_FOUND;
@@ -70,11 +70,11 @@ int DatabaseGeneralCreateParaTable(sqlite3* Db, char *Table)
 	char SqlSentence[256];
 	memset(SqlSentence, 0, sizeof(SqlSentence));
 	snprintf(SqlSentence, sizeof(SqlSentence), "	\
-		CREATE Table %s(							\
+		CREATE GENERAL_PARA_TABLE %s(							\
 		ID INTEGER PRIMARY KEY,						\
 		Name TEXT,									\
 		Value TEXT									\
-	  );", Table); 
+	  );", GENERAL_PARA_TABLE); 
 
 	int Result = sqlite3_exec(Db, SqlSentence, 0, 0, &Errmsg);
 	if(Result != SQLITE_OK)
@@ -82,14 +82,14 @@ int DatabaseGeneralCreateParaTable(sqlite3* Db, char *Table)
 	return DB_OK;	
 }
 
-int DatabaseGeneralInsertParaTable(sqlite3* Db, char *Table, char *Name, char *Value)
+int DatabaseGeneralInsertParaTable(sqlite3* Db, const char *Name, char *Value)
 {
 	if(!Db)
 		return DB_NO_FOUND;
 	char *Errmsg = NULL;
 	char SqlSentence[256];
 	memset(SqlSentence, 0, sizeof(SqlSentence));
-	snprintf(SqlSentence, sizeof(SqlSentence), "INSERT INTO \"%s\" ValueS(NULL, '%s', '%s');", Table, Name, Value); 
+	snprintf(SqlSentence, sizeof(SqlSentence), "INSERT INTO \"%s\" ValueS(NULL, '%s', '%s');", GENERAL_PARA_TABLE, Name, Value); 
 	int Result = sqlite3_exec(Db, SqlSentence, 0, 0, &Errmsg);
 	if(Result != SQLITE_OK)
 		return DB_ERROR;
@@ -97,17 +97,17 @@ int DatabaseGeneralInsertParaTable(sqlite3* Db, char *Table, char *Name, char *V
 }
 
 
-int DatabaseGeneralUpdateParaTable(sqlite3* Db, char *Table, char *Name, char *Value)
+int DatabaseGeneralUpdateParaTable(sqlite3* Db, const char *Name, char *Value)
 {
 	if(!Db)
 		return DB_NO_FOUND;
 	char sub[128] = {0};
-	if(QUERY_OK != DatabaseGeneralQueryParaTable(Db, Table, Name, sub, sizeof(sub)))
+	if(QUERY_OK != DatabaseGeneralQueryParaTable(Db, Name, sub, sizeof(sub)))
 		return QUERY_NO_FOUND;
 	char *Errmsg = NULL;
 	char SqlSentence[256];
 	memset(SqlSentence, 0, sizeof(SqlSentence));
-	snprintf(SqlSentence, sizeof(SqlSentence), "update %s set Value='%s' where Name='%s';", Table, Value, Name); 
+	snprintf(SqlSentence, sizeof(SqlSentence), "update %s set Value='%s' where Name='%s';", GENERAL_PARA_TABLE, Value, Name); 
 
 	int Result = sqlite3_exec(Db, SqlSentence, 0, 0, &Errmsg);
 	if(Result != SQLITE_OK)
@@ -115,7 +115,7 @@ int DatabaseGeneralUpdateParaTable(sqlite3* Db, char *Table, char *Name, char *V
 	return DB_OK;	
 }
 
-int DatabaseGeneralQueryParaTable(sqlite3* Db, char *Table, char *Name, char *Value, int Size)
+int DatabaseGeneralQueryParaTable(sqlite3* Db, const char *Name, char *Value, int Size)
 {
 	if(!Db)
 		return DB_NO_FOUND;
@@ -125,7 +125,7 @@ int DatabaseGeneralQueryParaTable(sqlite3* Db, char *Table, char *Name, char *Va
 	int i, j, index, Result;
 	char SqlSentence[256];
 	memset(SqlSentence, 0, sizeof(SqlSentence));
-	snprintf(SqlSentence, sizeof(SqlSentence), "select * from %s where Name='%s';", Table, Name); 
+	snprintf(SqlSentence, sizeof(SqlSentence), "select * from %s where Name='%s';", GENERAL_PARA_TABLE, Name); 
 
 	Result = sqlite3_get_table( Db, SqlSentence, &DbResult, &nRow, &nColumn, &Errmsg);
 	if(Result == SQLITE_OK)
@@ -157,14 +157,14 @@ int DatabaseGeneralQueryParaTable(sqlite3* Db, char *Table, char *Name, char *Va
 	return QUERY_OK;
 }
 
-int DatabaseDeleteParaTable(sqlite3 *Db, char *Table, char *Name)
+int DatabaseDeleteParaTable(sqlite3 *Db, const char *Name)
 {
 	if(!Db)
 		return DB_NO_FOUND;
 	char *Errmsg = NULL;
 	char SqlSentence[256];
 	memset(SqlSentence, 0, sizeof(SqlSentence));
-	snprintf(SqlSentence, sizeof(SqlSentence), "DELETE FROM %s WHERE Name = '%s';", Table, Name); 
+	snprintf(SqlSentence, sizeof(SqlSentence), "DELETE FROM %s WHERE Name = '%s';", GENERAL_PARA_TABLE, Name); 
 
 	int Result = sqlite3_exec(Db, SqlSentence, 0, 0, &Errmsg);
 	if(Result != SQLITE_OK)
@@ -173,7 +173,7 @@ int DatabaseDeleteParaTable(sqlite3 *Db, char *Table, char *Name)
 }
 
 
-int DatabaseGeneralCreateDevTable(sqlite3* Db, char *Table)
+int DatabaseGeneralCreateDevTable(sqlite3* Db)
 {
     if(!Db)
 	return DB_NO_FOUND;
@@ -181,14 +181,14 @@ int DatabaseGeneralCreateDevTable(sqlite3* Db, char *Table)
     char SqlSentence[256];
     memset(SqlSentence, 0, sizeof(SqlSentence));
     snprintf(SqlSentence, sizeof(SqlSentence), "						\
-	    CREATE Table %s(									\
+	    CREATE GENERAL_DEV_TABLE %s(									\
 	    ID INTEGER PRIMARY KEY,								\
 	    UUID TEXT,										\
 	    UserID TEXT,									\
-	    Passwd TEXT,									\
+	    PassWd TEXT,									\
 	    UserName TEXT,									\
 	    Type INTEGER									\
-	    );", Table); 
+	    );", GENERAL_DEV_TABLE); 
 
     int Result = sqlite3_exec(Db, SqlSentence, 0, 0, &Errmsg);
     if(Result != SQLITE_OK)
@@ -196,14 +196,14 @@ int DatabaseGeneralCreateDevTable(sqlite3* Db, char *Table)
     return DB_OK;	
 }
 
-int DatabaseGeneralInsertDevTable(sqlite3* Db, char *Table, char *Uuid, char *UserID, char *Passwd, char *UserName, unsigned int Type)
+int DatabaseGeneralInsertDevTable(sqlite3* Db, const char *Uuid, char *UserID, char *PassWd, char *UserName, unsigned int Type)
 {
     if(!Db)
 	return DB_NO_FOUND;
     char *Errmsg = NULL;
     char SqlSentence[256];
     memset(SqlSentence, 0, sizeof(SqlSentence));
-    snprintf(SqlSentence, sizeof(SqlSentence), "INSERT INTO \"%s\" ValueS(NULL, '%s', '%s', '%s', '%s', '%d');", Table, Uuid, UserID, Passwd, UserName, Type); 
+    snprintf(SqlSentence, sizeof(SqlSentence), "INSERT INTO \"%s\" ValueS(NULL, '%s', '%s', '%s', '%s', '%d');", GENERAL_DEV_TABLE, Uuid, UserID, PassWd, UserName, Type); 
     int Result = sqlite3_exec(Db, SqlSentence, 0, 0, &Errmsg);
     if(Result != SQLITE_OK)
 	return DB_ERROR;
@@ -211,22 +211,22 @@ int DatabaseGeneralInsertDevTable(sqlite3* Db, char *Table, char *Uuid, char *Us
 }
 
 
-int DatabaseGeneralUpdateDevTable(sqlite3* Db, char *Table, char *Uuid, char *Passwd, char *UserName)
+int DatabaseGeneralUpdateDevTable(sqlite3* Db, const char *Uuid, char *PassWd, char *UserName)
 {
     if(!Db)
 	return DB_NO_FOUND;
     unsigned int pType = 0;
-    if(QUERY_OK != DatabaseGeneralQueryDevTable(Db, Table, Uuid, NULL, 0, NULL, 0, NULL, 0, NULL))
+    if(QUERY_OK != DatabaseGeneralQueryDevTable(Db, Uuid, NULL, 0, NULL, 0, NULL, 0, NULL))
 	return QUERY_NO_FOUND;
     char *Errmsg = NULL;
     char SqlSentence[256];
     memset(SqlSentence, 0, sizeof(SqlSentence));
-    if(Passwd && UserName)
-	snprintf(SqlSentence, sizeof(SqlSentence), "update %s set Passwd='%s' UserName='%s' where Uuid='%s';", Table, Passwd, UserName, Uuid); 
-    else if(Passwd)
-	snprintf(SqlSentence, sizeof(SqlSentence), "update %s set Passwd='%s' where Uuid='%s';", Table, Passwd, Uuid); 
+    if(PassWd && UserName)
+	snprintf(SqlSentence, sizeof(SqlSentence), "update %s set PassWd='%s' UserName='%s' where Uuid='%s';", GENERAL_DEV_TABLE, PassWd, UserName, Uuid); 
+    else if(PassWd)
+	snprintf(SqlSentence, sizeof(SqlSentence), "update %s set PassWd='%s' where Uuid='%s';", GENERAL_DEV_TABLE, PassWd, Uuid); 
     else if(UserName)
-	snprintf(SqlSentence, sizeof(SqlSentence), "update %s set UserName='%s' where Uuid='%s';", Table, UserName, Uuid); 
+	snprintf(SqlSentence, sizeof(SqlSentence), "update %s set UserName='%s' where Uuid='%s';", GENERAL_DEV_TABLE, UserName, Uuid); 
     else
 	return DB_ERROR;
 
@@ -236,7 +236,7 @@ int DatabaseGeneralUpdateDevTable(sqlite3* Db, char *Table, char *Uuid, char *Pa
     return DB_OK;	
 }
 
-int DatabaseGeneralQueryDevTable(sqlite3* Db, char *Table, char *Uuid, char *UserId, int IdSize, char *Passwd, int WdSize, char *UserName, int NaSize, int *Type)
+int DatabaseGeneralQueryDevTable(sqlite3* Db, const char *Uuid, char *UserId, int IdSize, char *PassWd, int WdSize, char *UserName, int NaSize, int *Type)
 {
     if(!Db)
 	    return DB_NO_FOUND;
@@ -246,7 +246,7 @@ int DatabaseGeneralQueryDevTable(sqlite3* Db, char *Table, char *Uuid, char *Use
     int i, j, Index, Result;
     char SqlSentence[256];
     memset(SqlSentence, 0, sizeof(SqlSentence));
-    snprintf(SqlSentence, sizeof(SqlSentence), "select * from %s where Uuid='%s';", Table, Uuid); 
+    snprintf(SqlSentence, sizeof(SqlSentence), "select * from %s where Uuid='%s';", GENERAL_DEV_TABLE, Uuid); 
 
     Result = sqlite3_get_table(Db, SqlSentence, &DbResult, &nRow, &nColumn, &Errmsg);
     if(Result == SQLITE_OK)
@@ -258,8 +258,8 @@ int DatabaseGeneralQueryDevTable(sqlite3* Db, char *Table, char *Uuid, char *Use
 	    {
 	    	if(UserId)
 	    	    snprintf(UserId, IdSize, "%s", DbResult[Index + 2]);
-	    	if(Passwd)
-	    	    snprintf(Passwd, WdSize, "%s", DbResult[Index + 3]);
+	    	if(PassWd)
+	    	    snprintf(PassWd, WdSize, "%s", DbResult[Index + 3]);
 	    	if(UserName)
 	    	    snprintf(UserName, NaSize, "%s", DbResult[Index + 4]);
 	    	if(Type)
@@ -286,14 +286,14 @@ int DatabaseGeneralQueryDevTable(sqlite3* Db, char *Table, char *Uuid, char *Use
     return QUERY_OK;
 }
 
-int DatabaseDeleteDevTable(sqlite3 *Db, char *Table, char *Uuid)
+int DatabaseDeleteDevTable(sqlite3 *Db, const char *Uuid)
 {
 	if(!Db)
 	    return DB_NO_FOUND;
 	char *Errmsg = NULL;
 	char SqlSentence[256];
 	memset(SqlSentence, 0, sizeof(SqlSentence));
-	snprintf(SqlSentence, sizeof(SqlSentence), "DELETE FROM %s WHERE Uuid = '%s';", Table, Uuid); 
+	snprintf(SqlSentence, sizeof(SqlSentence), "DELETE FROM %s WHERE Uuid = '%s';", GENERAL_DEV_TABLE, Uuid); 
 
 	int Result = sqlite3_exec(Db, SqlSentence, 0, 0, &Errmsg);
 	if(Result != SQLITE_OK)

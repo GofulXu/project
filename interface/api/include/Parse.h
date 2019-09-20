@@ -8,7 +8,7 @@
 #ifndef __PARSE_H__
 #define __PARSE_H__
 
-int Hex2Str(char *Hex, int SizeHex, char *Str, int SizeStr);
-int Str2Hex(char *Str, int SizeStr, char *Hex, int SizeHex);
+int Hex2Str(unsigned char *Hex, int SizeHex, char *Str, int SizeStr);
+int Str2Hex(char *Str, int SizeStr, unsigned char *Hex, int SizeHex);
 
 #endif /*__PARSE_H__*/

@@ -14,6 +14,17 @@
 #define GF_LOG_ERROR( format, ...) 	gf_log(LOG_LEVEL_ERROR, "gflog", __FUNCTION__, __LINE__, format, ##__VA_ARGS__)
 #define GF_LOG_FATAL( format, ...) 	gf_log(LOG_LEVEL_FATAL, "gflog", __FUNCTION__, __LINE__, format, ##__VA_ARGS__)
 
+enum GfCode{
+    GFCODE_NODE,
+    GFCODE_SUCCESS,
+    GFCODE_SUCSAME,
+    GFCODE_ERROR,
+    GFCODE_ERROPEN,
+    GFCODE_ERRCLOSE,
+    GFCODE_ERRNOFOUND,
+    GFCODE_ERRPARA,
+    GFCODE_ERRTIMEOUT,
+};
 
 #ifndef _MAX_PATH
 #define _MAX_PATH 1024

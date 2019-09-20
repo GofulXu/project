@@ -11,6 +11,7 @@ SRC += \
 		base/string.c									\
 		base/sysclient/sysclient.c						\
 		base/syscmd/syscmd.c							\
+		base/GfTaskWait.c							\
 		parse/cJSON.c								\
 		parse/md5sum.c								\
 		parse/GfCRC32.c								\

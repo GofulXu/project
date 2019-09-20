@@ -22,23 +22,27 @@ int GfParamerterInit();
 void GfParamerterExit();
 
 //获取参数string
-int GfParamerterGet(char *Name, char *Value, int Size);
+int GfParamerterGet(const char *Name, char *Value, int Size);
 
 //获取参数int
-int GfParamerterGetInt(char *Name);
+int GfParamerterGetInt(const char *Name);
 
 //通用表插入新参数
-int GfParamerterInsert(char *Name, char *Value);
+int GfParamerterInsert(const char *Name, char *Value);
 
 //删除参数
-int GfParamerterDelete(char *Name);
+int GfParamerterDelete(const char *Name);
 
 //设置参数string
-int GfParamerterSet(char *Name, char *Value);
+int GfParamerterSet(const char *Name, char *Value);
 
 //设置参数int
-int GfParamerterSetInt(char *Name, int Value);
+int GfParamerterSetInt(const char *Name, int Value);
 
+int GfDeviceGet(const char *Uuid, char *UserId, int IdSize, char *PassWd, int WdSize, char *UserName, int NaSize, int *Type);
+int GfDeviceInsert(const char *Uuid, char *UserId, char *PassWd, char *UserName, int Type);
+int GfDeviceDelete(const char *Uuid);
+int GfDeviceSet(const char *Uuid, char *PassWd, char *UserName);
 #ifdef __cplusplus
 }
 #endif

@@ -79,8 +79,7 @@ static void* sema_thread_handler( void* lp_param );	//线程回调函数
  * 
  * @return 成功,返回线程句柄;失败,返回空值
  */
-HANDLE gf_thrd_open( char *name, unsigned char priority, gf_policy_t policy, int stack_size, 
-					threadhandler_t handler, threadhandler_t Errorhandler, uint64_t wparam, uint64_t lparam )
+HANDLE gf_thrd_open( char *name, unsigned char priority, gf_policy_t policy, int stack_size, threadhandler_t handler, threadhandler_t Errorhandler, uint64_t wparam, uint64_t lparam )
 {
 	int i, rc;
 	pthread_attr_t *pattr = NULL;

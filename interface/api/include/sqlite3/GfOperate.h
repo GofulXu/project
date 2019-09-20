@@ -44,17 +44,17 @@ enum {
 
 sqlite3 *DatabaseOpen(char *path);
 int DatabaseClose(sqlite3 *Db);
-int DatabaseDeleteParaTable(sqlite3 *Db, char *Table, char *Name);
-int DatabaseGeneralCreateParaTable(sqlite3* Db, char *Table);
-int DatabaseGeneralInsertParaTable(sqlite3* Db, char *Table, char *Name, char *Value);
-int DatabaseShow(sqlite3 *Db, char *Table);
-int DatabaseGeneralUpdateParaTable(sqlite3* Db, char *Table, char *Name, char *Value);
-int DatabaseGeneralQueryParaTable(sqlite3* Db, char *Table, char *Name, char *Value, int Size);
+int DatabaseDeleteParaTable(sqlite3 *Db, const char *Name);
+int DatabaseGeneralCreateParaTable(sqlite3* Db);
+int DatabaseGeneralInsertParaTable(sqlite3* Db, const char *Name, char *Value);
+int DatabaseShow(sqlite3 *Db);
+int DatabaseGeneralUpdateParaTable(sqlite3* Db, const char *Name, char *Value);
+int DatabaseGeneralQueryParaTable(sqlite3* Db, const char *Name, char *Value, int Size);
 
-int DatabaseGeneralCreateDevTable(sqlite3* Db, char *Table);
-int DatabaseGeneralInsertDevTable(sqlite3* Db, char *Table, char *Uuid, char *UserID, char *Passwd, char *UserName, unsigned int Type);
-int DatabaseGeneralUpdateDevTable(sqlite3* Db, char *Table, char *Uuid, char *Passwd, char *UserName);
-int DatabaseGeneralQueryDevTable(sqlite3* Db, char *Table, char *Uuid, char *UserId, int IdSize, char *Passwd, int WdSize, char *UserName, int NaSize, int *Type);
-int DatabaseDeleteDevTable(sqlite3 *Db, char *Table, char *Uuid);
+int DatabaseGeneralCreateDevTable(sqlite3* Db);
+int DatabaseGeneralInsertDevTable(sqlite3* Db, const char *Uuid, char *UserID, char *PassWd, char *UserName, unsigned int Type);
+int DatabaseGeneralUpdateDevTable(sqlite3* Db, const char *Uuid, char *PassWd, char *UserName);
+int DatabaseGeneralQueryDevTable(sqlite3* Db, const char *Uuid, char *UserId, int IdSize, char *PassWd, int WdSize, char *UserName, int NaSize, int *Type);
+int DatabaseDeleteDevTable(sqlite3 *Db, const char *Uuid);
 #endif /*__GFOPERATE_H__*/
 
